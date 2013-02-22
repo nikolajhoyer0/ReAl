@@ -1,6 +1,7 @@
 package real.Objects.Services;
 
 import java.awt.event.WindowEvent;
+import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import real.Interfaces.IService;
@@ -30,7 +31,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     @Override
     public void Initialize()
-    {        
+    {      
+        ImageIcon image = new ImageIcon("assets/icon/icon.png");
+        
+        this.setIconImage(image.getImage());
     }
 
     @Override
@@ -67,6 +71,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
         jTree1 = new javax.swing.JTree();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ReAl");
+        setAlwaysOnTop(true);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jButton1.setText("jButton1");
         jButton1.addActionListener(new java.awt.event.ActionListener()
@@ -102,8 +109,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(47, 47, 47)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)))
