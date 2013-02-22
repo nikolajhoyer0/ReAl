@@ -19,8 +19,8 @@ public class Union extends BinaryOperationBase
     @Override
     public Dataset execute() throws InvalidSchema, NoSuchDataset
     {
-        Dataset resultA = this.operandA.execute().clone();
-        Dataset resultB = this.operandB.execute().clone();
+        Dataset resultA = this.operandA.execute();
+        Dataset resultB = this.operandB.execute();
 
         if (resultA.equalsSchema(resultB))
         {
