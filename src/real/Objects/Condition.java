@@ -24,8 +24,6 @@ public class Condition extends ConditionBase
         {
             this.operandB = row.getValue(this.operandB);
         }
-
-        
         
         return true;
     }
