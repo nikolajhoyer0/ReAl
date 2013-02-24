@@ -323,8 +323,29 @@ public class ReversePolishParser
                 createStr = createStr.concat(str.substring(lastSub, current) + " " + str.substring(current, current+1)) + " ";               
                 lastSub = current+1;
             }
-
-            else if (this.isOperator(("" + chr)))
+            
+            else if (chr == '<' && str.charAt(current+1) == '=')
+            {
+                createStr = createStr.concat(str.substring(lastSub, current) + " " + str.substring(current, current+2)) + " ";               
+                lastSub = current+2;
+                current++;
+            }
+            
+            else if (chr == '>' && str.charAt(current+1) == '=')
+            {
+                createStr = createStr.concat(str.substring(lastSub, current) + " " + str.substring(current, current+2)) + " ";               
+                lastSub = current+2;
+                current++;
+            }
+            
+            else if (chr == '<' && str.charAt(current+1) == '>')
+            {
+                createStr = createStr.concat(str.substring(lastSub, current) + " " + str.substring(current, current+2)) + " ";               
+                lastSub = current+2;
+                current++;
+            }
+            
+            else if (this.isOperator("" + chr))
             {             
                 createStr = createStr.concat(str.substring(lastSub, current) + " " + str.substring(current, current+1) + " ");
                     
