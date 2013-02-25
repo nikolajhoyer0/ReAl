@@ -1,6 +1,7 @@
 
 package real.Objects.Services;
 
+import java.util.ArrayList;
 import real.BaseClasses.ServiceBase;
 import real.Objects.Column;
 import real.Objects.Dataset;
@@ -32,7 +33,7 @@ public class TestService extends ServiceBase
             System.out.print("InvalidDataset");
         }
     }
-
+    
     public void Test()
     {
         try
@@ -53,10 +54,7 @@ public class TestService extends ServiceBase
             Renaming rename = new Renaming(new ReferencedDataset("test2"), columns, change);  
             
                                
-            Dataset set = rename.execute();
-            
-
-                                   
+            Dataset set = rename.execute();                                  
             Kernel.GetService(MainWindow.class).setup(set);      
         }
         catch (NoSuchDataset ex)

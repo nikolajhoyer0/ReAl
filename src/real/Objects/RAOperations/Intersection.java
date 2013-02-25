@@ -8,7 +8,6 @@ import real.Objects.Dataset;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.Row;
-import real.Objects.Column;
 
 public class Intersection extends BinaryOperationBase
 {
@@ -35,6 +34,7 @@ public class Intersection extends BinaryOperationBase
                     includeRows.add(row);
                 }
             }
+            
             return new Dataset("", resultA.getColumns(), includeRows);
         }
         
