@@ -1,7 +1,9 @@
 package real.Objects;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 import real.Enumerations.DataType;
+import real.Objects.RAOperations.Selection;
 import real.Objects.Utility;
 
 public class ReversePolishParser
@@ -226,6 +228,8 @@ public class ReversePolishParser
             case "=":
             case "AND":
             case "and":
+            case "OR":
+            case "or":
             case ">":
             case "<":
             case "<=":
@@ -257,6 +261,8 @@ public class ReversePolishParser
             case "<>":
             case "AND":
             case "and":
+            case "or":
+            case "OR":
                 return true;
         }
         
@@ -267,6 +273,47 @@ public class ReversePolishParser
     {
         return (!this.isFunction(word) && !this.isOperator(word)
                     && !word.equals(")") && !word.equals("("));
+    }
+    
+    
+    
+    //function that adds character to certain function to prioritize their importance.
+    //todo might try to make it more effecient.
+    private String createPriority(final String str)
+    {
+        String word = "";
+        String[] words = str.split(" ");
+        ArrayList<String> storage = new ArrayList<>();
+       
+        
+        for(int i = 0; i < words.length; ++i)
+        {
+            word = words[i];
+            
+            if(word.equals("selection"))
+            {
+                boolean wasOperator = false;
+                int firstWord = 0;
+                
+                if(this.isOperator(word))
+                {
+                    wasOperator = true;
+                }
+                
+                else if(this.isIdentifier(word))
+                {
+                    if(!wasOperator)
+                    {
+                        
+                    }
+             
+                }
+                
+            }
+            
+        }
+      
+        return null;
     }
     
     //todo perhaps check if a space is needed, instead of just doing it without checking. 
