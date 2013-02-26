@@ -189,7 +189,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton3ActionPerformed
     {//GEN-HEADEREND:event_jButton3ActionPerformed
         ReversePolishParser parser = new ReversePolishParser();           
-        this.jTextPane2.setText(parser.spreadWords(this.jTextPane1.getText()));  
+        this.jTextPane2.setText(parser.priorityFunctions(parser.spreadWords(this.jTextPane1.getText())));  
     }//GEN-LAST:event_jButton3ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
