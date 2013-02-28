@@ -69,7 +69,6 @@ public class ExpressionParser
                 
                 else
                 {
-                    tokenStream.consume();
                     list.add(primary());
                     break;
                 }
