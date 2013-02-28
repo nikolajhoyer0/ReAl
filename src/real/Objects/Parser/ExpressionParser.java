@@ -47,13 +47,6 @@ public class ExpressionParser
             return tree;
         }
         
-        else if (token.getSymbol().equals("MAX"))
-        {
-            tokenStream.consume();
-            TokenTree[] tree = {expression(0)};
-            return new TokenTree(tree, token);
-        }
-        
         else if (token.getSymbol().equals("selection"))
         {
             tokenStream.consume();
