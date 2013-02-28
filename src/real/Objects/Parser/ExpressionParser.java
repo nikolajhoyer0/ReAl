@@ -77,7 +77,6 @@ public class ExpressionParser
             
             TokenTree[] fulltree = {expression(newPrecedence), tree};
             tree = new TokenTree(fulltree, token);
-            return tree;
         }
         
         return tree;

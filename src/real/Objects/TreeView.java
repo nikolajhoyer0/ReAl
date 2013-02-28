@@ -62,11 +62,12 @@ public class TreeView extends JFrame
     
     private void traverseTree(TokenTree tree, Object parent, Object thing, int y)
     {
+        Object v1;
                         
         if(tree.getChildren() != null)
         {
             int x = 0;
-            Object v1;
+            
             
             if(thing != null)
             {
@@ -90,6 +91,24 @@ public class TreeView extends JFrame
                 
                 traverseTree(tr, parent, v2, y+100);
             }
-        }    
+        }  
+        
+        else
+        {
+            if(thing != null)
+            {
+                v1 = thing;
+            }
+            
+            else 
+            {
+                v1 = graph.insertVertex(parent, null, tree.getToken().getSymbol(), 0, y, 80,
+                        30);
+                
+                
+            }
+            
+            
+        }
     }
 }

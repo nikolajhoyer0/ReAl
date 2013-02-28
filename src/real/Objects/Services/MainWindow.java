@@ -58,7 +58,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         ExpressionParser parser = new ExpressionParser(tokenStream);
         try
         {
-            TokenTree tree = parser.parse("( 2 + 3 ) - ( 2 + 3 ) * 5 + 3");
+            TokenTree tree = parser.parse("5 * 2 + 3 - 5");
             TreeView view = new TreeView(tree);
             view.setSize(800, 820);
             view.setVisible(true);
