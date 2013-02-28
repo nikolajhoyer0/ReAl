@@ -52,13 +52,14 @@ public class MainWindow extends javax.swing.JFrame implements IService
         opManager.addOp(new Token("+", 3, OpTypes.LEFT));
         opManager.addOp(new Token("-", 3, OpTypes.LEFT));
         opManager.addOp(new Token("*", 5, OpTypes.LEFT));
+        opManager.addOp(new Token("/", 5, OpTypes.LEFT));
 
         TokenStream tokenStream = new TokenStream(opManager);
 
         ExpressionParser parser = new ExpressionParser(tokenStream);
         try
         {
-            TokenTree tree = parser.parse("5 * 2 + 3 - 5");
+            TokenTree tree = parser.parse("selection att1 * 2 , att2 * 1 (dataset) / projection 2 + 3 (dataset)");
             TreeView view = new TreeView(tree);
             view.setSize(800, 820);
             view.setVisible(true);
