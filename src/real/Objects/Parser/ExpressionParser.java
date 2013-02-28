@@ -1,5 +1,6 @@
 package real.Objects.Parser;
 
+import java.util.LinkedList;
 import real.Enumerations.OpTypes;
 import real.Objects.Exceptions.InvalidParsing;
 
@@ -43,7 +44,38 @@ public class ExpressionParser
                 throw new InvalidParsing("Expecting end paranthese");
             }
               
-             return tree;
+            return tree;
+        }
+        
+        else if (token.getSymbol().equals("projection"))
+        {
+            tokenStream.consume();
+            TokenTree[] tree = {expression(0), primary()};
+            return new TokenTree(tree, token);           
+        }
+        
+        else if (token.getSymbol().equals("selection"))
+        {
+            tokenStream.consume();
+            LinkedList<TokenTree> list = new LinkedList<>();
+            list.add(expression(0));
+            while(true)
+            {            
+                if(tokenStream.next().getSymbol().equals(","))
+                {
+                    tokenStream.consume();
+                    list.add(expression(0));
+                }
+                
+                else
+                {
+                    list.add(primary());
+                    break;
+                }
+            }
+            
+            TokenTree[] trees = (TokenTree[])list.toArray(new TokenTree[0]);
+            return new TokenTree(trees, token);
         }
         
         else
@@ -52,7 +84,7 @@ public class ExpressionParser
             return new TokenTree(null, token);
         }
     }
-    
+
     private TokenTree expression(final int precedence) throws InvalidParsing
     {
         TokenTree tree = primary();
