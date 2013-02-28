@@ -81,7 +81,7 @@ public class ExpressionParser
         else if (token.getSymbol().equals("MAX"))
         {
             tokenStream.consume();
-            TokenTree[] tree = {expression(0)};
+            TokenTree[] tree = {primary()};
             return new TokenTree(tree, token);
         }
         

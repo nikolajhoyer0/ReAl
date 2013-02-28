@@ -59,7 +59,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         ExpressionParser parser = new ExpressionParser(tokenStream);
         try
         {
-            TokenTree tree = parser.parse("projection 4 + 3 , 4 + 2 ( dataset ) * 4");
+            TokenTree tree = parser.parse("MAX ( projection 4 + 3 * 4 , 4 + 2 ( dataset ) ) + MAX ( projection 7 + 1 , 8 + 3 ( dataset2 ) )");
             TreeView view = new TreeView(tree);
             view.setSize(800, 820);
             view.setVisible(true);
