@@ -47,14 +47,14 @@ public class ExpressionParser
             return tree;
         }
         
-        else if (token.getSymbol().equals("projection"))
+        else if (token.getSymbol().equals("selection"))
         {
             tokenStream.consume();
             TokenTree[] tree = {expression(0), primary()};
             return new TokenTree(tree, token);           
         }
         
-        else if (token.getSymbol().equals("selection"))
+        else if (token.getSymbol().equals("projection"))
         {
             tokenStream.consume();
             LinkedList<TokenTree> list = new LinkedList<>();
@@ -69,6 +69,7 @@ public class ExpressionParser
                 
                 else
                 {
+                    tokenStream.consume();
                     list.add(primary());
                     break;
                 }
