@@ -73,6 +73,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         jScrollPane4 = new javax.swing.JScrollPane();
         jTextPane2 = new javax.swing.JTextPane();
         jButton3 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ReAl");
@@ -129,6 +131,21 @@ public class MainWindow extends javax.swing.JFrame implements IService
             }
         });
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jTextArea1.addInputMethodListener(new java.awt.event.InputMethodListener()
+        {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt)
+            {
+                jTextArea1CaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt)
+            {
+                jTextArea1InputMethodTextChanged(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTextArea1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -148,6 +165,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton3))
+                        .addGap(44, 44, 44)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(119, 119, 119))
         );
@@ -161,14 +180,16 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
+                        .addGap(13, 13, 13)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3))
+                        .addGap(19, 19, 19))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
-                .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
-                .addGap(19, 19, 19))
+                    .addComponent(jScrollPane2)))
         );
 
         pack();
@@ -192,14 +213,28 @@ public class MainWindow extends javax.swing.JFrame implements IService
         this.jTextPane2.setText(parser.spreadWords(this.jTextPane1.getText()));  
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jTextArea1CaretPositionChanged(java.awt.event.InputMethodEvent evt)//GEN-FIRST:event_jTextArea1CaretPositionChanged
+    {//GEN-HEADEREND:event_jTextArea1CaretPositionChanged
+        //todo
+        System.out.println("hello2");
+    }//GEN-LAST:event_jTextArea1CaretPositionChanged
+
+    private void jTextArea1InputMethodTextChanged(java.awt.event.InputMethodEvent evt)//GEN-FIRST:event_jTextArea1InputMethodTextChanged
+    {//GEN-HEADEREND:event_jTextArea1InputMethodTextChanged
+        // TODO add your handling code here
+        System.out.println("hello");
+    }//GEN-LAST:event_jTextArea1InputMethodTextChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane jTextPane2;
     // End of variables declaration//GEN-END:variables
