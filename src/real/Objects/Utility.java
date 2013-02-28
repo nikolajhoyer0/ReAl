@@ -79,4 +79,14 @@ public class Utility
         }
         return sb.reverse().toString();
     }
+    
+    public static String getStringRepresentation(List<Character> list)
+    {
+        StringBuilder builder = new StringBuilder(list.size());
+        for (Character ch : list)
+        {
+            builder.append(ch);
+        }
+        return builder.toString();
+    }
 }

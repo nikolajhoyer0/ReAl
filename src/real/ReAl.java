@@ -8,6 +8,7 @@ import real.Objects.Services.TestService;
 import real.Objects.Services.TestService2;
 
 
+
 //gruppe id: 3
 public class ReAl
 {
@@ -20,7 +21,7 @@ public class ReAl
             Kernel.AddService(new TestService());
             Kernel.AddService(new TestService2());
             Kernel.AddService(new MainWindow());
-            Kernel.Run();                                
+            Kernel.Run();          
         }
         
         catch (Exception e)

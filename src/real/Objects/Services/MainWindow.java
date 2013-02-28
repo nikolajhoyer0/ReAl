@@ -49,17 +49,24 @@ public class MainWindow extends javax.swing.JFrame implements IService
         //testing
         TokenOpManager opManager = new TokenOpManager();
 
-        opManager.addOp(new Token("+", 3, OpTypes.LEFT));
-        opManager.addOp(new Token("-", 3, OpTypes.LEFT));
-        opManager.addOp(new Token("*", 5, OpTypes.LEFT));
-        opManager.addOp(new Token("/", 5, OpTypes.LEFT));
-
+        opManager.addOp(new Token("+", 4, OpTypes.LEFT));
+        opManager.addOp(new Token("-", 4, OpTypes.LEFT));
+        opManager.addOp(new Token("*", 6, OpTypes.LEFT));
+        opManager.addOp(new Token("/", 6, OpTypes.LEFT));
+        opManager.addOp(new Token("=", 2, OpTypes.LEFT));
+        opManager.addOp(new Token("<=", 2, OpTypes.LEFT));
+        opManager.addOp(new Token(">=", 2, OpTypes.LEFT));
+        opManager.addOp(new Token("<", 2, OpTypes.LEFT));
+        opManager.addOp(new Token(">", 2, OpTypes.LEFT));
+        opManager.addOp(new Token("AND", 1, OpTypes.LEFT));
+        opManager.addOp(new Token("OR", 0, OpTypes.LEFT));
+        
         TokenStream tokenStream = new TokenStream(opManager);
 
         ExpressionParser parser = new ExpressionParser(tokenStream);
         try
         {
-            TokenTree tree = parser.parse("MAX ( projection 4 + 3 * 4 , 4 + 2 ( dataset ) ) + MAX ( projection 7 + 1 , 8 + 3 ( dataset2 ) )");
+            TokenTree tree = parser.parse("selection 2 > Att (selection 2 < att2 (dataset))");
             TreeView view = new TreeView(tree);
             view.setSize(800, 820);
             view.setVisible(true);
