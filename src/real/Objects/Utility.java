@@ -67,4 +67,16 @@ public class Utility
         }
         return sb.toString();
     }
+    
+    public static String concatReverseStringsWSep(List<String> strings, String separator)
+    {
+        StringBuilder sb = new StringBuilder();
+        String sep = "";
+        for (String s : strings)
+        {
+            sb.append(sep).append(s);
+            sep = separator;
+        }
+        return sb.reverse().toString();
+    }
 }

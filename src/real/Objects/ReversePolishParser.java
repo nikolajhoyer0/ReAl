@@ -15,7 +15,7 @@ public class ReversePolishParser
     public String parse(final String str)
     {
         String processedWords = this.spreadWords(str);
-        processedWords = this.priorityFunctions(processedWords);             
+        processedWords = this.priorityFunctions(processedWords);   
         Scanner scanner = new Scanner(this.spreadWords(processedWords));
         this.priorityFunctions(processedWords);
         ArrayList<String> stack = new ArrayList<>();
@@ -264,7 +264,7 @@ public class ReversePolishParser
     private boolean isIdentifier(final String word)
     {
         return (!this.isFunction(word) && !this.isOperator(word)
-                    && !word.equals(")") && !word.equals("("));
+                    && !word.equals(")") && !word.equals("(")) && !word.equals(",");
     }
     
     
@@ -323,7 +323,54 @@ public class ReversePolishParser
                 }
             }
             
-           // else if()
+            else if(word.equals("projection"))
+            { 
+                boolean wasComma = true;
+                storage.addLast("(");           
+                storage.addLast(word);
+                storage.addLast("(");
+                index++;
+                
+                while(index < words.length)
+                {
+                    word = words[index];                 
+                    if(word.equals(","))
+                    {
+                        wasComma = true;
+                        storage.addLast(word); 
+                    }
+                    
+                    else if(this.isIdentifier(word))
+                    {
+                        storage.addLast(word);
+                        
+                        if(wasComma)
+                        {
+                            wasComma = false;
+                        }
+                        
+                        else
+                        {       
+                            storage.add(storage.size()-2, ")");
+                            storage.addLast(")");
+                            index++;
+                            break;
+                        }
+                    }
+                    
+                    else 
+                    {
+                       storage.addLast(word); 
+                    }
+                                
+                    index++;
+                }
+            }
+            
+           // else if(word.equals("rename"))
+           // {
+                
+           // }
             
             else
             {

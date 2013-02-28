@@ -18,7 +18,7 @@ public class ReAl
             Kernel.AddService(new TestService());
             Kernel.AddService(new TestService2());
             Kernel.AddService(new MainWindow());
-            Kernel.Run();
+            Kernel.Run();                                
         }
         
         catch (Exception e)
