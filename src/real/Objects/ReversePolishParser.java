@@ -1,5 +1,6 @@
 package real.Objects;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Scanner;
 import real.Enumerations.DataType;
 import real.Objects.Utility;
@@ -13,7 +14,10 @@ public class ReversePolishParser
 
     public String parse(final String str)
     {
-        Scanner scanner = new Scanner(this.spreadWords(str));
+        String processedWords = this.spreadWords(str);
+        processedWords = this.priorityFunctions(processedWords);   
+        Scanner scanner = new Scanner(this.spreadWords(processedWords));
+        this.priorityFunctions(processedWords);
         ArrayList<String> stack = new ArrayList<>();
         ArrayList<String> queue = new ArrayList<>();
         String word;
@@ -132,7 +136,7 @@ public class ReversePolishParser
         {
             String check = stack.get(stack.size()-1);
             
-            if(check == "(" | check == ")")
+            if(check.equals("(") || check.equals(")"))
             {
                 System.out.println("parentheses do not belong there");            
             }
@@ -141,14 +145,8 @@ public class ReversePolishParser
             stack.remove(stack.size()-1);
         }
         
-        String full = "";
-        
-        for(String c : queue)
-        {
-            full = full.concat(" " + c);
-        }
-        
-        
+        String full = Utility.concatStringsWSep(queue, " ");
+            
         return full;
     }
     
@@ -266,7 +264,123 @@ public class ReversePolishParser
     private boolean isIdentifier(final String word)
     {
         return (!this.isFunction(word) && !this.isOperator(word)
-                    && !word.equals(")") && !word.equals("("));
+                    && !word.equals(")") && !word.equals("(")) && !word.equals(",");
+    }
+    
+    
+    public String priorityFunctions(final String str)
+    {
+        LinkedList<String> storage = new LinkedList<>();
+        String[] words = str.split("[ ]+");
+        String word = "";
+        int index = 0;
+        
+        while(index < words.length)
+        {
+            word = words[index];
+                      
+            if(word.equals("selection"))
+            { 
+                boolean wasOperator = true;
+                storage.addLast("(");           
+                storage.addLast(word);
+                storage.addLast("(");
+                index++;
+                
+                while(index < words.length)
+                {
+                    word = words[index];                 
+                    if(this.isOperator(word))
+                    {
+                        wasOperator = true;
+                        storage.addLast(word); 
+                    }
+                    
+                    else if(this.isIdentifier(word))
+                    {
+                        storage.addLast(word);
+                        
+                        if(wasOperator)
+                        {
+                            wasOperator = false;
+                        }
+                        
+                        else
+                        {       
+                            storage.add(storage.size()-2, ")");
+                            storage.addLast(")");
+                            index++;
+                            break;
+                        }
+                    }
+                    
+                    else 
+                    {
+                       storage.addLast(word); 
+                    }
+                                
+                    index++;
+                }
+            }
+            
+            else if(word.equals("projection"))
+            { 
+                boolean wasComma = true;
+                storage.addLast("(");           
+                storage.addLast(word);
+                storage.addLast("(");
+                index++;
+                
+                while(index < words.length)
+                {
+                    word = words[index];                 
+                    if(word.equals(","))
+                    {
+                        wasComma = true;
+                        storage.addLast(word); 
+                    }
+                    
+                    else if(this.isIdentifier(word))
+                    {
+                        storage.addLast(word);
+                        
+                        if(wasComma)
+                        {
+                            wasComma = false;
+                        }
+                        
+                        else
+                        {       
+                            storage.add(storage.size()-2, ")");
+                            storage.addLast(")");
+                            index++;
+                            break;
+                        }
+                    }
+                    
+                    else 
+                    {
+                       storage.addLast(word); 
+                    }
+                                
+                    index++;
+                }
+            }
+            
+           // else if(word.equals("rename"))
+           // {
+                
+           // }
+            
+            else
+            {
+                storage.addLast(word);
+                index++;
+            }                           
+        }
+        
+       
+        return Utility.concatStringsWSep(storage, " ");
     }
     
     //todo perhaps check if a space is needed, instead of just doing it without checking. 

@@ -2,12 +2,22 @@ package real.Objects.Services;
 
 import real.Objects.ReversePolishParser;
 import java.awt.event.WindowEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import real.Enumerations.OpTypes;
 import real.Interfaces.IService;
 import real.Objects.Dataset;
+import real.Objects.Exceptions.InvalidParsing;
 import real.Objects.Kernel;
+import real.Objects.Parser.ExpressionParser;
+import real.Objects.Parser.Token;
+import real.Objects.Parser.TokenOpManager;
+import real.Objects.Parser.TokenStream;
+import real.Objects.Parser.TokenTree;
+import real.Objects.TreeView;
 
 public class MainWindow extends javax.swing.JFrame implements IService
 {
@@ -35,6 +45,28 @@ public class MainWindow extends javax.swing.JFrame implements IService
     {      
         ImageIcon image = new ImageIcon("assets/icon/icon.png");
         this.setIconImage(image.getImage());
+
+        //testing
+        TokenOpManager opManager = new TokenOpManager();
+
+        opManager.addOp(new Token("+", 3, OpTypes.LEFT));
+        opManager.addOp(new Token("-", 3, OpTypes.LEFT));
+        opManager.addOp(new Token("*", 5, OpTypes.LEFT));
+
+        TokenStream tokenStream = new TokenStream(opManager);
+
+        ExpressionParser parser = new ExpressionParser(tokenStream);
+        try
+        {
+            TokenTree tree = parser.parse("5 * 2 + 3 - 5");
+            TreeView view = new TreeView(tree);
+            view.setSize(800, 820);
+            view.setVisible(true);
+        }
+        catch (InvalidParsing ex)
+        {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }   
     }
 
     @Override
@@ -210,7 +242,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton3ActionPerformed
     {//GEN-HEADEREND:event_jButton3ActionPerformed
         ReversePolishParser parser = new ReversePolishParser();           
-        this.jTextPane2.setText(parser.spreadWords(this.jTextPane1.getText()));  
+        this.jTextPane2.setText(parser.priorityFunctions(parser.spreadWords(this.jTextPane1.getText())));  
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextArea1CaretPositionChanged(java.awt.event.InputMethodEvent evt)//GEN-FIRST:event_jTextArea1CaretPositionChanged
