@@ -18,27 +18,15 @@ public class TreeView extends JFrame
 
     final mxGraph graph;
     
-    public TreeView(TokenTree tree)
+    public TreeView()
     {
         super("Hello, World!");
 
         graph = new mxGraph();
-       // graph.setCellsLocked(true);
+        graph.setCellsLocked(false);
         graph.setAllowDanglingEdges(false);
-        graph.setConnectableEdges(false);
-
-        Object parent = graph.getDefaultParent();
-
-        graph.getModel().beginUpdate();
-        try
-        {
-            traverseTree(tree, parent, null, 0);
-        }
-        finally
-        {
-            graph.getModel().endUpdate();
-        }
-
+        graph.setConnectableEdges(false); 
+        
         mxHierarchicalLayout layout = new mxHierarchicalLayout(graph);  
         layout.execute(graph.getDefaultParent());
         
@@ -57,7 +45,26 @@ public class TreeView extends JFrame
                     System.out.println("cell=" + graph.getLabel(cell));
                 }
             }
-        });
+        });      
+    }
+    
+    public void load(TokenTree tree)
+    {
+        Object parent = graph.getDefaultParent();
+
+        graph.removeCells(graph.getChildVertices(graph.getDefaultParent()));
+        
+        graph.getModel().beginUpdate();
+        try
+        {
+            traverseTree(tree, parent, null, 0);
+            mxHierarchicalLayout layout = new mxHierarchicalLayout(graph);  
+            layout.execute(graph.getDefaultParent());
+        }
+        finally
+        {
+            graph.getModel().endUpdate();
+        }    
     }
     
     private void traverseTree(TokenTree tree, Object parent, Object thing, int y)

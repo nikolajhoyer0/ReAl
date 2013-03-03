@@ -1,6 +1,5 @@
 package real.Objects.Services;
 
-import real.Objects.ReversePolishParser;
 import java.awt.event.WindowEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,12 +21,12 @@ import real.Objects.TreeView;
 public class MainWindow extends javax.swing.JFrame implements IService
 {
 
-    private TestService testservice;
-
+    private ExpressionParser parser;
+    private TreeView view;
+    
     public MainWindow()
     {
         this.initComponents();
-        testservice = Kernel.GetService(TestService.class);
 
         // Setup listener so closing the window will close the kernel.
         this.addWindowListener(new java.awt.event.WindowAdapter()
@@ -46,6 +45,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         ImageIcon image = new ImageIcon("assets/icon/icon.png");
         this.setIconImage(image.getImage());
 
+        view = new TreeView();
+        view.setSize(800, 820);
+        view.setVisible(true);
+        
         //testing
         TokenOpManager opManager = new TokenOpManager();
 
@@ -63,18 +66,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         
         TokenStream tokenStream = new TokenStream(opManager);
 
-        ExpressionParser parser = new ExpressionParser(tokenStream);
-        try
-        {
-            TokenTree tree = parser.parse("selection 2 > Att (selection 2 < att2 (dataset))");
-            TreeView view = new TreeView(tree);
-            view.setSize(800, 820);
-            view.setVisible(true);
-        }
-        catch (InvalidParsing ex)
-        {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-        }   
+        parser = new ExpressionParser(tokenStream);     
     }
 
     @Override
@@ -107,14 +99,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTextPane2 = new javax.swing.JTextPane();
-        jButton3 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        textbox = new javax.swing.JTextArea();
+        button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ReAl");
@@ -145,46 +132,18 @@ public class MainWindow extends javax.swing.JFrame implements IService
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jButton2.setText("Parse");
-        jButton2.addActionListener(new java.awt.event.ActionListener()
+        textbox.setColumns(20);
+        textbox.setRows(5);
+        jScrollPane2.setViewportView(textbox);
+
+        button.setText("jButton2");
+        button.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButton2ActionPerformed(evt);
+                buttonActionPerformed(evt);
             }
         });
-
-        jScrollPane3.setViewportView(jTextPane1);
-        jTextPane1.getAccessibleContext().setAccessibleName("writeTest");
-
-        jTextPane2.setEditable(false);
-        jTextPane2.setName("parsedTest"); // NOI18N
-        jScrollPane4.setViewportView(jTextPane2);
-        jTextPane2.getAccessibleContext().setAccessibleName("drawTest");
-
-        jButton3.setText("Spread words");
-        jButton3.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jTextArea1.addInputMethodListener(new java.awt.event.InputMethodListener()
-        {
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt)
-            {
-                jTextArea1CaretPositionChanged(evt);
-            }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt)
-            {
-                jTextArea1InputMethodTextChanged(evt);
-            }
-        });
-        jScrollPane2.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -193,22 +152,19 @@ public class MainWindow extends javax.swing.JFrame implements IService
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(306, Short.MAX_VALUE)
+                        .addContainerGap(276, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(47, 47, 47)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
-                            .addComponent(jButton1)
-                            .addComponent(jScrollPane3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3))
-                        .addGap(44, 44, 44)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(119, 119, 119))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(187, 187, 187)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(button)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,19 +173,11 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 .addComponent(jButton1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47)
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
-                        .addGap(13, 13, 13)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3))
-                        .addGap(19, 19, 19))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(button))
+                .addContainerGap(114, Short.MAX_VALUE))
         );
 
         pack();
@@ -237,45 +185,29 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
     {//GEN-HEADEREND:event_jButton1ActionPerformed
-        testservice.Test();
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton2ActionPerformed
-    {//GEN-HEADEREND:event_jButton2ActionPerformed
+    private void buttonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonActionPerformed
+    {//GEN-HEADEREND:event_buttonActionPerformed
         // TODO add your handling code here:
-        ReversePolishParser parser = new ReversePolishParser();           
-        this.jTextPane2.setText(parser.parse(this.jTextPane1.getText()));     
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton3ActionPerformed
-    {//GEN-HEADEREND:event_jButton3ActionPerformed
-        ReversePolishParser parser = new ReversePolishParser();           
-        this.jTextPane2.setText(parser.priorityFunctions(parser.spreadWords(this.jTextPane1.getText())));  
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jTextArea1CaretPositionChanged(java.awt.event.InputMethodEvent evt)//GEN-FIRST:event_jTextArea1CaretPositionChanged
-    {//GEN-HEADEREND:event_jTextArea1CaretPositionChanged
-        //todo
-        System.out.println("hello2");
-    }//GEN-LAST:event_jTextArea1CaretPositionChanged
-
-    private void jTextArea1InputMethodTextChanged(java.awt.event.InputMethodEvent evt)//GEN-FIRST:event_jTextArea1InputMethodTextChanged
-    {//GEN-HEADEREND:event_jTextArea1InputMethodTextChanged
-        // TODO add your handling code here
-        System.out.println("hello");
-    }//GEN-LAST:event_jTextArea1InputMethodTextChanged
+        try
+        {
+            TokenTree tree = parser.parse(this.textbox.getText()).pop();
+            view.load(tree);
+        }
+        catch (InvalidParsing ex)
+        {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }   
+    }//GEN-LAST:event_buttonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton button;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextPane jTextPane1;
-    private javax.swing.JTextPane jTextPane2;
+    private javax.swing.JTextArea textbox;
     // End of variables declaration//GEN-END:variables
 }

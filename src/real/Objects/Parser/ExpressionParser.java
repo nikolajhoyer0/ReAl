@@ -12,10 +12,17 @@ public class ExpressionParser
         this.tokenStream = tokenStream;
     }
     
-    public TokenTree parse(final String str) throws InvalidParsing
+    public LinkedList<TokenTree> parse(final String str) throws InvalidParsing
     {
+        LinkedList<TokenTree> treeList = new LinkedList<>();
         tokenStream.read(str + " end");
-        return expression(0);
+        
+        while(!tokenStream.next().getSymbol().equals("end"))
+        {
+            treeList.add(expression(0));
+        }
+        
+        return treeList;
     }
     
     private TokenTree primary() throws InvalidParsing
@@ -54,7 +61,7 @@ public class ExpressionParser
             return new TokenTree(tree, token);           
         }
         
-        else if (token.getSymbol().equals("projection"))
+        else if (token.getSymbol().equals("rename") || token.getSymbol().equals("projection"))
         {
             tokenStream.consume();
             LinkedList<TokenTree> list = new LinkedList<>();
@@ -114,7 +121,7 @@ public class ExpressionParser
                 newPrecedence = token.getPrecedence();
             }
             
-            TokenTree[] fulltree = {expression(newPrecedence), tree};
+            TokenTree[] fulltree = {tree, expression(newPrecedence)};
             tree = new TokenTree(fulltree, token);
         }
         
