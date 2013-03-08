@@ -1,17 +1,18 @@
 package real.Objects.Parser;
 
+import java.util.EnumSet;
 import real.Enumerations.OpTypes;
 
 public class Token
 {
-    public Token(final String symbol, final int precedence, final OpTypes associativity)
+    public Token(final String symbol, final int precedence, final EnumSet associativity)
     {
         this.symbol = symbol;
         this.precedence = precedence;
         this.associativity = associativity;
     }
     
-    public Token(final String symbol, final int precedence, final OpTypes associativity, final int linePosition, final int wordPosition)
+    public Token(final String symbol, final int precedence, final EnumSet associativity, final int linePosition, final int wordPosition)
     {
         this.symbol = symbol;
         this.precedence = precedence;
@@ -45,7 +46,7 @@ public class Token
         return symbol;
     }
 
-    public OpTypes getAssociativity()
+    public EnumSet getAssociativity()
     {
         return associativity;
     }
@@ -57,11 +58,11 @@ public class Token
     
     public boolean isBinary()
     {
-        return associativity == OpTypes.LEFT || associativity == OpTypes.RIGHT;
+        return associativity.contains(OpTypes.LEFT) || associativity.contains(OpTypes.RIGHT);
     }
     
     private String symbol;
-    private OpTypes associativity;
+    private EnumSet associativity;
     private int precedence;
     private int linePosition;
     private int wordPosition;

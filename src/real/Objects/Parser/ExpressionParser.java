@@ -1,8 +1,10 @@
 package real.Objects.Parser;
 
+import java.util.EnumSet;
 import java.util.LinkedList;
 import real.Enumerations.OpTypes;
 import real.Objects.Exceptions.InvalidParsing;
+import real.Objects.Utility;
 
 
 public class ExpressionParser
@@ -27,12 +29,14 @@ public class ExpressionParser
     
     private TokenTree primary() throws InvalidParsing
     {
+        //ignore space
+        tokenStream.ignoreNextToken(" ");
         Token token = tokenStream.next();
         
-        if(token.getAssociativity() == OpTypes.UNARY)
+        if(token.getAssociativity().contains(OpTypes.UNARY))
         {
             tokenStream.consume();
-            TokenTree[] tree = {expression(token.getPrecedence())};
+            TokenTree[] tree = {expression(token.getPrecedence()+1)};
             return new TokenTree(tree, token);
         }
         
@@ -52,6 +56,29 @@ public class ExpressionParser
             }
               
             return tree;
+        }
+        
+        else if (token.getSymbol().equals("'"))
+        {
+            String concatStr = "";
+            
+            //making sure that we consider the whole string literal as one word.
+            int wordPosition = token.getWordPosition();
+            int linePosition = token.getLinePosition();
+            
+            tokenStream.consume();
+            
+            while(!tokenStream.next().getSymbol().equals("'"))
+            {               
+                concatStr = concatStr.concat(tokenStream.next().getSymbol());
+                tokenStream.consume();
+            }
+            
+            tokenStream.consume();
+            Token tk = new Token(concatStr, 0, EnumSet.of(OpTypes.NONE), linePosition, wordPosition);
+            TokenTree[] tree = {new TokenTree(null, tk)};
+            
+            return new TokenTree(tree, new Token("String", 0, EnumSet.of(OpTypes.NONE)));
         }
         
         else if (token.getSymbol().equals("selection"))
@@ -95,23 +122,40 @@ public class ExpressionParser
         else
         {
             tokenStream.consume();
-            return new TokenTree(null, token);
+            
+            if(Utility.isNumber(token.getSymbol()))
+            {
+                Token tk = new Token("Number", 0, EnumSet.of(OpTypes.NONE));
+                TokenTree[] tree = {new TokenTree(null, token)};
+                return new TokenTree(tree, tk);
+            }
+            
+            else
+            {
+                Token tk = new Token("Attribute", 0, EnumSet.of(OpTypes.NONE));
+                TokenTree[] tree = {new TokenTree(null, token)};
+                return new TokenTree(tree, tk);
+            }
+            
+            
         }
     }
 
     private TokenTree expression(final int precedence) throws InvalidParsing
     {
         TokenTree tree = primary();
+        //ignore space
+        tokenStream.ignoreNextToken(" ");
         
         while((tokenStream.next().isBinary() && tokenStream.next().getPrecedence() >= precedence)
-                && tokenStream.next().getAssociativity() != OpTypes.NONE)
+                && !tokenStream.next().getAssociativity().contains(OpTypes.NONE))
         {
             Token token = tokenStream.next();
             tokenStream.consume();
             
             int newPrecedence = 0;
             
-            if(token.getAssociativity() == OpTypes.LEFT)
+            if(token.getAssociativity().contains(OpTypes.LEFT))
             {
                 newPrecedence = token.getPrecedence() + 1;
             }

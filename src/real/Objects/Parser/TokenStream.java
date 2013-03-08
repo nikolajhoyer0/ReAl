@@ -1,5 +1,6 @@
 package real.Objects.Parser;
 
+import java.util.EnumSet;
 import java.util.LinkedList;
 import real.Enumerations.OpTypes;
 import real.Objects.Exceptions.InvalidParsing;
@@ -10,9 +11,12 @@ public class TokenStream
     public TokenStream(TokenOpManager manager)
     {
         opManager = manager;
-        opManager.addOp(new Token("(", 0, OpTypes.NONE));
-        opManager.addOp(new Token(")", 0, OpTypes.NONE));
-        opManager.addOp(new Token(",", 0, OpTypes.NONE));
+        opManager.addOp(new Token("(", 0, EnumSet.of(OpTypes.NONE)));
+        opManager.addOp(new Token(")", 0, EnumSet.of(OpTypes.NONE)));
+        opManager.addOp(new Token(",", 0, EnumSet.of(OpTypes.NONE)));
+        opManager.addOp(new Token("'", 0, EnumSet.of(OpTypes.NONE)));
+        opManager.addOp(new Token(" ", 0, EnumSet.of(OpTypes.NONE)));
+        ignoreList = new LinkedList<>();
     }
     
     public void read(String str) throws InvalidParsing
@@ -22,19 +26,53 @@ public class TokenStream
         tokens = collectAllTokens(str + " end"); 
     }
     
+    public void ignoreNextToken(String ignore)
+    {
+        ignoreList.add(ignore);
+    }
+    
+    private boolean isValidToken(String tokenSymbol)
+    {
+        for(String str : ignoreList)
+        {
+            if(!str.equals(tokenSymbol))
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     public Token next() throws InvalidParsing
     {
         if(full)
         {
+            if(!isValidToken(buffer.getSymbol()))
+            {
+                full = false;
+                ignoreList.clear();
+                return next();
+            }
+            
             return buffer;
         }
                     
         else if(consumed < tokens.length)
-        {
-            Token token = tokens[consumed];            
+        {           
+            Token token = tokens[consumed];    
+            
+            if(!isValidToken(token.getSymbol()))
+            {
+                consumed++;
+                ignoreList.clear();
+                return next();
+            }
+            
+            
             buffer = token;
             full = true;
-            consumed++;
+            consumed++;         
             return buffer;
         }
         
@@ -144,7 +182,7 @@ public class TokenStream
                 //word is guarenteed to be before operator
                 if(!wordBuffer.isEmpty())
                 {
-                    tokenList.add(new Token(wordBuffer, 0, OpTypes.NONE, linePosition, wordPosition));
+                    tokenList.add(new Token(wordBuffer, 0, EnumSet.of(OpTypes.NONE), linePosition, wordPosition));
                     wordPosition++;
                     wordBuffer = "";
                 }
@@ -180,4 +218,5 @@ public class TokenStream
     private Token[] tokens;
     private int consumed;
     private TokenOpManager opManager;
+    private LinkedList<String> ignoreList;
 }

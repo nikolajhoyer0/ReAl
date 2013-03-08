@@ -1,11 +1,10 @@
 package real.Objects.Services;
 
 import java.awt.event.WindowEvent;
+import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import real.Enumerations.OpTypes;
 import real.Interfaces.IService;
 import real.Objects.Dataset;
@@ -52,17 +51,18 @@ public class MainWindow extends javax.swing.JFrame implements IService
         //testing
         TokenOpManager opManager = new TokenOpManager();
 
-        opManager.addOp(new Token("+", 4, OpTypes.LEFT));
-        opManager.addOp(new Token("-", 4, OpTypes.LEFT));
-        opManager.addOp(new Token("*", 6, OpTypes.LEFT));
-        opManager.addOp(new Token("/", 6, OpTypes.LEFT));
-        opManager.addOp(new Token("=", 2, OpTypes.LEFT));
-        opManager.addOp(new Token("<=", 2, OpTypes.LEFT));
-        opManager.addOp(new Token(">=", 2, OpTypes.LEFT));
-        opManager.addOp(new Token("<", 2, OpTypes.LEFT));
-        opManager.addOp(new Token(">", 2, OpTypes.LEFT));
-        opManager.addOp(new Token("AND", 1, OpTypes.LEFT));
-        opManager.addOp(new Token("OR", 0, OpTypes.LEFT));
+        opManager.addOp(new Token("+", 4, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("-", 4, EnumSet.of(OpTypes.LEFT, OpTypes.UNARY)));
+        opManager.addOp(new Token("*", 6, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("/", 6, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("=", 2, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("<=", 2, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token(">=", 2, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("<", 2, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token(">", 2, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("AND", 1, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("OR", 0, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("^", 9, EnumSet.of(OpTypes.RIGHT)));
         
         TokenStream tokenStream = new TokenStream(opManager);
 
@@ -73,7 +73,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     public void Start()
     {
         this.setVisible(true);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);      
     }
 
     @Override
