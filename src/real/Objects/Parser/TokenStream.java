@@ -23,7 +23,7 @@ public class TokenStream
     {
         consumed = 0;
         full = false;
-        tokens = collectAllTokens(str + " end"); 
+        tokens = collectAllTokens(str + " end");
     }
     
     public void ignoreNextToken(String ignore)
@@ -44,6 +44,11 @@ public class TokenStream
         return true;
     }
     
+    public void clearIgnore()
+    {
+        ignoreList.clear();
+    }
+    
     public Token next() throws InvalidParsing
     {
         if(full)
@@ -51,7 +56,6 @@ public class TokenStream
             if(!isValidToken(buffer.getSymbol()))
             {
                 full = false;
-                ignoreList.clear();
                 return next();
             }
             
@@ -65,7 +69,6 @@ public class TokenStream
             if(!isValidToken(token.getSymbol()))
             {
                 consumed++;
-                ignoreList.clear();
                 return next();
             }
             
@@ -151,7 +154,7 @@ public class TokenStream
                     
                     operatorBuffer = Character.toString(chr);
                 }
-
+                /*
                 else if(chr == ' ')
                 {
                     if(!wordList.isEmpty())
@@ -160,7 +163,7 @@ public class TokenStream
                         wordList.clear();
                     }
                 }
-                
+                */
                 else if(chr == '\n')
                 {
                     if(!wordList.isEmpty())
