@@ -1,5 +1,6 @@
 package real.Objects;
 
+import java.util.List;
 import real.Enumerations.DataType;
 
 public class Utility
@@ -53,5 +54,39 @@ public class Utility
     public static boolean isBoolean(String input)
     {
         return input.equals("false") || input.equals("true");
+    }
+    
+    public static String concatStringsWSep(List<String> strings, String separator)
+    {
+        StringBuilder sb = new StringBuilder();
+        String sep = "";
+        for (String s : strings)
+        {
+            sb.append(sep).append(s);
+            sep = separator;
+        }
+        return sb.toString();
+    }
+    
+    public static String concatReverseStringsWSep(List<String> strings, String separator)
+    {
+        StringBuilder sb = new StringBuilder();
+        String sep = "";
+        for (String s : strings)
+        {
+            sb.append(sep).append(s);
+            sep = separator;
+        }
+        return sb.reverse().toString();
+    }
+    
+    public static String getStringRepresentation(List<Character> list)
+    {
+        StringBuilder builder = new StringBuilder(list.size());
+        for (Character ch : list)
+        {
+            builder.append(ch);
+        }
+        return builder.toString();
     }
 }

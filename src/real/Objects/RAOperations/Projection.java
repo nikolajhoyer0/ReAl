@@ -1,6 +1,7 @@
 package real.Objects.RAOperations;
 
 import java.util.ArrayList;
+import real.BaseClasses.ConditionBase;
 import real.BaseClasses.OperationBase;
 import real.BaseClasses.UnaryOperationBase;
 import real.Objects.Dataset;
@@ -12,7 +13,7 @@ public class Projection extends UnaryOperationBase
 {
     private String[] columns;
     
-    public Projection(OperationBase operand, String[] columns)
+    public Projection(OperationBase operand, ConditionBase[] conditions)
     {
         super(operand);
         this.columns = columns;

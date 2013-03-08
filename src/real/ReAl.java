@@ -4,9 +4,10 @@ import javax.swing.UIManager;
 import real.Objects.Kernel;
 import real.Objects.Services.DataManager;
 import real.Objects.Services.MainWindow;
-import real.Objects.Services.TestService;
-import real.Objects.Services.TestService2;
 
+
+
+//gruppe id: 3
 public class ReAl
 {
     public static void main(String[] args)
@@ -15,10 +16,8 @@ public class ReAl
         {
             UIManager.setLookAndFeel("com.jtattoo.plaf.smart.SmartLookAndFeel");
             Kernel.AddService(new DataManager());
-            Kernel.AddService(new TestService());
-            Kernel.AddService(new TestService2());
             Kernel.AddService(new MainWindow());
-            Kernel.Run();
+            Kernel.Run();          
         }
         
         catch (Exception e)
