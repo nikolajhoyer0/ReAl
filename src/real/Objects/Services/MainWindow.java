@@ -1,10 +1,16 @@
 package real.Objects.Services;
 
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import real.Enumerations.OpTypes;
 import real.Interfaces.IService;
 import real.Objects.Dataset;
@@ -22,7 +28,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private ExpressionParser parser;
     private TreeView view;
-    
+
     public MainWindow()
     {
         this.initComponents();
@@ -40,14 +46,14 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     @Override
     public void Initialize()
-    {      
+    {
         ImageIcon image = new ImageIcon("assets/icon/icon.png");
         this.setIconImage(image.getImage());
 
         view = new TreeView();
         view.setSize(800, 820);
         view.setVisible(true);
-        
+
         //testing
         TokenOpManager opManager = new TokenOpManager();
 
@@ -63,7 +69,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         opManager.addOp(new Token("AND", 1, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token("OR", 0, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token("^", 9, EnumSet.of(OpTypes.RIGHT)));
-        
+
         TokenStream tokenStream = new TokenStream(opManager);
 
         parser = new ExpressionParser(tokenStream);     
@@ -75,7 +81,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     public void Start()
     {
         this.setVisible(true);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);      
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
     @Override
@@ -95,91 +101,423 @@ public class MainWindow extends javax.swing.JFrame implements IService
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        loadFileChooser = new javax.swing.JFileChooser();
+        saveFileChooser = new javax.swing.JFileChooser();
+        combinedView = new javax.swing.JTabbedPane();
+        jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         textbox = new javax.swing.JTextArea();
+        jToolBar2 = new javax.swing.JToolBar();
         button = new javax.swing.JButton();
+        queryView = new javax.swing.JTabbedPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jToolBar1 = new javax.swing.JToolBar();
+        jButton1 = new javax.swing.JButton();
+        jToolBar3 = new javax.swing.JToolBar();
+        piButton = new javax.swing.JButton();
+        deltaButton = new javax.swing.JButton();
+        rhoButton = new javax.swing.JButton();
+        gammaButton = new javax.swing.JButton();
+        tauButton = new javax.swing.JButton();
+        arrowButton = new javax.swing.JButton();
+        unionButton = new javax.swing.JButton();
+        intersectionButton = new javax.swing.JButton();
+        differenceButton = new javax.swing.JButton();
+        productButton = new javax.swing.JButton();
+        joinButton = new javax.swing.JButton();
+        leftouterjoinButton = new javax.swing.JButton();
+        rightouterjoinButton = new javax.swing.JButton();
+        fullouterjoinButton = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tableView = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        relationView = new javax.swing.JList();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        fileMenu = new javax.swing.JMenu();
+        loadMenuItem = new javax.swing.JMenuItem();
+        saveMenuItem = new javax.swing.JMenuItem();
+        importMenuItem = new javax.swing.JMenuItem();
+        exportMenuItem = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        exitMenuItem = new javax.swing.JMenuItem();
+        editMenu = new javax.swing.JMenu();
+        jMenu1 = new javax.swing.JMenu();
+        aboutMenuItem = new javax.swing.JMenuItem();
+
+        loadFileChooser.setDialogTitle("Load script");
+
+        saveFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
+        saveFileChooser.setDialogTitle("Save script");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ReAl");
         setAlwaysOnTop(true);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                jButton1ActionPerformed(evt);
+        textbox.setColumns(20);
+        textbox.setFont(new java.awt.Font("Cambria", 0, 15)); // NOI18N
+        textbox.setRows(5);
+        jScrollPane2.setViewportView(textbox);
+
+        jToolBar2.setFloatable(false);
+        jToolBar2.setRollover(true);
+        jToolBar2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+        button.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
+        button.setText("Run");
+        button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonActionPerformed(evt);
             }
         });
+        jToolBar2.add(button);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
+            new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String []
-            {
+            new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         jScrollPane1.setViewportView(jTable1);
 
-        textbox.setColumns(20);
-        textbox.setRows(5);
-        jScrollPane2.setViewportView(textbox);
+        queryView.addTab("Query result", jScrollPane1);
 
-        button.setText("jButton2");
-        button.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                buttonActionPerformed(evt);
+        jToolBar1.setFloatable(false);
+        jToolBar1.setRollover(true);
+
+        jButton1.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
+        jButton1.setText("Save");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
+        jToolBar1.add(jButton1);
+
+        jToolBar3.setFloatable(false);
+        jToolBar3.setRollover(true);
+
+        piButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
+        piButton.setText("π");
+        piButton.setFocusable(false);
+        piButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        piButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        piButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                piButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(piButton);
+
+        deltaButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
+        deltaButton.setText("δ");
+        deltaButton.setFocusable(false);
+        deltaButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        deltaButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        deltaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deltaButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(deltaButton);
+
+        rhoButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
+        rhoButton.setText("ρ");
+        rhoButton.setFocusable(false);
+        rhoButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        rhoButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        rhoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rhoButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(rhoButton);
+
+        gammaButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
+        gammaButton.setText("γ");
+        gammaButton.setFocusable(false);
+        gammaButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        gammaButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        gammaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gammaButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(gammaButton);
+
+        tauButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
+        tauButton.setText("τ");
+        tauButton.setFocusable(false);
+        tauButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        tauButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        tauButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tauButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(tauButton);
+
+        arrowButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
+        arrowButton.setText("→");
+        arrowButton.setFocusable(false);
+        arrowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        arrowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        arrowButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                arrowButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(arrowButton);
+
+        unionButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
+        unionButton.setText("∪");
+        unionButton.setFocusable(false);
+        unionButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        unionButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        unionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                unionButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(unionButton);
+
+        intersectionButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
+        intersectionButton.setText("∩");
+        intersectionButton.setFocusable(false);
+        intersectionButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        intersectionButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        intersectionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                intersectionButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(intersectionButton);
+
+        differenceButton.setFont(new java.awt.Font("Cambria", 0, 24)); // NOI18N
+        differenceButton.setText("‒");
+        differenceButton.setFocusable(false);
+        differenceButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        differenceButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        differenceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                differenceButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(differenceButton);
+
+        productButton.setFont(new java.awt.Font("Cambria", 0, 24)); // NOI18N
+        productButton.setText("×");
+        productButton.setFocusable(false);
+        productButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        productButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        productButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                productButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(productButton);
+
+        joinButton.setFont(new java.awt.Font("Cambria", 0, 24)); // NOI18N
+        joinButton.setText("⋈");
+        joinButton.setFocusable(false);
+        joinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        joinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        joinButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                joinButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(joinButton);
+
+        leftouterjoinButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
+        leftouterjoinButton.setText("⟕");
+        leftouterjoinButton.setFocusable(false);
+        leftouterjoinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        leftouterjoinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        leftouterjoinButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                leftouterjoinButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(leftouterjoinButton);
+
+        rightouterjoinButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
+        rightouterjoinButton.setText("⟖");
+        rightouterjoinButton.setFocusable(false);
+        rightouterjoinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        rightouterjoinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        rightouterjoinButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rightouterjoinButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(rightouterjoinButton);
+
+        fullouterjoinButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
+        fullouterjoinButton.setText("⟗");
+        fullouterjoinButton.setFocusable(false);
+        fullouterjoinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        fullouterjoinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        fullouterjoinButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fullouterjoinButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(fullouterjoinButton);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(queryView, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(queryView, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        combinedView.addTab("Query view", jPanel1);
+
+        tableView.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tableView.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jScrollPane4.setViewportView(tableView);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
+        );
+
+        combinedView.addTab("Table view", jPanel2);
+
+        relationView.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Table 1", "Table 2", "Table 3" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane3.setViewportView(relationView);
+
+        fileMenu.setText("File");
+
+        loadMenuItem.setText("Load script");
+        loadMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(loadMenuItem);
+
+        saveMenuItem.setText("Save script");
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(saveMenuItem);
+
+        importMenuItem.setText("Import table");
+        importMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                importMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(importMenuItem);
+
+        exportMenuItem.setText("Export table");
+        exportMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(exportMenuItem);
+        fileMenu.add(jSeparator1);
+
+        exitMenuItem.setText("Exit");
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(exitMenuItem);
+
+        jMenuBar1.add(fileMenu);
+
+        editMenu.setText("Edit");
+        jMenuBar1.add(editMenu);
+
+        jMenu1.setText("Help");
+
+        aboutMenuItem.setText("About");
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(aboutMenuItem);
+
+        jMenuBar1.add(jMenu1);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(276, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(jButton1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(119, 119, 119))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(187, 187, 187)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(button)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(combinedView)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(button))
-                .addContainerGap(114, Short.MAX_VALUE))
+                    .addComponent(combinedView)
+                    .addComponent(jScrollPane3))
+                .addContainerGap())
         );
 
         pack();
@@ -201,15 +539,161 @@ public class MainWindow extends javax.swing.JFrame implements IService
         catch (InvalidParsing ex)
         {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-        }   
+        }
     }//GEN-LAST:event_buttonActionPerformed
 
+    private void piButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_piButtonActionPerformed
+        textbox.insert("π", textbox.getCaretPosition());
+    }//GEN-LAST:event_piButtonActionPerformed
+
+    private void deltaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deltaButtonActionPerformed
+        textbox.insert("δ", textbox.getCaretPosition());
+    }//GEN-LAST:event_deltaButtonActionPerformed
+
+    private void rhoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rhoButtonActionPerformed
+        textbox.insert("ρ", textbox.getCaretPosition());
+    }//GEN-LAST:event_rhoButtonActionPerformed
+
+    private void gammaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gammaButtonActionPerformed
+        textbox.insert("γ", textbox.getCaretPosition());
+    }//GEN-LAST:event_gammaButtonActionPerformed
+
+    private void tauButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tauButtonActionPerformed
+        textbox.insert("τ", textbox.getCaretPosition());
+    }//GEN-LAST:event_tauButtonActionPerformed
+
+    private void unionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unionButtonActionPerformed
+        textbox.insert("∪", textbox.getCaretPosition());
+    }//GEN-LAST:event_unionButtonActionPerformed
+
+    private void intersectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intersectionButtonActionPerformed
+        textbox.insert("∩", textbox.getCaretPosition());
+    }//GEN-LAST:event_intersectionButtonActionPerformed
+
+    private void differenceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_differenceButtonActionPerformed
+        textbox.insert("‒", textbox.getCaretPosition());
+    }//GEN-LAST:event_differenceButtonActionPerformed
+
+    private void productButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productButtonActionPerformed
+        textbox.insert("×", textbox.getCaretPosition());
+    }//GEN-LAST:event_productButtonActionPerformed
+
+    private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinButtonActionPerformed
+        textbox.insert("⋈", textbox.getCaretPosition());
+    }//GEN-LAST:event_joinButtonActionPerformed
+
+    private void leftouterjoinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftouterjoinButtonActionPerformed
+        textbox.insert("⟕", textbox.getCaretPosition());
+    }//GEN-LAST:event_leftouterjoinButtonActionPerformed
+
+    private void rightouterjoinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightouterjoinButtonActionPerformed
+        textbox.insert("⟖", textbox.getCaretPosition());
+    }//GEN-LAST:event_rightouterjoinButtonActionPerformed
+
+    private void fullouterjoinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullouterjoinButtonActionPerformed
+        textbox.insert("⟗", textbox.getCaretPosition());
+    }//GEN-LAST:event_fullouterjoinButtonActionPerformed
+
+    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        Kernel.Stop();
+        System.exit(0);
+    }//GEN-LAST:event_exitMenuItemActionPerformed
+
+    private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(rootPane, "This is ReAl ver. 1E-10 \n\n"
+                + "Authors: \nDaniel Gavin \nTobias Kristoffer Scavenius \nNikolaj Høyer", "About", WIDTH);
+    }//GEN-LAST:event_aboutMenuItemActionPerformed
+
+    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
+        int returnVal = saveFileChooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = saveFileChooser.getSelectedFile();
+            try {
+                FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+                textbox.write(fw);
+            }
+            catch (IOException ex) {
+                System.out.println("Problem saving file at " + file.getAbsolutePath());
+            }
+        }
+        else {
+            System.out.println("File save cancelled by user.");
+        }
+    }//GEN-LAST:event_saveMenuItemActionPerformed
+
+    private void loadMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMenuItemActionPerformed
+        int returnVal = loadFileChooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = loadFileChooser.getSelectedFile();
+            try {
+                textbox.read(new FileReader(file.getAbsolutePath()), null);
+            }
+            catch (IOException ex) {
+                System.out.println("Problem accessing file " + file.getAbsolutePath());
+            }
+        }
+        else {
+            System.out.println("File access cancelled by user.");
+        }
+    }//GEN-LAST:event_loadMenuItemActionPerformed
+
+    private void importMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importMenuItemActionPerformed
+        JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
+    }//GEN-LAST:event_importMenuItemActionPerformed
+
+    private void exportMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportMenuItemActionPerformed
+        JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
+    }//GEN-LAST:event_exportMenuItemActionPerformed
+
+    private void arrowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arrowButtonActionPerformed
+        textbox.insert("→", textbox.getCaretPosition());
+    }//GEN-LAST:event_arrowButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JButton arrowButton;
     private javax.swing.JButton button;
+    private javax.swing.JTabbedPane combinedView;
+    private javax.swing.JButton deltaButton;
+    private javax.swing.JButton differenceButton;
+    private javax.swing.JMenu editMenu;
+    private javax.swing.JMenuItem exitMenuItem;
+    private javax.swing.JMenuItem exportMenuItem;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JButton fullouterjoinButton;
+    private javax.swing.JButton gammaButton;
+    private javax.swing.JMenuItem importMenuItem;
+    private javax.swing.JButton intersectionButton;
     private javax.swing.JButton jButton1;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JToolBar jToolBar2;
+    private javax.swing.JToolBar jToolBar3;
+    private javax.swing.JButton joinButton;
+    private javax.swing.JButton leftouterjoinButton;
+    private javax.swing.JFileChooser loadFileChooser;
+    private javax.swing.JMenuItem loadMenuItem;
+    private javax.swing.JButton piButton;
+    private javax.swing.JButton productButton;
+    private javax.swing.JTabbedPane queryView;
+    private javax.swing.JList relationView;
+    private javax.swing.JButton rhoButton;
+    private javax.swing.JButton rightouterjoinButton;
+    private javax.swing.JFileChooser saveFileChooser;
+    private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JTable tableView;
+    private javax.swing.JButton tauButton;
     private javax.swing.JTextArea textbox;
+    private javax.swing.JButton unionButton;
     // End of variables declaration//GEN-END:variables
 }
