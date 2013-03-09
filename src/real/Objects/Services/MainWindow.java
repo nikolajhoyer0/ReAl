@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import real.Enumerations.OpTypes;
 import real.Interfaces.IService;
 import real.Objects.Dataset;
@@ -133,7 +134,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         leftouterjoinButton = new javax.swing.JButton();
         rightouterjoinButton = new javax.swing.JButton();
         fullouterjoinButton = new javax.swing.JButton();
-        worksheets = new javax.swing.JTabbedPane();
+        worksheetPane = new javax.swing.JTabbedPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         textbox = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
@@ -179,6 +180,11 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         newSheetButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         newSheetButton.setText("New sheet");
+        newSheetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newSheetButtonActionPerformed(evt);
+            }
+        });
         jToolBar2.add(newSheetButton);
         jToolBar2.add(jSeparator3);
 
@@ -187,6 +193,11 @@ public class MainWindow extends javax.swing.JFrame implements IService
         removeSheetButton.setFocusable(false);
         removeSheetButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         removeSheetButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        removeSheetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeSheetButtonActionPerformed(evt);
+            }
+        });
         jToolBar2.add(removeSheetButton);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -393,7 +404,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         textbox.setRows(5);
         jScrollPane2.setViewportView(textbox);
 
-        worksheets.addTab("Sheet1", jScrollPane2);
+        worksheetPane.addTab("Sheet0", jScrollPane2);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -405,7 +416,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addComponent(worksheets)
+            .addComponent(worksheetPane)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -414,7 +425,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                     .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(worksheets, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                .addComponent(worksheetPane, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -670,6 +681,16 @@ public class MainWindow extends javax.swing.JFrame implements IService
         textbox.insert("→", textbox.getCaretPosition());
     }//GEN-LAST:event_arrowButtonActionPerformed
 
+    private void newSheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSheetButtonActionPerformed
+        JTextArea t = new JTextArea();
+        t.setName("Sheet");
+        worksheetPane.add(t);
+    }//GEN-LAST:event_newSheetButtonActionPerformed
+
+    private void removeSheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSheetButtonActionPerformed
+        worksheetPane.remove(worksheetPane.getSelectedIndex());
+    }//GEN-LAST:event_removeSheetButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JButton arrowButton;
@@ -719,6 +740,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private javax.swing.JButton tauButton;
     private javax.swing.JTextArea textbox;
     private javax.swing.JButton unionButton;
-    private javax.swing.JTabbedPane worksheets;
+    private javax.swing.JTabbedPane worksheetPane;
     // End of variables declaration//GEN-END:variables
 }

@@ -160,7 +160,7 @@
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jToolBar3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="worksheets" alignment="0" max="32767" attributes="0"/>
+                  <Component id="worksheetPane" alignment="0" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -171,7 +171,7 @@
                           <Component id="jToolBar3" min="-2" pref="25" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="worksheets" pref="181" max="32767" attributes="0"/>
+                      <Component id="worksheetPane" pref="181" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jToolBar1" min="-2" pref="25" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -212,6 +212,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value="New sheet"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="newSheetButtonActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JToolBar$Separator" name="jSeparator3">
                 </Component>
@@ -225,6 +228,9 @@
                     <Property name="horizontalTextPosition" type="int" value="0"/>
                     <Property name="verticalTextPosition" type="int" value="3"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeSheetButtonActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -490,7 +496,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JTabbedPane" name="worksheets">
+            <Container class="javax.swing.JTabbedPane" name="worksheetPane">
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
               <SubComponents>
@@ -500,8 +506,8 @@
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                      <JTabbedPaneConstraints tabName="Sheet1">
-                        <Property name="tabTitle" type="java.lang.String" value="Sheet1"/>
+                      <JTabbedPaneConstraints tabName="Sheet0">
+                        <Property name="tabTitle" type="java.lang.String" value="Sheet0"/>
                       </JTabbedPaneConstraints>
                     </Constraint>
                   </Constraints>
