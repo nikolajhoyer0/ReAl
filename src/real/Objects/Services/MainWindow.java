@@ -91,8 +91,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         
         TokenStream tokenStream = new TokenStream(opManager);
 
-        parser = new ExpressionParser(tokenStream);     
-        
+        parser = new ExpressionParser(tokenStream);
+
         this.textbox.setLineWrap(true);
     }
 
@@ -126,15 +126,17 @@ public class MainWindow extends javax.swing.JFrame implements IService
         saveFileChooser = new javax.swing.JFileChooser();
         combinedView = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        textbox = new javax.swing.JTextArea();
         jToolBar2 = new javax.swing.JToolBar();
-        button = new javax.swing.JButton();
+        runButton = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
+        newSheetButton = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
+        removeSheetButton = new javax.swing.JButton();
         queryView = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jToolBar1 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
         jToolBar3 = new javax.swing.JToolBar();
         piButton = new javax.swing.JButton();
         deltaButton = new javax.swing.JButton();
@@ -150,6 +152,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
         leftouterjoinButton = new javax.swing.JButton();
         rightouterjoinButton = new javax.swing.JButton();
         fullouterjoinButton = new javax.swing.JButton();
+        worksheets = new javax.swing.JTabbedPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        textbox = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tableView = new javax.swing.JTable();
@@ -164,7 +169,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
-        jMenu1 = new javax.swing.JMenu();
+        helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
 
         loadFileChooser.setDialogTitle("Load script");
@@ -177,23 +182,31 @@ public class MainWindow extends javax.swing.JFrame implements IService
         setAlwaysOnTop(true);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        textbox.setColumns(20);
-        textbox.setFont(new java.awt.Font("Cambria", 0, 15)); // NOI18N
-        textbox.setRows(5);
-        jScrollPane2.setViewportView(textbox);
-
         jToolBar2.setFloatable(false);
         jToolBar2.setRollover(true);
         jToolBar2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        button.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
-        button.setText("Run");
-        button.addActionListener(new java.awt.event.ActionListener() {
+        runButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        runButton.setText("Run");
+        runButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonActionPerformed(evt);
+                runButtonActionPerformed(evt);
             }
         });
-        jToolBar2.add(button);
+        jToolBar2.add(runButton);
+        jToolBar2.add(jSeparator2);
+
+        newSheetButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        newSheetButton.setText("New sheet");
+        jToolBar2.add(newSheetButton);
+        jToolBar2.add(jSeparator3);
+
+        removeSheetButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        removeSheetButton.setText("Remove sheet");
+        removeSheetButton.setFocusable(false);
+        removeSheetButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        removeSheetButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(removeSheetButton);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -214,14 +227,14 @@ public class MainWindow extends javax.swing.JFrame implements IService
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
-        jButton1.setFont(new java.awt.Font("Cambria", 0, 14)); // NOI18N
-        jButton1.setText("Save");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        saveButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        saveButton.setText("Save");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                saveButtonActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton1);
+        jToolBar1.add(saveButton);
 
         jToolBar3.setFloatable(false);
         jToolBar3.setRollover(true);
@@ -394,17 +407,24 @@ public class MainWindow extends javax.swing.JFrame implements IService
         });
         jToolBar3.add(fullouterjoinButton);
 
+        textbox.setColumns(20);
+        textbox.setFont(new java.awt.Font("Cambria", 0, 15)); // NOI18N
+        textbox.setRows(5);
+        jScrollPane2.setViewportView(textbox);
+
+        worksheets.addTab("Sheet1", jScrollPane2);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2)
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(queryView, javax.swing.GroupLayout.DEFAULT_SIZE, 718, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(worksheets)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -413,7 +433,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                     .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                .addComponent(worksheets, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -504,7 +524,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         editMenu.setText("Edit");
         jMenuBar1.add(editMenu);
 
-        jMenu1.setText("Help");
+        helpMenu.setText("Help");
 
         aboutMenuItem.setText("About");
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -512,9 +532,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 aboutMenuItemActionPerformed(evt);
             }
         });
-        jMenu1.add(aboutMenuItem);
+        helpMenu.add(aboutMenuItem);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(helpMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -542,13 +562,13 @@ public class MainWindow extends javax.swing.JFrame implements IService
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
-    {//GEN-HEADEREND:event_jButton1ActionPerformed
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveButtonActionPerformed
+    {//GEN-HEADEREND:event_saveButtonActionPerformed
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_saveButtonActionPerformed
 
-    private void buttonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonActionPerformed
-    {//GEN-HEADEREND:event_buttonActionPerformed
+    private void runButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_runButtonActionPerformed
+    {//GEN-HEADEREND:event_runButtonActionPerformed
         // TODO add your handling code here:
         try
         {
@@ -559,7 +579,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_buttonActionPerformed
+    }//GEN-LAST:event_runButtonActionPerformed
 
     private void piButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_piButtonActionPerformed
         textbox.insert("π", textbox.getCaretPosition());
@@ -672,7 +692,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JButton arrowButton;
-    private javax.swing.JButton button;
     private javax.swing.JTabbedPane combinedView;
     private javax.swing.JButton deltaButton;
     private javax.swing.JButton differenceButton;
@@ -682,10 +701,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private javax.swing.JMenu fileMenu;
     private javax.swing.JButton fullouterjoinButton;
     private javax.swing.JButton gammaButton;
+    private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem importMenuItem;
     private javax.swing.JButton intersectionButton;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -694,6 +712,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
@@ -702,17 +722,22 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private javax.swing.JButton leftouterjoinButton;
     private javax.swing.JFileChooser loadFileChooser;
     private javax.swing.JMenuItem loadMenuItem;
+    private javax.swing.JButton newSheetButton;
     private javax.swing.JButton piButton;
     private javax.swing.JButton productButton;
     private javax.swing.JTabbedPane queryView;
     private javax.swing.JList relationView;
+    private javax.swing.JButton removeSheetButton;
     private javax.swing.JButton rhoButton;
     private javax.swing.JButton rightouterjoinButton;
+    private javax.swing.JButton runButton;
+    private javax.swing.JButton saveButton;
     private javax.swing.JFileChooser saveFileChooser;
     private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JTable tableView;
     private javax.swing.JButton tauButton;
     private javax.swing.JTextArea textbox;
     private javax.swing.JButton unionButton;
+    private javax.swing.JTabbedPane worksheets;
     // End of variables declaration//GEN-END:variables
 }
