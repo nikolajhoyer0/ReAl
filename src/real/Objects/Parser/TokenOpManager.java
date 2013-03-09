@@ -3,6 +3,9 @@ package real.Objects.Parser;
 
 import java.util.HashMap;
 
+/**
+ * Class for storing the different operators - plus, minus etc
+ */
 public class TokenOpManager
 {
     public TokenOpManager()

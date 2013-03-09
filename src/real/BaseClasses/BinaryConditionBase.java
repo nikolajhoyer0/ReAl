@@ -1,5 +1,8 @@
 package real.BaseClasses;
 
+/**
+ * Base class for binary operations
+ */
 public abstract class BinaryConditionBase extends ConditionBase
 {
     protected ConditionBase operandA;

@@ -12,6 +12,9 @@ import real.Objects.Exceptions.InvalidDataset;
 import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.Row;
 
+/**
+ * The class that allows you to load in files and store them as datasets.
+ */
 public class DataManager extends ServiceBase
 {
 

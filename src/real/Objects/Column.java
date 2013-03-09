@@ -4,6 +4,10 @@ package real.Objects;
 import java.util.Objects;
 import real.Enumerations.DataType;
 
+/**
+ * Class that allows you to store column names and their datatype.
+ */
+
 public class Column
 {
 

@@ -6,7 +6,9 @@ import real.Enumerations.OpTypes;
 import real.Objects.Exceptions.InvalidParsing;
 import real.Objects.Utility;
 
-
+/**
+ * Class that parses relationel expressions.
+ */
 public class ExpressionParser
 {
     public ExpressionParser(TokenStream tokenStream)
@@ -58,8 +60,12 @@ public class ExpressionParser
             return tree;
         }
         
+        //handle string literal
         else if (token.getSymbol().equals("'"))
         {
+            //we will not ignore space anymore
+            tokenStream.clearIgnore();
+            
             String concatStr = "";
             
             //making sure that we consider the whole string literal as one word.
@@ -80,6 +86,16 @@ public class ExpressionParser
             
             return new TokenTree(tree, new Token("String", 0, EnumSet.of(OpTypes.NONE)));
         }
+        
+        //must be tuple generation
+        //syntax {(value1, value2, ...), (tuble) ... }
+        //else if (token.getSymbol().equals("{"))
+        //{
+          
+            
+            
+            
+        //}
         
         else if (token.getSymbol().equals("selection"))
         {
@@ -119,6 +135,7 @@ public class ExpressionParser
             return new TokenTree(tree, token);
         }
         
+        //numbers/attributes/booleans
         else
         {
             tokenStream.consume();
@@ -130,14 +147,20 @@ public class ExpressionParser
                 return new TokenTree(tree, tk);
             }
             
+            //boolean
+            else if(token.getSymbol().equals("true") || token.getSymbol().equals("false"))
+            {
+                Token tk = new Token("Boolean", 0, EnumSet.of(OpTypes.NONE));
+                TokenTree[] tree = {new TokenTree(null, token)};
+                return new TokenTree(tree, tk);
+            }
+            
             else
             {
                 Token tk = new Token("Attribute", 0, EnumSet.of(OpTypes.NONE));
                 TokenTree[] tree = {new TokenTree(null, token)};
                 return new TokenTree(tree, tk);
-            }
-            
-            
+            }                     
         }
     }
 

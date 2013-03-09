@@ -67,6 +67,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         TokenStream tokenStream = new TokenStream(opManager);
 
         parser = new ExpressionParser(tokenStream);     
+        
+        this.textbox.setLineWrap(true);
     }
 
     @Override

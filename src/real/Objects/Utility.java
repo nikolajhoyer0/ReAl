@@ -3,6 +3,9 @@ package real.Objects;
 import java.util.List;
 import real.Enumerations.DataType;
 
+/**
+ * A utility class that contain different useful functions.
+ */
 public class Utility
 {
 
