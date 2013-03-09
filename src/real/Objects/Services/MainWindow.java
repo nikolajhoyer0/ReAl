@@ -70,7 +70,26 @@ public class MainWindow extends javax.swing.JFrame implements IService
         opManager.addOp(new Token("AND", 1, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token("OR", 0, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token("^", 9, EnumSet.of(OpTypes.RIGHT)));
-
+        
+        //function operators
+        opManager.addOp(new Token("π", 0, EnumSet.of(OpTypes.NONE)));  
+        opManager.addOp(new Token("δ", 0, EnumSet.of(OpTypes.NONE)));   
+        opManager.addOp(new Token("ρ", 0, EnumSet.of(OpTypes.NONE)));   
+        opManager.addOp(new Token("γ", 0, EnumSet.of(OpTypes.NONE))); 
+        opManager.addOp(new Token("τ", 0, EnumSet.of(OpTypes.NONE)));
+        
+        //relational binary operators      
+        //todo: figure out the proper precendence for each operator.
+        opManager.addOp(new Token("∪", 6, EnumSet.of(OpTypes.LEFT)));   
+        opManager.addOp(new Token("∩", 6, EnumSet.of(OpTypes.LEFT)));   
+        opManager.addOp(new Token("‒", 6, EnumSet.of(OpTypes.LEFT)));   
+        opManager.addOp(new Token("×", 6, EnumSet.of(OpTypes.LEFT)));   
+        opManager.addOp(new Token("⋈", 6, EnumSet.of(OpTypes.LEFT)));   
+        opManager.addOp(new Token("→", 6, EnumSet.of(OpTypes.LEFT))); 
+        opManager.addOp(new Token("⟕", 6, EnumSet.of(OpTypes.LEFT)));   
+        opManager.addOp(new Token("⟖", 6, EnumSet.of(OpTypes.LEFT)));   
+        opManager.addOp(new Token("⟗", 6, EnumSet.of(OpTypes.LEFT))); 
+        
         TokenStream tokenStream = new TokenStream(opManager);
 
         parser = new ExpressionParser(tokenStream);

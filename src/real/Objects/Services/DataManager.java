@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import real.BaseClasses.ServiceBase;
 import real.Objects.Dataset;
+import real.Objects.Exceptions.DatasetDuplicate;
 import real.Objects.Exceptions.InvalidDataset;
 import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.Row;
@@ -41,14 +42,14 @@ public class DataManager extends ServiceBase
         this.datasets.add(value);
     }
 
-    public void LoadDataset(String filepath) throws InvalidDataset
+    public void LoadDataset(String filepath, String tableName) throws InvalidDataset, DatasetDuplicate
     {
         Path path = Paths.get(filepath);
+        
         try (Scanner scanner = new Scanner(path))
         {
             if (scanner.hasNextLine())
             {
-                String datasetname = this.filename(filepath);
                 String[] columns = scanner.nextLine().split(",");
                 ArrayList<Row> rows = new ArrayList<>();
                 while (scanner.hasNextLine())
@@ -56,7 +57,16 @@ public class DataManager extends ServiceBase
                     rows.add(new Row(scanner.nextLine(), columns));
                 }
                 scanner.close();
-                this.setDataset(new Dataset(datasetname, columns, rows));
+           
+                if(this.find(tableName) != null)
+                {
+                    throw new DatasetDuplicate();
+                }
+                
+                else
+                {
+                    this.datasets.add(new Dataset(tableName, columns, rows));
+                }
             }
         }
         catch (ArrayIndexOutOfBoundsException | IOException e)
@@ -72,7 +82,7 @@ public class DataManager extends ServiceBase
 
     private Dataset find(String name)
     {
-        if (name != null && !name.equals(""))
+        if (name != null && !name.isEmpty())
         {
             for (Dataset dataset : this.datasets)
             {

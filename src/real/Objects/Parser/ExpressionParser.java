@@ -84,7 +84,7 @@ public class ExpressionParser
             Token tk = new Token(concatStr, 0, EnumSet.of(OpTypes.NONE), linePosition, wordPosition);
             TokenTree[] tree = {new TokenTree(null, tk)};
             
-            return new TokenTree(tree, new Token("String", 0, EnumSet.of(OpTypes.NONE)));
+            return new TokenTree(tree, new Token("String" + token.getLinePosition() + " " + token.getWordPosition(), 0, EnumSet.of(OpTypes.NONE)));
         }
         
         //must be tuple generation
@@ -97,14 +97,14 @@ public class ExpressionParser
             
         //}
         
-        else if (token.getSymbol().equals("selection"))
+        else if (token.getSymbol().equals("δ"))
         {
             tokenStream.consume();
             TokenTree[] tree = {expression(0), primary()};
             return new TokenTree(tree, token);           
         }
         
-        else if (token.getSymbol().equals("rename") || token.getSymbol().equals("projection"))
+        else if (token.getSymbol().equals("ρ") || token.getSymbol().equals("π"))
         {
             tokenStream.consume();
             LinkedList<TokenTree> list = new LinkedList<>();
