@@ -103,7 +103,12 @@ public class TokenStream
  
     private Token[] collectAllTokens(final String str) throws InvalidParsing
     {
+        //fields for string literal, making sure that they give the right line and word positions.
         boolean isStringLiteral = false;
+        boolean inString = false;
+        int lineSet = 0;
+        int wordSet = 0;
+        
         int length = str.length();
         int linePosition = 1;
         int wordPosition = 1;
@@ -146,10 +151,22 @@ public class TokenStream
                     index++;
                 }
                 
+                //must be start of string or end.
                 else if(chr == '\'')
                 {
                     //to be sure that we consider the whole string literal as one word
-                    isStringLiteral = !isStringLiteral;
+                    if(isStringLiteral)
+                    {
+                        isStringLiteral = false;
+                    }
+                    
+                    else
+                    {
+                        //set the word and line position to the start of the string
+                        isStringLiteral = true;
+                        lineSet = linePosition;
+                        wordSet = wordPosition;
+                    }
                     
                     if(!wordList.isEmpty())
                     {

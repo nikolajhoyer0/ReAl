@@ -41,7 +41,7 @@ public class DataManager extends ServiceBase
         this.datasets.add(value);
     }
 
-    public void LoadDataset(String filepath) throws InvalidDataset
+    public void LoadDataset(String filepath, String tableName) throws InvalidDataset
     {
         Path path = Paths.get(filepath);
         try (Scanner scanner = new Scanner(path))
