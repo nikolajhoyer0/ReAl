@@ -6,6 +6,9 @@ import real.Enumerations.OpTypes;
 import real.Objects.Exceptions.InvalidParsing;
 import real.Objects.Utility;
 
+/**
+ * Class that creates all the tokens and handles the stream.
+ */
 public class TokenStream
 {
     public TokenStream(TokenOpManager manager)
@@ -15,7 +18,6 @@ public class TokenStream
         opManager.addOp(new Token(")", 0, EnumSet.of(OpTypes.NONE)));
         opManager.addOp(new Token(",", 0, EnumSet.of(OpTypes.NONE)));
         opManager.addOp(new Token("'", 0, EnumSet.of(OpTypes.NONE)));
-        opManager.addOp(new Token(" ", 0, EnumSet.of(OpTypes.NONE)));
         ignoreList = new LinkedList<>();
     }
     
@@ -35,7 +37,7 @@ public class TokenStream
     {
         for(String str : ignoreList)
         {
-            if(!str.equals(tokenSymbol))
+            if(str.equals(tokenSymbol))
             {
                 return false;
             }
@@ -101,6 +103,7 @@ public class TokenStream
  
     private Token[] collectAllTokens(final String str) throws InvalidParsing
     {
+        boolean isStringLiteral = false;
         int length = str.length();
         int linePosition = 1;
         int wordPosition = 1;
@@ -143,6 +146,20 @@ public class TokenStream
                     index++;
                 }
                 
+                else if(chr == '\'')
+                {
+                    //to be sure that we consider the whole string literal as one word
+                    isStringLiteral = !isStringLiteral;
+                    
+                    if(!wordList.isEmpty())
+                    {
+                        wordBuffer = Utility.getStringRepresentation(wordList);
+                        wordList.clear();
+                    }
+                    
+                    operatorBuffer = Character.toString(chr);
+                }
+                
                 else if (opManager.getOp(Character.toString(chr)) != null)
                 {
                      
@@ -154,7 +171,7 @@ public class TokenStream
                     
                     operatorBuffer = Character.toString(chr);
                 }
-                /*
+                
                 else if(chr == ' ')
                 {
                     if(!wordList.isEmpty())
@@ -163,7 +180,7 @@ public class TokenStream
                         wordList.clear();
                     }
                 }
-                */
+                
                 else if(chr == '\n')
                 {
                     if(!wordList.isEmpty())
@@ -186,7 +203,12 @@ public class TokenStream
                 if(!wordBuffer.isEmpty())
                 {
                     tokenList.add(new Token(wordBuffer, 0, EnumSet.of(OpTypes.NONE), linePosition, wordPosition));
-                    wordPosition++;
+                    
+                    if(isStringLiteral)
+                    {
+                            wordPosition++;
+                    }
+                    
                     wordBuffer = "";
                 }
                 
@@ -205,7 +227,11 @@ public class TokenStream
                         token.setWordPosition(wordPosition);
                         tokenList.add(token);                                  
                         operatorBuffer = "";
-                        wordPosition++;
+                        
+                        if(isStringLiteral)
+                        {
+                            wordPosition++;
+                        }
                     }
                 }
                 

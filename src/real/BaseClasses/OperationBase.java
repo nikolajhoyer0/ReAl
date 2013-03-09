@@ -4,6 +4,9 @@ import real.Objects.Dataset;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
 
+/**
+ * The base class for all relational operations.
+ */
 public abstract class OperationBase
 {
     public OperationBase()

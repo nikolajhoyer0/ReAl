@@ -1,5 +1,8 @@
 package real.BaseClasses;
 
+/*
+ * for condtions that only use one operand
+ */
 public abstract class UnaryConditionBase extends ConditionBase
 {
     protected ConditionBase operand;

@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+
+/**
+ * This class is for storing tuples. Each value is saved based upon the column
+ * name. 
+ */
 public class Row
 {
     private Map<String, String> values;

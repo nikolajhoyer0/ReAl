@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import real.Enumerations.DataType;
 
+/**
+ * Class that is used for storing data relation.
+ */
 public class Dataset extends AbstractTableModel
 {
 
