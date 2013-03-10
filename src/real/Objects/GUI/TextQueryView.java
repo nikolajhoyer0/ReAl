@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import real.Objects.Dataset;
 import real.Objects.Kernel;
 import real.Objects.Services.DataManager;
 
@@ -63,6 +64,18 @@ public class TextQueryView extends JPanel implements DocumentListener
     public void insertUpdate(DocumentEvent ev)
     {
         ArrayList<String> words = Kernel.GetService(DataManager.class).getAllNames();
+
+        // This should enable autocomplete for attributes as well
+  //      ArrayList<Dataset> datasets = Kernel.GetService(DataManager.class).GetAllDatasets();
+  //      for(int i = 0; i < datasets.size(); i++) {
+  //          for(int k = 0; k < datasets.get(i).getColumnCount(); k++) {
+  //              String keyword = datasets.get(i).getColumnName(k);
+  //              if(!words.contains(keyword)) {
+  //                words.add(keyword);
+  //                  System.out.println(keyword);
+  //              }
+  //          }
+  //      }
         
         if (ev.getLength() != 1)
         {
