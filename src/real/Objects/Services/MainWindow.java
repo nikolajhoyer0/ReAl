@@ -787,7 +787,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
             {
                 //ask for the table name
                 String str = (String) JOptionPane.showInputDialog(rootPane, 
-                            "Please enter the name for the worksheet.", "Worksheet", JOptionPane.PLAIN_MESSAGE);
+                            "Please enter the name for the table.", "Table", JOptionPane.PLAIN_MESSAGE);
                 
                 if(str == null)
                 {
