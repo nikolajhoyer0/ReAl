@@ -26,6 +26,7 @@ public class TokenStream
         consumed = 0;
         full = false;
         tokens = collectAllTokens(str + " end");
+        int d = 0;
     }
     
     public void ignoreNextToken(String ignore)
@@ -105,17 +106,18 @@ public class TokenStream
     {
         //fields for string literal, making sure that they give the right line and word positions.
         boolean isStringLiteral = false;
-        boolean inString = false;
-        int lineSet = 0;
-        int wordSet = 0;
         
         int length = str.length();
         int linePosition = 1;
         int wordPosition = 1;
         String operatorBuffer = "";
         String wordBuffer = "";
+ 
         LinkedList<Character> wordList = new LinkedList<>();   
         LinkedList<Token> tokenList = new LinkedList<>();
+        
+        //for handling spaces
+        boolean isSpace = false;
         
         
         if (length > 0)
@@ -164,9 +166,10 @@ public class TokenStream
                     {
                         //set the word and line position to the start of the string
                         isStringLiteral = true;
-                        lineSet = linePosition;
-                        wordSet = wordPosition;
+                        //the word position must go back because it meets operator '
+                        wordPosition--;
                     }
+                    
                     
                     if(!wordList.isEmpty())
                     {
@@ -189,13 +192,24 @@ public class TokenStream
                     operatorBuffer = Character.toString(chr);
                 }
                 
-                else if(chr == ' ')
+                else if (chr == ' ')
                 {
-                    if(!wordList.isEmpty())
+
+                    if (!isStringLiteral)
                     {
-                        wordBuffer = Utility.getStringRepresentation(wordList);
-                        wordList.clear();
+                        if (!wordList.isEmpty())
+                        {
+                            wordBuffer = Utility.getStringRepresentation(wordList);
+                            wordList.clear();
+                        }
                     }
+                    
+                    else
+                    {
+                        wordList.add(chr);
+                    }
+                    
+                    isSpace = true;
                 }
                 
                 else if(chr == '\n')
@@ -221,7 +235,7 @@ public class TokenStream
                 {
                     tokenList.add(new Token(wordBuffer, 0, EnumSet.of(OpTypes.NONE), linePosition, wordPosition));
                     
-                    if(isStringLiteral)
+                    if(!isStringLiteral)
                     {
                             wordPosition++;
                     }
@@ -245,11 +259,17 @@ public class TokenStream
                         tokenList.add(token);                                  
                         operatorBuffer = "";
                         
-                        if(isStringLiteral)
+                        if(!isStringLiteral)
                         {
                             wordPosition++;
                         }
                     }
+                }
+                
+                if(isSpace)
+                {                    
+                    tokenList.add(new Token(" ", 0, EnumSet.of(OpTypes.NONE)));
+                    isSpace = false;                   
                 }
                 
                 index++;     

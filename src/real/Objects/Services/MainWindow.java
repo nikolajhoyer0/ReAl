@@ -512,6 +512,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
             }
         ));
         tableView.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tableView.setFocusable(false);
+        tableView.setRowSelectionAllowed(false);
         jScrollPane4.setViewportView(tableView);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);

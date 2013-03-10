@@ -20,7 +20,7 @@ public class ExpressionParser
     {
         LinkedList<TokenTree> treeList = new LinkedList<>();
         tokenStream.read(str + " end");
-        
+        tokenStream.ignoreNextToken(" ");
         while(!tokenStream.next().getSymbol().equals("end"))
         {
             treeList.add(expression(0));
@@ -84,7 +84,7 @@ public class ExpressionParser
             Token tk = new Token(concatStr, 0, EnumSet.of(OpTypes.NONE), linePosition, wordPosition);
             TokenTree[] tree = {new TokenTree(null, tk)};
             
-            return new TokenTree(tree, new Token("String" + token.getLinePosition() + " " + token.getWordPosition(), 0, EnumSet.of(OpTypes.NONE)));
+            return new TokenTree(tree, new Token("String", 0, EnumSet.of(OpTypes.NONE)));
         }
         
         //must be tuple generation
