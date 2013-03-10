@@ -803,6 +803,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 {
                     Kernel.GetService(DataManager.class).LoadDataset(file.getAbsolutePath(), str);
                     relationModel.addElement(str);
+                    //add the word completions for this table
+                    TextQueryView.addTableAutoWords(str);
                 }
             }
             catch (InvalidDataset ex)

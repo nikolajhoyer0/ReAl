@@ -5,12 +5,14 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
-import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -23,6 +25,7 @@ import real.Objects.Services.DataManager;
  Class is pretty much like JTextArea, except it also finishes table name words for you.
  pretty much ripped from the oracle example.
 */
+
 public class TextQueryView extends JPanel implements DocumentListener
 {    
     private static final String COMMIT_ACTION = "commit";     
@@ -30,6 +33,9 @@ public class TextQueryView extends JPanel implements DocumentListener
     private Mode mode = Mode.INSERT;
     private JTextArea textArea;
     private JScrollPane scrollPane;
+    
+    //autocompletion words for textarea
+    static ArrayList<String> words = new ArrayList<>();
     
     public TextQueryView()
     {      
@@ -45,10 +51,63 @@ public class TextQueryView extends JPanel implements DocumentListener
         this.add(scrollPane);     
     }
     
+    public static void addAutoWord(String word)
+    {
+        words.add(word);
+        Collections.sort(words);
+    }
+    
+    public static void removeAutoWord(String word)
+    {
+        words.remove(word);
+    }
+    
+    public static void addTableAutoWords(String table)
+    {
+        ArrayList<Dataset> datasets = Kernel.GetService(DataManager.class).GetAllDatasets();
+        for (int i = 0; i < datasets.size(); i++)
+        {
+            for (int k = 0; k < datasets.get(i).getColumnCount(); k++)
+            {
+                String keyword = datasets.get(i).getColumnName(k);
+                
+                if (!words.contains(keyword))
+                {
+                    words.add(keyword);
+                    System.out.println(keyword);
+                }
+            }
+        }
+        
+        
+        addAutoWord(table);
+    }
+ 
+    public static void removeTableAutoWords(String table)
+    {
+        ArrayList<Dataset> datasets = Kernel.GetService(DataManager.class).GetAllDatasets();
+        for (int i = 0; i < datasets.size(); i++)
+        {
+            for (int k = 0; k < datasets.get(i).getColumnCount(); k++)
+            {
+                String keyword = datasets.get(i).getColumnName(k);
+                
+                if (!words.contains(keyword))
+                {
+                    words.remove(keyword);
+                    System.out.println(keyword);
+                }
+            }
+        }
+        
+        removeAutoWord(table);
+    }
+    
     public JTextArea getTextArea()
     {
         return textArea;
     }
+    
     
     @Override
     public void changedUpdate(DocumentEvent eve)
@@ -62,21 +121,7 @@ public class TextQueryView extends JPanel implements DocumentListener
 
     @Override
     public void insertUpdate(DocumentEvent ev)
-    {
-        ArrayList<String> words = Kernel.GetService(DataManager.class).getAllNames();
-
-        // This should enable autocomplete for attributes as well
-  //      ArrayList<Dataset> datasets = Kernel.GetService(DataManager.class).GetAllDatasets();
-  //      for(int i = 0; i < datasets.size(); i++) {
-  //          for(int k = 0; k < datasets.get(i).getColumnCount(); k++) {
-  //              String keyword = datasets.get(i).getColumnName(k);
-  //              if(!words.contains(keyword)) {
-  //                words.add(keyword);
-  //                  System.out.println(keyword);
-  //              }
-  //          }
-  //      }
-        
+    {      
         if (ev.getLength() != 1)
         {
             return;
@@ -168,7 +213,6 @@ public class TextQueryView extends JPanel implements DocumentListener
             }
             else
             {                       
-                mode = Mode.INSERT;
                 textArea.replaceSelection("\n");                
             }
         }
