@@ -75,7 +75,7 @@ public class Dataset extends AbstractTableModel
     {
         return getValueAt(0, c).getClass();
     }
-
+    
     @Override
     public boolean isCellEditable(int row, int col)
     {
@@ -122,6 +122,53 @@ public class Dataset extends AbstractTableModel
         return this.name;
     }
 
+    public String getCSV()
+    {
+        String str = "";
+        int columnSize = this.columns.size();
+        
+        for(Column column : this.columns)
+        {
+            if(!str.isEmpty())
+            {
+                str = str + "," + column.getName();
+            }          
+            else
+            {
+                str = column.getName();
+            }
+        }
+        
+        str = str + "\n";
+        
+        for(int i = 0; i < this.rows.size(); i++)
+        {
+            for(int j = 0; j < this.columns.size(); j++)
+            {
+                if(j == 0)
+                {
+                    str = str + this.rows.get(i).getValue(columns.get(j).getName());
+                }
+                else
+                {
+                    str = str + "," + this.rows.get(i).getValue(columns.get(j).getName());
+                }
+            }      
+            
+            if(i == this.rows.size())
+            {
+  
+            }
+            
+            else
+            {
+                str = str + "\n";
+            }
+        }
+        
+        return str;
+    }
+    
     public ArrayList<Column> getColumns()
     {
         return this.columns;

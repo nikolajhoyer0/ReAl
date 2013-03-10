@@ -777,6 +777,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_loadMenuItemActionPerformed
 
     private void importMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importMenuItemActionPerformed
+        //todo: need to write my own filechooser - not use the save and load from script
         int returnVal = loadFileChooser.showOpenDialog(this);
         
         if (returnVal == JFileChooser.APPROVE_OPTION)
@@ -821,7 +822,30 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_importMenuItemActionPerformed
 
     private void exportMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportMenuItemActionPerformed
-        JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
+        //todo: need to write my own filechooser - not use the save and load from script
+        int returnVal = saveFileChooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION)
+        {
+            File file = saveFileChooser.getSelectedFile();
+            try
+            {
+                FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+                Dataset dataset = Kernel.GetService(DataManager.class).getDataset((String) relationModel.getElementAt(relationView.getSelectedIndex()));
+                fw.write(dataset.getCSV());
+                fw.flush();
+            }
+            catch (IOException ex)
+            {
+                System.out.println("Problem saving file at " + file.getAbsolutePath());
+            }
+            catch (NoSuchDataset ex)
+            {
+            }
+        }
+        else
+        {
+            System.out.println("File save cancelled by user.");
+        }
     }//GEN-LAST:event_exportMenuItemActionPerformed
 
     private void arrowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arrowButtonActionPerformed
