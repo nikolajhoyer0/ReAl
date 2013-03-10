@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -15,7 +16,11 @@ import javax.swing.JTextArea;
 import real.Enumerations.OpTypes;
 import real.Interfaces.IService;
 import real.Objects.Dataset;
+import real.Objects.Exceptions.DatasetDuplicate;
+import real.Objects.Exceptions.InvalidDataset;
 import real.Objects.Exceptions.InvalidParsing;
+import real.Objects.Exceptions.NoSuchDataset;
+import real.Objects.GUI.TextQueryView;
 import real.Objects.Kernel;
 import real.Objects.Parser.ExpressionParser;
 import real.Objects.Parser.Token;
@@ -29,7 +34,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private ExpressionParser parser;
     private TreeView view;
-
+    private DefaultListModel relationModel = new DefaultListModel();
+    
     public MainWindow()
     {
         this.initComponents();
@@ -45,17 +51,27 @@ public class MainWindow extends javax.swing.JFrame implements IService
         });
     }
 
+    //will always return non null, since we can not have a empty worksheet
+    public JTextArea getCurrentWorksheet()
+    {
+        TextQueryView view = (TextQueryView)worksheetPane.getSelectedComponent(); 
+        return view.getTextArea();
+    }
+    
     @Override
     public void Initialize()
     {
         ImageIcon image = new ImageIcon("assets/icon/icon.png");
         this.setIconImage(image.getImage());
 
+        relationView.setModel(relationModel);
+        
         view = new TreeView();
         view.setSize(800, 820);
         view.setVisible(true);
 
         //testing
+        //code will be removed when we get the query model done
         TokenOpManager opManager = new TokenOpManager();
 
         opManager.addOp(new Token("+", 4, EnumSet.of(OpTypes.LEFT)));
@@ -93,8 +109,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
         TokenStream tokenStream = new TokenStream(opManager);
 
         parser = new ExpressionParser(tokenStream);
-
-        this.textbox.setLineWrap(true);
     }
 
     @Override
@@ -121,7 +135,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         loadFileChooser = new javax.swing.JFileChooser();
         saveFileChooser = new javax.swing.JFileChooser();
@@ -154,8 +169,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
         rightouterjoinButton = new javax.swing.JButton();
         fullouterjoinButton = new javax.swing.JButton();
         worksheetPane = new javax.swing.JTabbedPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        textbox = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tableView = new javax.swing.JTable();
@@ -167,6 +180,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         saveMenuItem = new javax.swing.JMenuItem();
         importMenuItem = new javax.swing.JMenuItem();
         exportMenuItem = new javax.swing.JMenuItem();
+        deleteMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
@@ -189,8 +203,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         runButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         runButton.setText("Run");
-        runButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        runButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 runButtonActionPerformed(evt);
             }
         });
@@ -199,8 +215,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         newSheetButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         newSheetButton.setText("New sheet");
-        newSheetButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        newSheetButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 newSheetButtonActionPerformed(evt);
             }
         });
@@ -212,21 +230,25 @@ public class MainWindow extends javax.swing.JFrame implements IService
         removeSheetButton.setFocusable(false);
         removeSheetButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         removeSheetButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        removeSheetButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        removeSheetButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 removeSheetButtonActionPerformed(evt);
             }
         });
         jToolBar2.add(removeSheetButton);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
@@ -240,8 +262,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         saveButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         saveButton.setText("Save");
-        saveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        saveButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 saveButtonActionPerformed(evt);
             }
         });
@@ -255,8 +279,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         piButton.setFocusable(false);
         piButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         piButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        piButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        piButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 piButtonActionPerformed(evt);
             }
         });
@@ -267,8 +293,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         deltaButton.setFocusable(false);
         deltaButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         deltaButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        deltaButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        deltaButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 deltaButtonActionPerformed(evt);
             }
         });
@@ -279,8 +307,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         rhoButton.setFocusable(false);
         rhoButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rhoButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        rhoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        rhoButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 rhoButtonActionPerformed(evt);
             }
         });
@@ -291,8 +321,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         gammaButton.setFocusable(false);
         gammaButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         gammaButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        gammaButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        gammaButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 gammaButtonActionPerformed(evt);
             }
         });
@@ -303,8 +335,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         tauButton.setFocusable(false);
         tauButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         tauButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        tauButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        tauButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 tauButtonActionPerformed(evt);
             }
         });
@@ -315,8 +349,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         arrowButton.setFocusable(false);
         arrowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         arrowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        arrowButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        arrowButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 arrowButtonActionPerformed(evt);
             }
         });
@@ -327,8 +363,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         unionButton.setFocusable(false);
         unionButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         unionButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        unionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        unionButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 unionButtonActionPerformed(evt);
             }
         });
@@ -339,8 +377,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         intersectionButton.setFocusable(false);
         intersectionButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         intersectionButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        intersectionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        intersectionButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 intersectionButtonActionPerformed(evt);
             }
         });
@@ -351,8 +391,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         differenceButton.setFocusable(false);
         differenceButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         differenceButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        differenceButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        differenceButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 differenceButtonActionPerformed(evt);
             }
         });
@@ -363,8 +405,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         productButton.setFocusable(false);
         productButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         productButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        productButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        productButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 productButtonActionPerformed(evt);
             }
         });
@@ -375,8 +419,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         joinButton.setFocusable(false);
         joinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         joinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        joinButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        joinButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 joinButtonActionPerformed(evt);
             }
         });
@@ -387,8 +433,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         leftouterjoinButton.setFocusable(false);
         leftouterjoinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         leftouterjoinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        leftouterjoinButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        leftouterjoinButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 leftouterjoinButtonActionPerformed(evt);
             }
         });
@@ -399,8 +447,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         rightouterjoinButton.setFocusable(false);
         rightouterjoinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rightouterjoinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        rightouterjoinButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        rightouterjoinButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 rightouterjoinButtonActionPerformed(evt);
             }
         });
@@ -411,19 +461,14 @@ public class MainWindow extends javax.swing.JFrame implements IService
         fullouterjoinButton.setFocusable(false);
         fullouterjoinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         fullouterjoinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        fullouterjoinButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        fullouterjoinButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 fullouterjoinButtonActionPerformed(evt);
             }
         });
         jToolBar3.add(fullouterjoinButton);
-
-        textbox.setColumns(20);
-        textbox.setFont(new java.awt.Font("Cambria", 0, 15)); // NOI18N
-        textbox.setRows(5);
-        jScrollPane2.setViewportView(textbox);
-
-        worksheetPane.addTab("Sheet0", jScrollPane2);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -454,13 +499,15 @@ public class MainWindow extends javax.swing.JFrame implements IService
         combinedView.addTab("Query view", jPanel1);
 
         tableView.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
@@ -480,51 +527,73 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         combinedView.addTab("Table view", jPanel2);
 
-        relationView.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Table 1", "Table 2", "Table 3" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+        relationView.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
+                relationViewMouseClicked(evt);
+            }
         });
         jScrollPane3.setViewportView(relationView);
 
         fileMenu.setText("File");
 
-        loadMenuItem.setText("Load script");
-        loadMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        loadMenuItem.setText("Load Project");
+        loadMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 loadMenuItemActionPerformed(evt);
             }
         });
         fileMenu.add(loadMenuItem);
 
-        saveMenuItem.setText("Save script");
-        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        saveMenuItem.setText("Save Project");
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 saveMenuItemActionPerformed(evt);
             }
         });
         fileMenu.add(saveMenuItem);
 
         importMenuItem.setText("Import table");
-        importMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        importMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 importMenuItemActionPerformed(evt);
             }
         });
         fileMenu.add(importMenuItem);
 
         exportMenuItem.setText("Export table");
-        exportMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        exportMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 exportMenuItemActionPerformed(evt);
             }
         });
         fileMenu.add(exportMenuItem);
+
+        deleteMenuItem.setText("Delete table");
+        deleteMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                deleteMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(deleteMenuItem);
         fileMenu.add(jSeparator1);
 
         exitMenuItem.setText("Exit");
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 exitMenuItemActionPerformed(evt);
             }
         });
@@ -538,8 +607,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         helpMenu.setText("Help");
 
         aboutMenuItem.setText("About");
-        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 aboutMenuItemActionPerformed(evt);
             }
         });
@@ -583,7 +654,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         // TODO add your handling code here:
         try
         {
-            TokenTree tree = parser.parse(this.textbox.getText()).pop();
+            TokenTree tree = parser.parse(this.getCurrentWorksheet().getText()).pop();
             view.load(tree);
         }
         catch (InvalidParsing ex)
@@ -593,55 +664,68 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_runButtonActionPerformed
 
     private void piButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_piButtonActionPerformed
-        textbox.insert("π", textbox.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("π", area.getCaretPosition());
     }//GEN-LAST:event_piButtonActionPerformed
 
     private void deltaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deltaButtonActionPerformed
-        textbox.insert("δ", textbox.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("δ", area.getCaretPosition());
     }//GEN-LAST:event_deltaButtonActionPerformed
 
     private void rhoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rhoButtonActionPerformed
-        textbox.insert("ρ", textbox.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("ρ", area.getCaretPosition());
     }//GEN-LAST:event_rhoButtonActionPerformed
 
     private void gammaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gammaButtonActionPerformed
-        textbox.insert("γ", textbox.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("γ", area.getCaretPosition());
     }//GEN-LAST:event_gammaButtonActionPerformed
 
     private void tauButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tauButtonActionPerformed
-        textbox.insert("τ", textbox.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("τ", area.getCaretPosition());
     }//GEN-LAST:event_tauButtonActionPerformed
 
     private void unionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unionButtonActionPerformed
-        textbox.insert("∪", textbox.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("∪", area.getCaretPosition());
     }//GEN-LAST:event_unionButtonActionPerformed
 
     private void intersectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intersectionButtonActionPerformed
-        textbox.insert("∩", textbox.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("∩", area.getCaretPosition());
     }//GEN-LAST:event_intersectionButtonActionPerformed
 
     private void differenceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_differenceButtonActionPerformed
-        textbox.insert("‒", textbox.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("‒", area.getCaretPosition());
     }//GEN-LAST:event_differenceButtonActionPerformed
 
     private void productButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productButtonActionPerformed
-        textbox.insert("×", textbox.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("×", area.getCaretPosition());
     }//GEN-LAST:event_productButtonActionPerformed
 
     private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinButtonActionPerformed
-        textbox.insert("⋈", textbox.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("⋈", area.getCaretPosition());
     }//GEN-LAST:event_joinButtonActionPerformed
 
     private void leftouterjoinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftouterjoinButtonActionPerformed
-        textbox.insert("⟕", textbox.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("⟕", area.getCaretPosition());
     }//GEN-LAST:event_leftouterjoinButtonActionPerformed
 
     private void rightouterjoinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightouterjoinButtonActionPerformed
-        textbox.insert("⟖", textbox.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("⟖", area.getCaretPosition());
     }//GEN-LAST:event_rightouterjoinButtonActionPerformed
 
     private void fullouterjoinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullouterjoinButtonActionPerformed
-        textbox.insert("⟗", textbox.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("⟗", area.getCaretPosition());
     }//GEN-LAST:event_fullouterjoinButtonActionPerformed
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
@@ -661,7 +745,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
             File file = saveFileChooser.getSelectedFile();
             try {
                 FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
-                textbox.write(fw);
+                this.getCurrentWorksheet().write(fw);
             }
             catch (IOException ex) {
                 System.out.println("Problem saving file at " + file.getAbsolutePath());
@@ -674,22 +758,66 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private void loadMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMenuItemActionPerformed
         int returnVal = loadFileChooser.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        if (returnVal == JFileChooser.APPROVE_OPTION)
+        {
             File file = loadFileChooser.getSelectedFile();
-            try {
-                textbox.read(new FileReader(file.getAbsolutePath()), null);
+            try
+            {
+                this.getCurrentWorksheet().read(new FileReader(file.getAbsolutePath()), null);
             }
-            catch (IOException ex) {
+            catch (IOException ex)
+            {
                 System.out.println("Problem accessing file " + file.getAbsolutePath());
             }
         }
-        else {
+        else
+        {
             System.out.println("File access cancelled by user.");
         }
     }//GEN-LAST:event_loadMenuItemActionPerformed
 
     private void importMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importMenuItemActionPerformed
-        JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
+        int returnVal = loadFileChooser.showOpenDialog(this);
+        
+        if (returnVal == JFileChooser.APPROVE_OPTION)
+        {
+            File file = loadFileChooser.getSelectedFile();
+            try
+            {
+                //ask for the table name
+                String str = (String) JOptionPane.showInputDialog(rootPane, 
+                            "Please enter the name for the worksheet.", "Worksheet", JOptionPane.PLAIN_MESSAGE);
+                
+                if(str == null)
+                {
+                    //user pressed cancel
+                }
+                
+                else if(str.isEmpty())
+                {
+                    JOptionPane.showMessageDialog(rootPane, "Table name can't be empty");
+                }
+                
+                else
+                {
+                    Kernel.GetService(DataManager.class).LoadDataset(file.getAbsolutePath(), str);
+                    relationModel.addElement(str);
+                }
+            }
+            catch (InvalidDataset ex)
+            {
+                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            catch (DatasetDuplicate ex)
+            {
+                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        else
+        {
+            System.out.println("File access cancelled by user.");
+        }
     }//GEN-LAST:event_importMenuItemActionPerformed
 
     private void exportMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportMenuItemActionPerformed
@@ -697,23 +825,126 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_exportMenuItemActionPerformed
 
     private void arrowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arrowButtonActionPerformed
-        textbox.insert("→", textbox.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("→", area.getCaretPosition());
     }//GEN-LAST:event_arrowButtonActionPerformed
 
     private void newSheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSheetButtonActionPerformed
-        JTextArea t = new JTextArea();
-        t.setName("Sheet");
-        worksheetPane.add(t);
+        String str = (String) JOptionPane.showInputDialog(rootPane, "Please enter the name for the worksheet.", "Worksheet", JOptionPane.PLAIN_MESSAGE);
+
+        if(str == null)
+        {
+            //the user pressed exit
+        }
+        
+        else if(str.isEmpty())
+        {
+            JOptionPane.showMessageDialog(rootPane, "Can't accept empty name!");
+        }
+                   
+        else
+        {
+            boolean foundDup = false;
+            //we must check if a tab has the same name.
+            for(int i = 0; i < worksheetPane.getTabCount(); ++i)
+            {
+                if(worksheetPane.getTitleAt(i).equals(str))
+                {
+                    foundDup = true;
+                }
+            }
+            
+            //if we found the duplicate
+            if(foundDup)
+            {
+                JOptionPane.showMessageDialog(rootPane, "Worksheet name already exists!");
+            }
+            
+            else
+            {
+                TextQueryView t = new TextQueryView();
+                worksheetPane.addTab(str, t);
+            }
+        }
+
     }//GEN-LAST:event_newSheetButtonActionPerformed
 
     private void removeSheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSheetButtonActionPerformed
-        worksheetPane.remove(worksheetPane.getSelectedIndex());
+      
+        //if the tabbedpane is empty no point in asking
+        //todo: we have to discuss if we want to stop removing when there is one tab left
+        if (worksheetPane.getTabCount() != 0)
+        {
+            int n = JOptionPane.showConfirmDialog(
+                    rootPane,
+                    "Are you sure that you want to remove the current worksheet?",
+                    "remove",
+                    JOptionPane.YES_NO_OPTION);
+
+            //yes
+            if (n == 0)
+            {
+                int index = worksheetPane.getSelectedIndex();
+                worksheetPane.removeTabAt(index);
+            }
+            
+            //no
+            else
+            {
+            }
+        }
     }//GEN-LAST:event_removeSheetButtonActionPerformed
+
+    private void relationViewMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_relationViewMouseClicked
+    {//GEN-HEADEREND:event_relationViewMouseClicked
+        //if the user double clicks.
+        if (evt.getClickCount() == 2)
+        {
+            int index = relationView.getSelectedIndex();
+            String str = (String) relationModel.getElementAt(index);
+
+            if (str != null)
+            {
+                try
+                {
+                    Dataset dataset = Kernel.GetService(DataManager.class).getDataset(str);
+                    tableView.setModel(dataset);
+                    //focus it for cool effect
+                    //1 is table view.
+                    combinedView.setSelectedIndex(1);
+                }
+                catch (NoSuchDataset ex)
+                {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }//GEN-LAST:event_relationViewMouseClicked
+
+    private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_deleteMenuItemActionPerformed
+    {//GEN-HEADEREND:event_deleteMenuItemActionPerformed
+        String str = (String)relationModel.getElementAt(relationView.getSelectedIndex());
+        
+        if(str != null)
+        {
+            relationModel.remove(relationView.getSelectedIndex());
+
+            try
+            {
+                Kernel.GetService(DataManager.class).removeDataset(str);
+            }
+            catch (NoSuchDataset ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_deleteMenuItemActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JButton arrowButton;
     private javax.swing.JTabbedPane combinedView;
+    private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JButton deltaButton;
     private javax.swing.JButton differenceButton;
     private javax.swing.JMenu editMenu;
@@ -729,7 +960,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
@@ -757,7 +987,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JTable tableView;
     private javax.swing.JButton tauButton;
-    private javax.swing.JTextArea textbox;
     private javax.swing.JButton unionButton;
     private javax.swing.JTabbedPane worksheetPane;
     // End of variables declaration//GEN-END:variables

@@ -20,10 +20,12 @@ public class DataManager extends ServiceBase
 {
 
     private ArrayList<Dataset> datasets;
-
+    private ArrayList<String> datasetNames;
+    
     public DataManager()
     {
         this.datasets = new ArrayList<>();
+        this.datasetNames = new ArrayList<>();
     }
 
     public Dataset getDataset(String name) throws NoSuchDataset
@@ -34,6 +36,11 @@ public class DataManager extends ServiceBase
             return ds;
         }
         throw new NoSuchDataset();
+    }
+    
+    public ArrayList<String> getAllNames()
+    {
+        return datasetNames;
     }
 
     public void setDataset(Dataset value)
@@ -66,6 +73,7 @@ public class DataManager extends ServiceBase
                 else
                 {
                     this.datasets.add(new Dataset(tableName, columns, rows));
+                    this.datasetNames.add(tableName);
                 }
             }
         }
@@ -75,6 +83,21 @@ public class DataManager extends ServiceBase
         }
     }
 
+    public void removeDataset(String remove) throws NoSuchDataset
+    {
+        Dataset dataset = this.find(remove);
+        
+        if(dataset == null)
+        {
+            throw new NoSuchDataset();
+        }
+        
+        else
+        {
+            this.datasets.remove(dataset);
+            this.datasetNames.remove(remove);
+        }
+    }
     public ArrayList<Dataset> GetAllDatasets()
     {
         return this.datasets;
@@ -93,12 +116,5 @@ public class DataManager extends ServiceBase
             }
         }
         return null;
-    }
-
-    private String filename(String filename)
-    {
-        int dot = filename.lastIndexOf(".");
-        int sep = filename.lastIndexOf("/");
-        return filename.substring(sep + 1, dot);
-    }
+    } 
 }
