@@ -5,14 +5,21 @@ import real.BaseClasses.BinaryConditionBase;
 import real.BaseClasses.ConditionBase;
 import real.Enumerations.DataType;
 import real.Objects.Column;
+import real.Objects.Exceptions.WrongType;
 import real.Objects.Row;
 
 public class Equal extends BinaryConditionBase
 {
 
-    public Equal(ConditionBase operandA, ConditionBase operandB)
+    public Equal(ConditionBase operandA, ConditionBase operandB) throws WrongType
     {
-        super(operandA, operandB, DataType.UNKNOWN);
+        super(operandA, operandB);
+                
+        if(getType() == DataType.UNKNOWN)
+        {
+            throw new WrongType("can't equal with two different types");
+        }
+        
     }
     
     @Override
