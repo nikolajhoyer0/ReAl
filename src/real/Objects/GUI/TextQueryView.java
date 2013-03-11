@@ -3,6 +3,8 @@ package real.Objects.GUI;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +28,7 @@ import real.Objects.Services.DataManager;
  pretty much ripped from the oracle example.
 */
 
-public class TextQueryView extends JPanel implements DocumentListener
+public class TextQueryView extends JPanel implements DocumentListener, KeyListener
 {    
     private static final String COMMIT_ACTION = "commit";     
     private static enum Mode { INSERT, COMPLETION };
@@ -45,7 +47,8 @@ public class TextQueryView extends JPanel implements DocumentListener
         textArea.setLineWrap(true);    
         textArea.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), COMMIT_ACTION);
         textArea.getActionMap().put(COMMIT_ACTION, new CommitAction());   
-        textArea.getDocument().addDocumentListener(this);  
+        textArea.getDocument().addDocumentListener(this); 
+        textArea.addKeyListener(this);
         textArea.setBorder(null);
         scrollPane = new JScrollPane(textArea);
         this.add(scrollPane);     
@@ -106,6 +109,23 @@ public class TextQueryView extends JPanel implements DocumentListener
     public JTextArea getTextArea()
     {
         return textArea;
+    }
+    
+    @Override
+    public void keyTyped(KeyEvent e)
+    {     
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e)
+    {
+        SwingUtilities.invokeLater(
+                        new CheckTask(textArea.getCaretPosition()));
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e)
+    {
     }
     
     
@@ -214,6 +234,128 @@ public class TextQueryView extends JPanel implements DocumentListener
             else
             {                       
                 textArea.replaceSelection("\n");                
+            }
+        }
+    }
+    
+    //class that checks the words that gets typed and changes relation operator
+    //terms to the real symbols.
+    private class CheckTask implements Runnable
+    {
+        private int pos;
+        
+        public CheckTask(int pos)
+        {
+            this.pos = pos;
+        }
+ 
+        private void convertToSymbol(final int start, final int end, String str)
+        {
+            switch (str.substring(start, end))
+            {
+                case "projection":
+                    textArea.replaceRange("π", start, end);
+                    break;
+                case "selection":
+                    textArea.replaceRange("δ", start, end);
+                    break;
+                case "rename":
+                    textArea.replaceRange("ρ", start, end);
+                    break;
+                case "group":
+                    textArea.replaceRange("γ", start, end);
+                    break;
+            }
+        }
+        
+        @Override
+        public void run()
+        {
+            String str = textArea.getText();
+            
+            if (str.length() > pos)
+            {
+                
+
+                //if we are in the string we only look for one string
+                if (!Character.isSpaceChar(str.charAt(pos)))
+                {
+                    int leftIndex = 0;
+                    int rightIndex = 0;
+                    
+                    for (leftIndex = pos; leftIndex > 0; --leftIndex)
+                    {
+
+                        if (Character.isSpaceChar(str.charAt(leftIndex)))
+                        {
+                            leftIndex++;
+                            break;
+                        }
+
+                    }
+
+                    for (rightIndex = pos; rightIndex < str.length(); ++rightIndex)
+                    {
+
+                        if (Character.isSpaceChar(str.charAt(rightIndex)))
+                        {
+                            rightIndex--;
+                            break;
+                        }
+
+                    }
+
+                    convertToSymbol(leftIndex, rightIndex, str);
+                }
+                
+                //if we are in space we have to look for two words and compare
+                else
+                {
+                    int leftEndIndex;
+                    int leftStartIndex;
+                    int rightEndIndex;
+                    int rightStartIndex;
+                    
+                    //find the left start index word                
+                    for(leftStartIndex = pos; leftStartIndex > 0; --leftStartIndex)
+                    {
+                        if(!Character.isSpaceChar(str.charAt(leftStartIndex)))
+                        {
+                            break;
+                        }                
+                    }
+                    //find the index where the left word finish
+                    
+                    for(leftEndIndex = leftStartIndex; leftEndIndex > 0; --leftEndIndex)
+                    {
+                        if(Character.isSpaceChar(str.charAt(leftEndIndex)))
+                        {
+                            break;
+                        }                
+                    }
+                    
+                    //find the right start index word                
+                    for(rightStartIndex = pos; rightStartIndex < str.length(); ++rightStartIndex)
+                    {
+                        if(!Character.isSpaceChar(str.charAt(rightStartIndex)))
+                        {
+                            break;
+                        }                
+                    }
+                    
+                    //find the index where the right word finish                    
+                    for(rightEndIndex = rightStartIndex; rightEndIndex < str.length(); ++rightEndIndex)
+                    {
+                        if(Character.isSpaceChar(str.charAt(rightEndIndex)))
+                        {
+                            break;
+                        }                
+                    }
+                                   
+                    convertToSymbol(leftEndIndex, leftStartIndex+1, str);
+                    convertToSymbol(rightStartIndex, rightEndIndex, str);
+                }
+
             }
         }
     }
