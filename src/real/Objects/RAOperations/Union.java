@@ -21,16 +21,19 @@ public class Union extends BinaryOperationBase
     {
         Dataset resultA = this.operandA.execute();
         Dataset resultB = this.operandB.execute();
+        
+        ArrayList<Row> includeRows = new ArrayList<>();
 
         if (resultA.equalsSchema(resultB))
         {
-            ArrayList<Row> rows = new ArrayList<>();
-            rows.addAll(resultA.getRows());
-            for (Row row : resultB.getRows())
+            includeRows.addAll(resultA.getRows());
+            Difference difference = new Difference(operandA, operandB);
+            
+            for (Row row : difference.execute().getRows())
             {
-                rows.add(row);
+                includeRows.add(row);
             }
-            return new Dataset("", resultA.getColumns(), rows);
+            return new Dataset("", resultA.getColumns(), includeRows);
         }
         throw new InvalidSchema();
     }
