@@ -29,42 +29,42 @@ import real.Objects.Services.DataManager;
 */
 
 public class TextQueryView extends JPanel implements DocumentListener, KeyListener
-{    
-    private static final String COMMIT_ACTION = "commit";     
+{
+    private static final String COMMIT_ACTION = "commit";
     private static enum Mode { INSERT, COMPLETION };
     private Mode mode = Mode.INSERT;
     private JTextArea textArea;
     private JScrollPane scrollPane;
-    
+
     //autocompletion words for textarea
     static ArrayList<String> words = new ArrayList<>();
-    
+
     public TextQueryView()
-    {      
+    {
         this.setLayout(new BorderLayout());
         textArea = new JTextArea();
         textArea.setFont(new Font("cambria", Font.PLAIN, 15));
-        textArea.setLineWrap(true);    
+        textArea.setLineWrap(true);
         textArea.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), COMMIT_ACTION);
-        textArea.getActionMap().put(COMMIT_ACTION, new CommitAction());   
-        textArea.getDocument().addDocumentListener(this); 
+        textArea.getActionMap().put(COMMIT_ACTION, new CommitAction());
+        textArea.getDocument().addDocumentListener(this);
         textArea.addKeyListener(this);
         textArea.setBorder(null);
         scrollPane = new JScrollPane(textArea);
-        this.add(scrollPane);     
+        this.add(scrollPane);
     }
-    
+
     public static void addAutoWord(String word)
     {
         words.add(word);
         Collections.sort(words);
     }
-    
+
     public static void removeAutoWord(String word)
     {
         words.remove(word);
     }
-    
+
     public static void addTableAutoWords(String table)
     {
         ArrayList<Dataset> datasets = Kernel.GetService(DataManager.class).GetAllDatasets();
@@ -73,19 +73,18 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
             for (int k = 0; k < datasets.get(i).getColumnCount(); k++)
             {
                 String keyword = datasets.get(i).getColumnName(k);
-                
+
                 if (!words.contains(keyword))
                 {
                     words.add(keyword);
-                    System.out.println(keyword);
                 }
             }
         }
-        
-        
+
+
         addAutoWord(table);
     }
- 
+
     public static void removeTableAutoWords(String table)
     {
         ArrayList<Dataset> datasets = Kernel.GetService(DataManager.class).GetAllDatasets();
@@ -94,26 +93,25 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
             for (int k = 0; k < datasets.get(i).getColumnCount(); k++)
             {
                 String keyword = datasets.get(i).getColumnName(k);
-                
+
                 if (!words.contains(keyword))
                 {
                     words.remove(keyword);
-                    System.out.println(keyword);
                 }
             }
         }
-        
+
         removeAutoWord(table);
     }
-    
+
     public JTextArea getTextArea()
     {
         return textArea;
     }
-    
+
     @Override
     public void keyTyped(KeyEvent e)
-    {     
+    {
     }
 
     @Override
@@ -127,11 +125,11 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
     public void keyReleased(KeyEvent e)
     {
     }
-    
-    
+
+
     @Override
     public void changedUpdate(DocumentEvent eve)
-    {   
+    {
     }
 
     @Override
@@ -141,7 +139,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
     @Override
     public void insertUpdate(DocumentEvent ev)
-    {      
+    {
         if (ev.getLength() != 1)
         {
             return;
@@ -149,7 +147,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
         int pos = ev.getOffset();
         String content = null;
-          
+
         try
         {
             content = textArea.getText(0, pos + 1);
@@ -173,7 +171,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
             // Too few chars
             return;
         }
-        
+
         String prefix = content.substring(w + 1).toLowerCase();
         int n = Collections.binarySearch(words, prefix);
         if (n < 0 && -n <= words.size())
@@ -196,7 +194,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
         }
     }
-    
+
     private class CompletionTask implements Runnable
     {
 
@@ -211,7 +209,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
         @Override
         public void run()
-        {          
+        {
             textArea.insert(completion, position);
             textArea.setCaretPosition(position + completion.length());
             textArea.moveCaretPosition(position);
@@ -232,23 +230,23 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                 mode = Mode.INSERT;
             }
             else
-            {                       
-                textArea.replaceSelection("\n");                
+            {
+                textArea.replaceSelection("\n");
             }
         }
     }
-    
+
     //class that checks the words that gets typed and changes relation operator
     //terms to the real symbols.
     private class CheckTask implements Runnable
     {
         private int pos;
-        
+
         public CheckTask(int pos)
         {
             this.pos = pos;
         }
- 
+
         private void convertToSymbol(final int start, final int end, String str)
         {
             switch (str.substring(start, end))
@@ -270,22 +268,22 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                     break;
             }
         }
-        
+
         @Override
         public void run()
         {
             String str = textArea.getText();
-            
+
             if (str.length() > pos)
             {
-                
+
 
                 //if we are in the string we only look for one string
                 if (!Character.isSpaceChar(str.charAt(pos)))
                 {
                     int leftIndex = 0;
                     int rightIndex = 0;
-                    
+
                     for (leftIndex = pos; leftIndex > 0; --leftIndex)
                     {
 
@@ -310,7 +308,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
                     convertToSymbol(leftIndex, rightIndex, str);
                 }
-                
+
                 //if we are in space we have to look for two words and compare
                 else
                 {
@@ -318,43 +316,43 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                     int leftStartIndex;
                     int rightEndIndex;
                     int rightStartIndex;
-                    
-                    //find the left start index word                
+
+                    //find the left start index word
                     for(leftStartIndex = pos; leftStartIndex > 0; --leftStartIndex)
                     {
                         if(!Character.isSpaceChar(str.charAt(leftStartIndex)))
                         {
                             break;
-                        }                
+                        }
                     }
                     //find the index where the left word finish
-                    
+
                     for(leftEndIndex = leftStartIndex; leftEndIndex > 0; --leftEndIndex)
                     {
                         if(Character.isSpaceChar(str.charAt(leftEndIndex)))
                         {
                             break;
-                        }                
+                        }
                     }
-                    
-                    //find the right start index word                
+
+                    //find the right start index word
                     for(rightStartIndex = pos; rightStartIndex < str.length(); ++rightStartIndex)
                     {
                         if(!Character.isSpaceChar(str.charAt(rightStartIndex)))
                         {
                             break;
-                        }                
+                        }
                     }
-                    
-                    //find the index where the right word finish                    
+
+                    //find the index where the right word finish
                     for(rightEndIndex = rightStartIndex; rightEndIndex < str.length(); ++rightEndIndex)
                     {
                         if(Character.isSpaceChar(str.charAt(rightEndIndex)))
                         {
                             break;
-                        }                
+                        }
                     }
-                                   
+
                     convertToSymbol(leftEndIndex, leftStartIndex+1, str);
                     convertToSymbol(rightStartIndex, rightEndIndex, str);
                 }
