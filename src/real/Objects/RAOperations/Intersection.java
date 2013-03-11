@@ -9,6 +9,9 @@ import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.Row;
 
+/**
+ * Implements the intersection operation on bags.
+ */
 public class Intersection extends BinaryOperationBase
 {
 
@@ -21,8 +24,8 @@ public class Intersection extends BinaryOperationBase
     public Dataset execute() throws InvalidSchema, NoSuchDataset
     {
         Dataset resultA = this.operandA.execute();
-        Dataset resultB = this.operandB.execute();
-               
+        Dataset resultB = this.operandB.execute().clone();
+                
         ArrayList<Row> includeRows = new ArrayList<>();
         
         if (resultA.equalsSchema(resultB))
@@ -32,6 +35,8 @@ public class Intersection extends BinaryOperationBase
                 if (resultB.getRows().contains(row))
                 {
                     includeRows.add(row);
+                    // remove rows that have been used
+                    resultB.getRows().remove(row);
                 }
             }
             
