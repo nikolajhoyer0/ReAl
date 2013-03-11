@@ -18,21 +18,20 @@ public class BooleanLiteral extends UnaryConditionBase
     }
     
     @Override
-    public String evaluateString(Row row, Column column)
+    public String evaluateString(Row row)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public int evaluateNumber(Row row, Column column)
+    public int evaluateNumber(Row row)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public boolean evaluateBoolean(Row row, Column column)
+    public boolean evaluateBoolean(Row row)
     {
         return value;
     }
-    
 }

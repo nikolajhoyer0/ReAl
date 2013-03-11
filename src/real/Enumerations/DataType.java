@@ -5,5 +5,6 @@ public enum DataType
     UNKNOWN,
     NUMBER,
     BOOLEAN,
-    STRING
+    STRING,
+    ATTRIBUTE
 }

@@ -1,7 +1,6 @@
 package real.BaseClasses;
 
 import real.Enumerations.DataType;
-import real.Objects.Column;
 import real.Objects.Row;
 
 /**
@@ -21,7 +20,30 @@ public abstract class ConditionBase
         return type;
     }
     
-    public abstract String evaluateString(Row row, Column column);
-    public abstract int evaluateNumber(Row row, Column column);
-    public abstract boolean evaluateBoolean(Row row, Column column);
+    public Object evaluate(Row row)
+    {
+        if(type == DataType.BOOLEAN)
+        {
+            return evaluateBoolean(row);
+        }
+        
+        else if(type == DataType.NUMBER)
+        {
+            return evaluateNumber(row);
+        }
+        
+        else if(type == DataType.STRING)
+        {
+            return evaluateString(row);
+        }
+        
+        else
+        {
+            throw new UnsupportedOperationException("only exist type: number, boolean, attribute, string");
+        }
+    }
+    
+    public abstract String evaluateString(Row row);
+    public abstract int evaluateNumber(Row row);
+    public abstract boolean evaluateBoolean(Row row);
 }

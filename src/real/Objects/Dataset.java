@@ -192,6 +192,19 @@ public class Dataset extends AbstractTableModel
         return columns;
     }
 
+    public Column getColumn(String column)
+    {
+        for (Column c : this.columns)
+        {
+            if (c.getName().equals(column))
+            {
+                return c;
+            }
+        }
+        
+        return null;
+    }
+
     public ArrayList<Row> getRows()
     {
         return this.rows;

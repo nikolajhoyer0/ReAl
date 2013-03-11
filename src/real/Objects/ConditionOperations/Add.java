@@ -4,7 +4,6 @@ package real.Objects.ConditionOperations;
 import real.BaseClasses.BinaryConditionBase;
 import real.BaseClasses.ConditionBase;
 import real.Enumerations.DataType;
-import real.Objects.Column;
 import real.Objects.Exceptions.WrongType;
 import real.Objects.Row;
 
@@ -22,19 +21,19 @@ public class Add extends BinaryConditionBase
     }
     
     @Override
-    public String evaluateString(Row row, Column column)
+    public String evaluateString(Row row)
     {
         throw new UnsupportedOperationException("Cannot concat strings.");
     }
 
     @Override
-    public int evaluateNumber(Row row, Column column)
+    public int evaluateNumber(Row row)
     {     
-        return operandA.evaluateNumber(row, column) + operandB.evaluateNumber(row, column);
+        return operandA.evaluateNumber(row) + operandB.evaluateNumber(row);
     }
 
     @Override
-    public boolean evaluateBoolean(Row row, Column column)
+    public boolean evaluateBoolean(Row row)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }

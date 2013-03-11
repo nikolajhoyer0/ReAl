@@ -5,32 +5,34 @@ import real.BaseClasses.UnaryConditionBase;
 import real.Enumerations.DataType;
 import real.Objects.Row;
 
-public class StringLiteral extends UnaryConditionBase
+
+public class AttributeLiteral extends UnaryConditionBase
 {
-    String value;
     
-    public StringLiteral(String value)
+    String attributeName;
+    
+    public AttributeLiteral(String value, DataType type)
     {
-        super(null, DataType.STRING);
-        this.value = value;
+        super(null, type);
+        attributeName = value;
     }
 
     @Override
     public String evaluateString(Row row)
     {
-        return value;
+        return row.getValue(attributeName);
     }
 
     @Override
     public int evaluateNumber(Row row)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return Integer.parseInt(row.getValue(attributeName));
     }
 
     @Override
     public boolean evaluateBoolean(Row row)
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return Boolean.parseBoolean(row.getValue(attributeName));
     }
     
 }

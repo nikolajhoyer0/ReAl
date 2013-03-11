@@ -17,7 +17,14 @@ public abstract class BinaryConditionBase extends ConditionBase
         this.operandA = operandA;
         this.operandB = operandB;
     }
-
+    
+    public BinaryConditionBase(ConditionBase operandA, ConditionBase operandB, DataType type)
+    {
+        super((operandA.getType() == operandB.getType()) ? type : DataType.UNKNOWN);
+        this.operandA = operandA;
+        this.operandB = operandB;
+    }
+    
     public ConditionBase getOperandA()
     {
         return this.operandA;
