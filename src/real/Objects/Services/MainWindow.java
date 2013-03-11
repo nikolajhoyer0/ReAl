@@ -35,7 +35,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private ExpressionParser parser;
     private TreeView view;
     private DefaultListModel relationModel = new DefaultListModel();
-    
+
     public MainWindow()
     {
         this.initComponents();
@@ -54,10 +54,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
     //will always return non null, since we can not have a empty worksheet
     public JTextArea getCurrentWorksheet()
     {
-        TextQueryView view = (TextQueryView)worksheetPane.getSelectedComponent(); 
+        TextQueryView view = (TextQueryView)worksheetPane.getSelectedComponent();
         return view.getTextArea();
     }
-    
+
     @Override
     public void Initialize()
     {
@@ -65,7 +65,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         this.setIconImage(image.getImage());
 
         relationView.setModel(relationModel);
-        
+
         view = new TreeView();
         view.setSize(800, 820);
         view.setVisible(true);
@@ -86,26 +86,26 @@ public class MainWindow extends javax.swing.JFrame implements IService
         opManager.addOp(new Token("AND", 1, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token("OR", 0, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token("^", 9, EnumSet.of(OpTypes.RIGHT)));
-        
+
         //function operators
-        opManager.addOp(new Token("π", 0, EnumSet.of(OpTypes.NONE)));  
-        opManager.addOp(new Token("δ", 0, EnumSet.of(OpTypes.NONE)));   
-        opManager.addOp(new Token("ρ", 0, EnumSet.of(OpTypes.NONE)));   
-        opManager.addOp(new Token("γ", 0, EnumSet.of(OpTypes.NONE))); 
+        opManager.addOp(new Token("π", 0, EnumSet.of(OpTypes.NONE)));
+        opManager.addOp(new Token("δ", 0, EnumSet.of(OpTypes.NONE)));
+        opManager.addOp(new Token("ρ", 0, EnumSet.of(OpTypes.NONE)));
+        opManager.addOp(new Token("γ", 0, EnumSet.of(OpTypes.NONE)));
         opManager.addOp(new Token("τ", 0, EnumSet.of(OpTypes.NONE)));
-        
-        //relational binary operators      
+
+        //relational binary operators
         //todo: figure out the proper precendence for each operator.
-        opManager.addOp(new Token("∪", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("∩", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("‒", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("×", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("⋈", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("→", 2, EnumSet.of(OpTypes.LEFT))); 
-        opManager.addOp(new Token("⟕", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("⟖", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("⟗", 6, EnumSet.of(OpTypes.LEFT))); 
-        
+        opManager.addOp(new Token("∪", 6, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("∩", 6, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("‒", 6, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("×", 6, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("⋈", 6, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("→", 2, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("⟕", 6, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("⟖", 6, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("⟗", 6, EnumSet.of(OpTypes.LEFT)));
+
         TokenStream tokenStream = new TokenStream(opManager);
 
         parser = new ExpressionParser(tokenStream);
@@ -723,26 +723,26 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private void importMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importMenuItemActionPerformed
         //todo: need to write my own filechooser - not use the save and load from script
         int returnVal = loadFileChooser.showOpenDialog(this);
-        
+
         if (returnVal == JFileChooser.APPROVE_OPTION)
         {
             File file = loadFileChooser.getSelectedFile();
             try
             {
                 //ask for the table name
-                String str = (String) JOptionPane.showInputDialog(rootPane, 
+                String str = (String) JOptionPane.showInputDialog(rootPane,
                             "Please enter the name for the table.", "Table", JOptionPane.PLAIN_MESSAGE);
-                
+
                 if(str == null)
                 {
                     //user pressed cancel
                 }
-                
+
                 else if(str.isEmpty())
                 {
                     JOptionPane.showMessageDialog(rootPane, "Table name can't be empty");
                 }
-                
+
                 else
                 {
                     Kernel.GetService(DataManager.class).LoadDataset(file.getAbsolutePath(), str);
@@ -760,7 +760,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         else
         {
             System.out.println("File access cancelled by user.");
@@ -806,12 +806,12 @@ public class MainWindow extends javax.swing.JFrame implements IService
         {
             //the user pressed exit
         }
-        
+
         else if(str.isEmpty())
         {
             JOptionPane.showMessageDialog(rootPane, "Can't accept empty name!");
         }
-                   
+
         else
         {
             boolean foundDup = false;
@@ -823,13 +823,13 @@ public class MainWindow extends javax.swing.JFrame implements IService
                     foundDup = true;
                 }
             }
-            
+
             //if we found the duplicate
             if(foundDup)
             {
                 JOptionPane.showMessageDialog(rootPane, "Worksheet name already exists!");
             }
-            
+
             else
             {
                 TextQueryView t = new TextQueryView();
@@ -840,7 +840,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_newSheetButtonActionPerformed
 
     private void removeSheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSheetButtonActionPerformed
-      
+
         //if the tabbedpane is empty no point in asking
         //todo: we have to discuss if we want to stop removing when there is one tab left
         if (worksheetPane.getTabCount() != 0)
@@ -857,7 +857,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 int index = worksheetPane.getSelectedIndex();
                 worksheetPane.removeTabAt(index);
             }
-            
+
             //no
             else
             {
@@ -894,7 +894,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_deleteMenuItemActionPerformed
     {//GEN-HEADEREND:event_deleteMenuItemActionPerformed
         String str = (String)relationModel.getElementAt(relationView.getSelectedIndex());
-        
+
         if(str != null)
         {
             relationModel.remove(relationView.getSelectedIndex());
