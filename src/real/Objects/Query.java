@@ -8,18 +8,35 @@ import java.util.logging.Logger;
 import real.BaseClasses.ConditionBase;
 import real.BaseClasses.OperationBase;
 import real.Enumerations.OpTypes;
+import real.Objects.ConditionOperations.Add;
+import real.Objects.ConditionOperations.Atomic.AttributeLiteral;
+import real.Objects.ConditionOperations.Atomic.BooleanLiteral;
+import real.Objects.ConditionOperations.Atomic.NumberLiteral;
+import real.Objects.ConditionOperations.Atomic.StringLiteral;
+import real.Objects.ConditionOperations.BooleanOperations.And;
+import real.Objects.ConditionOperations.BooleanOperations.Equal;
+import real.Objects.ConditionOperations.BooleanOperations.Greater;
+import real.Objects.ConditionOperations.BooleanOperations.GreaterEqual;
+import real.Objects.ConditionOperations.BooleanOperations.Less;
+import real.Objects.ConditionOperations.BooleanOperations.LessEqual;
+import real.Objects.ConditionOperations.BooleanOperations.Not;
+import real.Objects.ConditionOperations.BooleanOperations.Or;
+import real.Objects.ConditionOperations.Div;
+import real.Objects.ConditionOperations.Mult;
+import real.Objects.ConditionOperations.Sub;
 import real.Objects.Exceptions.InvalidParsing;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
+import real.Objects.Exceptions.WrongType;
 import real.Objects.Parser.ExpressionParser;
 import real.Objects.Parser.Token;
 import real.Objects.Parser.TokenOpManager;
 import real.Objects.Parser.TokenStream;
 import real.Objects.Parser.TokenTree;
-import real.Objects.RAOperations.Difference;
 import real.Objects.RAOperations.Intersection;
 import real.Objects.RAOperations.NaturalJoin;
 import real.Objects.RAOperations.ReferencedDataset;
+import real.Objects.RAOperations.Selection;
 import real.Objects.RAOperations.Union;
 
 public class Query
@@ -104,7 +121,8 @@ public class Query
                 
                 else
                 {
-                    //for now
+                    //we need to make a observer error class so we can send
+                    //errors to the errorview
                     break;
                 }                         
             }
@@ -121,23 +139,94 @@ public class Query
         String word = tree.getToken().getSymbol();
         TokenTree[] children = tree.getChildren();
         
-        switch(word)
+        try
         {
-            case "∪":
-                return new Union(interpretOperation(children[0]), interpretOperation(children[1]));
-            case "∩":
-                return new Intersection(interpretOperation(children[0]), interpretOperation(children[1]));
-            case "Attribute":
-                return new ReferencedDataset(children[0].getToken().getSymbol());
-            case "⋈":
-                return new NaturalJoin(interpretOperation(children[0]), interpretOperation(children[1]));
-        }     
+
+            switch (word)
+            {
+                case "∪":
+                    return new Union(interpretOperation(children[0]), interpretOperation(children[1]));
+                case "∩":
+                    return new Intersection(interpretOperation(children[0]), interpretOperation(children[1]));
+                case "Attribute":
+                    return new ReferencedDataset(children[0].getToken().getSymbol());
+                case "⋈":
+                    return new NaturalJoin(interpretOperation(children[0]), interpretOperation(children[1]));
+                case "δ":
+                    OperationBase relation = interpretOperation(children[1]);
+                    ConditionBase condition = interpretCondition(children[0], relation);
+                    return new Selection(relation, condition);
+                default:
+                    System.out.println(word + "is not a supported operator");
+
+            }
+
+        }
+        
+        catch(WrongType ex)
+        {
+            
+        }
+        
+        catch(InvalidSchema ex)
+        {
+            
+        }
+        
+        catch(NoSuchDataset ex)
+        {
+            
+        }
         
         return null;
     }
     
-    public ConditionBase interpretCondition(TokenTree tree)
+    public ConditionBase interpretCondition(TokenTree tree, OperationBase relation) throws WrongType, InvalidSchema, NoSuchDataset
     {
+        String word = tree.getToken().getSymbol();
+        TokenTree[] children = tree.getChildren();
+        
+        switch(word)
+        {
+            case "+":
+                return new Add(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+            case "-":
+                return new Sub(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+            case "*":
+                return new Mult(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+            case "/":
+                return new Div(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+            case "=":
+                return new Equal(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+            case "<=":
+                return new LessEqual(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+            case ">=":
+                return new GreaterEqual(interpretCondition(children[0], relation),interpretCondition(children[1], relation));    
+            case ">":
+                return new Greater(interpretCondition(children[0], relation),interpretCondition(children[1], relation)); 
+            case "<":
+                return new Less(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+            case "!=":
+                return new Not(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+            case "AND":
+                return new And(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+            case "Or":
+                return new Or(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+            case "Attribute":
+                String value = children[0].getToken().getSymbol();
+                return new AttributeLiteral(value, relation.execute().getColumn(value).getDataType());
+            case "String":
+                return new StringLiteral(children[0].getToken().getSymbol());
+            case "Number":
+                int number = Integer.parseInt(children[0].getToken().getSymbol());
+                return new NumberLiteral(number);
+            case "Boolean":
+                boolean b = Boolean.parseBoolean(children[0].getToken().getSymbol());
+                return new BooleanLiteral(b);
+        }
+        
+        
+        //probably throw exception
         return null;
     }
 }
