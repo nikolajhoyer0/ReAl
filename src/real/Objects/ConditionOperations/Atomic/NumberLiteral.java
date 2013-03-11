@@ -3,7 +3,6 @@ package real.Objects.ConditionOperations.Atomic;
 
 import real.BaseClasses.UnaryConditionBase;
 import real.Enumerations.DataType;
-import real.Objects.Column;
 import real.Objects.Row;
 
 public class NumberLiteral extends UnaryConditionBase

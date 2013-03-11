@@ -59,6 +59,9 @@ public class ConditionOperationsTest
             assertFalse((boolean)new Equal(n1, n2).evaluate(null));
             assertTrue((boolean)new Equal(str1, str1).evaluate(null));
             assertTrue((boolean)new Equal(n1, n1).evaluate(null));
+            assertTrue((boolean)new Equal(new BooleanLiteral(true), new BooleanLiteral(true)).evaluate(null));
+            assertFalse((boolean)new Equal(new BooleanLiteral(true), new BooleanLiteral(false)).evaluate(null));
+            assertTrue((boolean)new Equal(a1, a1).evaluate(null));
         }
         
         catch (WrongType ex)
@@ -88,8 +91,6 @@ public class ConditionOperationsTest
         {
             assertTrue(true);
             System.out.println(ex.getMessage());
-        }
-       
-        
+        }       
     }
 }

@@ -35,6 +35,7 @@ public class Union extends BinaryOperationBase
             }
             return new Dataset("", resultA.getColumns(), includeRows);
         }
+        
         throw new InvalidSchema();
     }
 }
