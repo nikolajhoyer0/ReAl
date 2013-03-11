@@ -1,5 +1,7 @@
 package real.BaseClasses;
 
+import real.Enumerations.DataType;
+
 /**
  * Base class for binary operations
  */
@@ -8,8 +10,9 @@ public abstract class BinaryConditionBase extends ConditionBase
     protected ConditionBase operandA;
     protected ConditionBase operandB;
     
-    public BinaryConditionBase(ConditionBase operandA, ConditionBase operandB)
+    public BinaryConditionBase(ConditionBase operandA, ConditionBase operandB, DataType type)
     {
+        super(type);
         this.operandA = operandA;
         this.operandB = operandB;
     }

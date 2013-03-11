@@ -28,10 +28,7 @@ public class Union extends BinaryOperationBase
             rows.addAll(resultA.getRows());
             for (Row row : resultB.getRows())
             {
-                if (!rows.contains(row))
-                {
-                    rows.add(row);
-                }
+                rows.add(row);
             }
             return new Dataset("", resultA.getColumns(), rows);
         }
