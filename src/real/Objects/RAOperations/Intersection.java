@@ -21,8 +21,8 @@ public class Intersection extends BinaryOperationBase
     public Dataset execute() throws InvalidSchema, NoSuchDataset
     {
         Dataset resultA = this.operandA.execute();
-        Dataset resultB = this.operandB.execute();
-               
+        Dataset resultB = this.operandB.execute().clone();
+                
         ArrayList<Row> includeRows = new ArrayList<>();
         
         if (resultA.equalsSchema(resultB))
@@ -32,6 +32,7 @@ public class Intersection extends BinaryOperationBase
                 if (resultB.getRows().contains(row))
                 {
                     includeRows.add(row);
+                    resultB.getRows().remove(row);
                 }
             }
             
