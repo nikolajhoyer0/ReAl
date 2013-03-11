@@ -101,7 +101,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         opManager.addOp(new Token("‒", 6, EnumSet.of(OpTypes.LEFT)));   
         opManager.addOp(new Token("×", 6, EnumSet.of(OpTypes.LEFT)));   
         opManager.addOp(new Token("⋈", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("→", 6, EnumSet.of(OpTypes.LEFT))); 
+        opManager.addOp(new Token("→", 2, EnumSet.of(OpTypes.LEFT))); 
         opManager.addOp(new Token("⟕", 6, EnumSet.of(OpTypes.LEFT)));   
         opManager.addOp(new Token("⟖", 6, EnumSet.of(OpTypes.LEFT)));   
         opManager.addOp(new Token("⟗", 6, EnumSet.of(OpTypes.LEFT))); 
