@@ -5,18 +5,19 @@ import real.BaseClasses.BinaryConditionBase;
 import real.BaseClasses.ConditionBase;
 import real.Enumerations.DataType;
 import real.Objects.Column;
+import real.Objects.Exceptions.WrongType;
 import real.Objects.Row;
 
 public class Add extends BinaryConditionBase 
 {
 
-    public Add(ConditionBase operandA, ConditionBase operandB)
+    public Add(ConditionBase operandA, ConditionBase operandB) throws WrongType
     {
-        super(operandA, operandB, DataType.UNKNOWN);
+        super(operandA, operandB);
         
-        if(operandA.getType() != operandA.getType())
+        if(getType() == DataType.UNKNOWN)
         {
-           // throw new 
+            throw new WrongType("can't add with two different types.");
         }
     }
     
@@ -28,7 +29,7 @@ public class Add extends BinaryConditionBase
 
     @Override
     public int evaluateNumber(Row row, Column column)
-    {
+    {     
         return operandA.evaluateNumber(row, column) + operandB.evaluateNumber(row, column);
     }
 

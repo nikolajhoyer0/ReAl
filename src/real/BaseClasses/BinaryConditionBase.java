@@ -10,9 +10,10 @@ public abstract class BinaryConditionBase extends ConditionBase
     protected ConditionBase operandA;
     protected ConditionBase operandB;
     
-    public BinaryConditionBase(ConditionBase operandA, ConditionBase operandB, DataType type)
+    
+    public BinaryConditionBase(ConditionBase operandA, ConditionBase operandB)
     {
-        super(type);
+        super((operandA.getType() == operandB.getType()) ? operandB.getType() : DataType.UNKNOWN);
         this.operandA = operandA;
         this.operandB = operandB;
     }
