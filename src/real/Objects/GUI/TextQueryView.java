@@ -253,16 +253,16 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
         {
             switch (str.substring(start, end))
             {
-                case "PROJECTION":
+                case "projection":
                     textArea.replaceRange("π", start, end);
                     break;
-                case "SELECTION":
+                case "selection":
                     textArea.replaceRange("δ", start, end);
                     break;
-                case "RENAME":
+                case "rename":
                     textArea.replaceRange("ρ", start, end);
                     break;
-                case "GROUP":
+                case "group":
                     textArea.replaceRange("γ", start, end);
                     break;
                 case "->":
