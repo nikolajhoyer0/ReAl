@@ -123,6 +123,7 @@ public class Query
                 {
                     //we need to make a observer error class so we can send
                     //errors to the errorview
+                    System.out.println("must declare sentence with 'var = expression'.");
                     break;
                 }                         
             }
@@ -165,17 +166,17 @@ public class Query
         
         catch(WrongType ex)
         {
-            
+            System.out.println(ex.getMessage());
         }
         
         catch(InvalidSchema ex)
         {
-            
+            System.out.println(ex.getMessage());
         }
         
         catch(NoSuchDataset ex)
         {
-            
+            System.out.println(ex.getMessage());
         }
         
         return null;
@@ -218,7 +219,7 @@ public class Query
             case "String":
                 return new StringLiteral(children[0].getToken().getSymbol());
             case "Number":
-                int number = Integer.parseInt(children[0].getToken().getSymbol());
+                float number = Float.parseFloat(children[0].getToken().getSymbol());
                 return new NumberLiteral(number);
             case "Boolean":
                 boolean b = Boolean.parseBoolean(children[0].getToken().getSymbol());

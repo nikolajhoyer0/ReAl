@@ -28,7 +28,7 @@ public class Equal extends BinaryConditionBase
     }
 
     @Override
-    public int evaluateNumber(Row row)
+    public float evaluateNumber(Row row)
     {
         throw new UnsupportedOperationException("only supports boolean");
     }
@@ -45,8 +45,8 @@ public class Equal extends BinaryConditionBase
         
         else if(operandA.getType() == DataType.NUMBER)
         {
-            int a = (int)operandA.evaluate(row);
-            int b = (int)operandB.evaluate(row);            
+            float a = (float)operandA.evaluate(row);
+            float b = (float)operandB.evaluate(row);            
             return a == b;
         }
         

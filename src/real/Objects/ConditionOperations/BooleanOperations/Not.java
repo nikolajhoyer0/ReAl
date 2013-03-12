@@ -14,9 +14,8 @@ public class Not extends BinaryConditionBase
                 
         if(getType() == DataType.UNKNOWN)
         {
-            throw new WrongType("can't equal with two different types");
-        }
-        
+            throw new WrongType("can't compare with two different types");
+        }            
     }
     
     @Override
@@ -26,7 +25,7 @@ public class Not extends BinaryConditionBase
     }
 
     @Override
-    public int evaluateNumber(Row row)
+    public float evaluateNumber(Row row)
     {
         throw new UnsupportedOperationException("only supports boolean");
     }
@@ -43,8 +42,8 @@ public class Not extends BinaryConditionBase
         
         else if(operandA.getType() != DataType.NUMBER)
         {
-            int a = (int)operandA.evaluate(row);
-            int b = (int)operandB.evaluate(row);            
+            float a = (float)operandA.evaluate(row);
+            float b = (float)operandB.evaluate(row);            
             return a == b;
         }
         

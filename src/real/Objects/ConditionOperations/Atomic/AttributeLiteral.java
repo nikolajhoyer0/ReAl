@@ -24,9 +24,9 @@ public class AttributeLiteral extends UnaryConditionBase
     }
 
     @Override
-    public int evaluateNumber(Row row)
+    public float evaluateNumber(Row row)
     {
-        return Integer.parseInt(row.getValue(attributeName));
+        return Float.parseFloat(row.getValue(attributeName));
     }
 
     @Override

@@ -3,13 +3,19 @@ package real.Objects.ConditionOperations.BooleanOperations;
 import real.BaseClasses.BinaryConditionBase;
 import real.BaseClasses.ConditionBase;
 import real.Enumerations.DataType;
+import real.Objects.Exceptions.WrongType;
 import real.Objects.Row;
 
 public class GreaterEqual extends BinaryConditionBase
 {
-    public GreaterEqual(ConditionBase operandA, ConditionBase operandB)
+    public GreaterEqual(ConditionBase operandA, ConditionBase operandB) throws WrongType
     {
         super(operandA, operandB, DataType.BOOLEAN);
+        
+        if(getType() == DataType.UNKNOWN)
+        {
+            throw new WrongType("Can't compare two different types.");
+        }
     }
 
     @Override
@@ -19,7 +25,7 @@ public class GreaterEqual extends BinaryConditionBase
     }
 
     @Override
-    public int evaluateNumber(Row row)
+    public float evaluateNumber(Row row)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -29,8 +35,8 @@ public class GreaterEqual extends BinaryConditionBase
     {
         if (operandA.getType() == DataType.NUMBER)
         {
-            int a = (int) operandA.evaluate(row);
-            int b = (int) operandB.evaluate(row);
+            float a = (float) operandA.evaluate(row);
+            float b = (float) operandB.evaluate(row);
             return a >= b;
         }
         else

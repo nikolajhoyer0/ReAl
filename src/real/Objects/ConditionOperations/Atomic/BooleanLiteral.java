@@ -23,7 +23,7 @@ public class BooleanLiteral extends UnaryConditionBase
     }
 
     @Override
-    public int evaluateNumber(Row row)
+    public float evaluateNumber(Row row)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }

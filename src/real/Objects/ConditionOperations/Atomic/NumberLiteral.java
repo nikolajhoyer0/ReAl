@@ -8,9 +8,9 @@ import real.Objects.Row;
 public class NumberLiteral extends UnaryConditionBase
 {
 
-    private int value;
+    private float value;
     
-    public NumberLiteral(int value)
+    public NumberLiteral(float value)
     {
         //the tree goes no further
         super(null, DataType.NUMBER);
@@ -24,7 +24,7 @@ public class NumberLiteral extends UnaryConditionBase
     }
 
     @Override
-    public int evaluateNumber(Row row)
+    public float evaluateNumber(Row row)
     {
         return this.value;
     }
