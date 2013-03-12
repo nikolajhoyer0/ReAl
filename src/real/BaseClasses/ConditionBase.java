@@ -1,6 +1,7 @@
 package real.BaseClasses;
 
 import real.Enumerations.DataType;
+import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Row;
 
 /**
@@ -20,7 +21,7 @@ public abstract class ConditionBase
         return type;
     }
     
-    public Object evaluate(Row row)
+    public Object evaluate(Row row) throws InvalidEvaluation
     {
         if(type == DataType.BOOLEAN)
         {
@@ -43,7 +44,7 @@ public abstract class ConditionBase
         }
     }
     
-    public abstract String evaluateString(Row row);
-    public abstract float evaluateNumber(Row row);
-    public abstract boolean evaluateBoolean(Row row);
+    public abstract String evaluateString(Row row) throws InvalidEvaluation;
+    public abstract float evaluateNumber(Row row) throws InvalidEvaluation;;
+    public abstract boolean evaluateBoolean(Row row) throws InvalidEvaluation;;
 }

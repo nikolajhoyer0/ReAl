@@ -3,6 +3,7 @@ package real.Objects.ConditionOperations;
 import real.BaseClasses.BinaryConditionBase;
 import real.BaseClasses.ConditionBase;
 import real.Enumerations.DataType;
+import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.WrongType;
 import real.Objects.Row;
 
@@ -25,7 +26,7 @@ public class Mult extends BinaryConditionBase
     }
 
     @Override
-    public float evaluateNumber(Row row)
+    public float evaluateNumber(Row row) throws InvalidEvaluation
     {
         return operandA.evaluateNumber(row) * operandB.evaluateNumber(row);
     }

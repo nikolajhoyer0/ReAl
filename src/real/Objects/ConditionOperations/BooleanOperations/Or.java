@@ -3,6 +3,7 @@ package real.Objects.ConditionOperations.BooleanOperations;
 import real.BaseClasses.BinaryConditionBase;
 import real.BaseClasses.ConditionBase;
 import real.Enumerations.DataType;
+import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.WrongType;
 import real.Objects.Row;
 
@@ -31,7 +32,7 @@ public class Or extends BinaryConditionBase
     }
 
     @Override
-    public boolean evaluateBoolean(Row row)
+    public boolean evaluateBoolean(Row row) throws InvalidEvaluation
     {
         boolean a = (boolean)operandA.evaluate(row);
         boolean b = (boolean)operandB.evaluate(row);      

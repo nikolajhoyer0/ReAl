@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import real.BaseClasses.BinaryOperationBase;
 import real.BaseClasses.OperationBase;
 import real.Objects.Dataset;
+import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
@@ -18,7 +19,7 @@ public class Union extends BinaryOperationBase
     }
 
     @Override
-    public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters
+    public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
     {
         Dataset resultA = this.operandA.execute();
         Dataset resultB = this.operandB.execute();

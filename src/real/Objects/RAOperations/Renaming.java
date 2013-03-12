@@ -4,6 +4,7 @@ package real.Objects.RAOperations;
 import real.BaseClasses.OperationBase;
 import real.BaseClasses.UnaryOperationBase;
 import real.Objects.Dataset;
+import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
@@ -21,7 +22,7 @@ public class Renaming extends UnaryOperationBase
     }
 
     @Override
-    public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters
+    public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
     {
         Dataset result = this.operand.execute();          
         Dataset dataset = result.clone();

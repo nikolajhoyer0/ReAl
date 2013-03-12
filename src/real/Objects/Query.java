@@ -1,7 +1,7 @@
 package real.Objects;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +24,7 @@ import real.Objects.ConditionOperations.BooleanOperations.Or;
 import real.Objects.ConditionOperations.Div;
 import real.Objects.ConditionOperations.Mult;
 import real.Objects.ConditionOperations.Sub;
+import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidParsing;
 import real.Objects.Exceptions.InvalidSchema;
@@ -36,6 +37,7 @@ import real.Objects.Parser.TokenStream;
 import real.Objects.Parser.TokenTree;
 import real.Objects.RAOperations.Intersection;
 import real.Objects.RAOperations.NaturalJoin;
+import real.Objects.RAOperations.Projection;
 import real.Objects.RAOperations.ReferencedDataset;
 import real.Objects.RAOperations.Selection;
 import real.Objects.RAOperations.Union;
@@ -101,7 +103,7 @@ public class Query
         }   
     }
     
-    public Dataset interpret(String str) throws InvalidSchema, NoSuchDataset, InvalidParameters
+    public Dataset interpret(String str) throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
     {
         LinkedList<TokenTree> trees = parse(str);
         LocalDataManager local = Kernel.GetService(LocalDataManager.class);  
@@ -123,8 +125,7 @@ public class Query
                     String name = children[0].getChildren()[0].getToken().getSymbol();
                     localData = currentData.execute().clone();
                     localData.setName(name);
-                    local.LoadDataset(localData);
-                    
+                    local.LoadDataset(localData);                  
                 }
                 
                 else
@@ -165,6 +166,10 @@ public class Query
                     OperationBase relation = interpretOperation(children[1]);
                     ConditionBase condition = interpretCondition(children[0], relation);
                     return new Selection(relation, condition);
+                case "π":
+                    relation = interpretOperation(children[children.length-1]);
+                    ConditionBase[] conditions = getProjectionConditions(children, relation);
+                    return new Projection(relation, conditions);                                 
                 default:
                     System.out.println(word + "is not a supported operator");
 
@@ -192,10 +197,15 @@ public class Query
             System.out.println(ex.getMessage());
         }
         
+        catch(InvalidEvaluation ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+        
         return null;
     }
     
-    public ConditionBase interpretCondition(TokenTree tree, OperationBase relation) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters
+    public ConditionBase interpretCondition(TokenTree tree, OperationBase relation) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
     {
         String word = tree.getToken().getSymbol();
         TokenTree[] children = tree.getChildren();
@@ -242,5 +252,17 @@ public class Query
         
         //probably throw exception
         return null;
+    }
+    
+    public ConditionBase[] getProjectionConditions(TokenTree[] children, OperationBase relation) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    {
+        ArrayList<ConditionBase> bases = new ArrayList<>();
+        
+        for(int i = 0; i < children.length-1; ++i)
+        {
+            bases.add(interpretCondition(children[i], relation));
+        }
+        
+        return bases.toArray(new ConditionBase[1]);
     }
 }
