@@ -13,29 +13,24 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
-import real.Enumerations.OpTypes;
 import real.Interfaces.IService;
 import real.Objects.Dataset;
 import real.Objects.Exceptions.DatasetDuplicate;
 import real.Objects.Exceptions.InvalidDataset;
-import real.Objects.Exceptions.InvalidParsing;
+import real.Objects.Exceptions.InvalidParameters;
+import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.GUI.TextQueryView;
 import real.Objects.Kernel;
-import real.Objects.Parser.ExpressionParser;
-import real.Objects.Parser.Token;
-import real.Objects.Parser.TokenOpManager;
-import real.Objects.Parser.TokenStream;
-import real.Objects.Parser.TokenTree;
+import real.Objects.Query;
 import real.Objects.TreeView;
 
 public class MainWindow extends javax.swing.JFrame implements IService
 {
-
-    private ExpressionParser parser;
     private TreeView view;
     private DefaultListModel relationModel = new DefaultListModel();
-
+    private Query query;
+    
     public MainWindow()
     {
         this.initComponents();
@@ -51,7 +46,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
         });
     }
 
-    //will always return non null, since we can not have a empty worksheet
     public JTextArea getCurrentWorksheet()
     {
         TextQueryView view = (TextQueryView)worksheetPane.getSelectedComponent();
@@ -62,6 +56,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     public void Initialize()
     {
         ImageIcon image = new ImageIcon("assets/icon/icon.png");
+        query = new Query();
         this.setIconImage(image.getImage());
 
         relationView.setModel(relationModel);
@@ -69,46 +64,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
         view = new TreeView();
         view.setSize(800, 820);
         view.setVisible(true);
-
-        //testing
-        //code will be removed when we get the query model done
-        TokenOpManager opManager = new TokenOpManager();
-
-        opManager.addOp(new Token("+", 4, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("-", 4, EnumSet.of(OpTypes.LEFT, OpTypes.UNARY)));
-        opManager.addOp(new Token("*", 6, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("/", 6, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("=", 2, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("<=", 2, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token(">=", 2, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("<", 2, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token(">", 2, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("AND", 1, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("OR", 0, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("^", 9, EnumSet.of(OpTypes.RIGHT)));
-
-        //function operators
-        opManager.addOp(new Token("π", 0, EnumSet.of(OpTypes.NONE)));
-        opManager.addOp(new Token("δ", 0, EnumSet.of(OpTypes.NONE)));
-        opManager.addOp(new Token("ρ", 0, EnumSet.of(OpTypes.NONE)));
-        opManager.addOp(new Token("γ", 0, EnumSet.of(OpTypes.NONE)));
-        opManager.addOp(new Token("τ", 0, EnumSet.of(OpTypes.NONE)));
-
-        //relational binary operators
-        //todo: figure out the proper precendence for each operator.
-        opManager.addOp(new Token("∪", 6, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("∩", 6, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("‒", 6, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("×", 6, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("⋈", 6, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("→", 2, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("⟕", 6, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("⟖", 6, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("⟗", 6, EnumSet.of(OpTypes.LEFT)));
-
-        TokenStream tokenStream = new TokenStream(opManager);
-
-        parser = new ExpressionParser(tokenStream);
     }
 
     @Override
@@ -123,11 +78,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
     {
     }
 
-    public void setup(Dataset ds)
-    {
-        this.jTable1.setModel(ds);
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -135,7 +85,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    private void initComponents()
+    {
 
         loadFileChooser = new javax.swing.JFileChooser();
         saveFileChooser = new javax.swing.JFileChooser();
@@ -149,7 +100,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         removeSheetButton = new javax.swing.JButton();
         queryView = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        queryTable = new javax.swing.JTable();
         jToolBar1 = new javax.swing.JToolBar();
         saveButton = new javax.swing.JButton();
         jToolBar3 = new javax.swing.JToolBar();
@@ -201,8 +152,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         runButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         runButton.setText("Run");
-        runButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        runButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 runButtonActionPerformed(evt);
             }
         });
@@ -211,8 +164,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         newSheetButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         newSheetButton.setText("New sheet");
-        newSheetButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        newSheetButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 newSheetButtonActionPerformed(evt);
             }
         });
@@ -224,26 +179,30 @@ public class MainWindow extends javax.swing.JFrame implements IService
         removeSheetButton.setFocusable(false);
         removeSheetButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         removeSheetButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        removeSheetButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        removeSheetButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 removeSheetButtonActionPerformed(evt);
             }
         });
         jToolBar2.add(removeSheetButton);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+        queryTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        jScrollPane1.setViewportView(jTable1);
+        queryTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        jScrollPane1.setViewportView(queryTable);
 
         queryView.addTab("Query result", jScrollPane1);
 
@@ -252,8 +211,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         saveButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         saveButton.setText("Save");
-        saveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        saveButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 saveButtonActionPerformed(evt);
             }
         });
@@ -267,8 +228,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         piButton.setFocusable(false);
         piButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         piButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        piButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        piButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 piButtonActionPerformed(evt);
             }
         });
@@ -279,8 +242,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         deltaButton.setFocusable(false);
         deltaButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         deltaButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        deltaButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        deltaButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 deltaButtonActionPerformed(evt);
             }
         });
@@ -291,8 +256,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         rhoButton.setFocusable(false);
         rhoButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rhoButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        rhoButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        rhoButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 rhoButtonActionPerformed(evt);
             }
         });
@@ -303,8 +270,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         gammaButton.setFocusable(false);
         gammaButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         gammaButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        gammaButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        gammaButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 gammaButtonActionPerformed(evt);
             }
         });
@@ -315,8 +284,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         tauButton.setFocusable(false);
         tauButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         tauButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        tauButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        tauButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 tauButtonActionPerformed(evt);
             }
         });
@@ -327,8 +298,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         arrowButton.setFocusable(false);
         arrowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         arrowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        arrowButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        arrowButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 arrowButtonActionPerformed(evt);
             }
         });
@@ -339,8 +312,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         unionButton.setFocusable(false);
         unionButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         unionButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        unionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        unionButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 unionButtonActionPerformed(evt);
             }
         });
@@ -351,8 +326,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         intersectionButton.setFocusable(false);
         intersectionButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         intersectionButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        intersectionButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        intersectionButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 intersectionButtonActionPerformed(evt);
             }
         });
@@ -363,8 +340,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         differenceButton.setFocusable(false);
         differenceButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         differenceButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        differenceButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        differenceButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 differenceButtonActionPerformed(evt);
             }
         });
@@ -375,8 +354,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         productButton.setFocusable(false);
         productButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         productButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        productButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        productButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 productButtonActionPerformed(evt);
             }
         });
@@ -387,8 +368,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         joinButton.setFocusable(false);
         joinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         joinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        joinButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        joinButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 joinButtonActionPerformed(evt);
             }
         });
@@ -399,8 +382,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         leftouterjoinButton.setFocusable(false);
         leftouterjoinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         leftouterjoinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        leftouterjoinButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        leftouterjoinButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 leftouterjoinButtonActionPerformed(evt);
             }
         });
@@ -411,8 +396,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         rightouterjoinButton.setFocusable(false);
         rightouterjoinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rightouterjoinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        rightouterjoinButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        rightouterjoinButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 rightouterjoinButtonActionPerformed(evt);
             }
         });
@@ -423,8 +410,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         fullouterjoinButton.setFocusable(false);
         fullouterjoinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         fullouterjoinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        fullouterjoinButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        fullouterjoinButton.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 fullouterjoinButtonActionPerformed(evt);
             }
         });
@@ -459,13 +448,15 @@ public class MainWindow extends javax.swing.JFrame implements IService
         combinedView.addTab("Query view", jPanel1);
 
         tableView.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
+            new Object [][]
+            {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String [] {
+            new String []
+            {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
@@ -487,8 +478,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         combinedView.addTab("Table view", jPanel2);
 
-        relationView.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
+        relationView.addMouseListener(new java.awt.event.MouseAdapter()
+        {
+            public void mouseClicked(java.awt.event.MouseEvent evt)
+            {
                 relationViewMouseClicked(evt);
             }
         });
@@ -497,40 +490,50 @@ public class MainWindow extends javax.swing.JFrame implements IService
         fileMenu.setText("File");
 
         loadMenuItem.setText("Load Project");
-        loadMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        loadMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 loadMenuItemActionPerformed(evt);
             }
         });
         fileMenu.add(loadMenuItem);
 
         saveMenuItem.setText("Save Project");
-        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 saveMenuItemActionPerformed(evt);
             }
         });
         fileMenu.add(saveMenuItem);
 
         importMenuItem.setText("Import table");
-        importMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        importMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 importMenuItemActionPerformed(evt);
             }
         });
         fileMenu.add(importMenuItem);
 
         exportMenuItem.setText("Export table");
-        exportMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        exportMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 exportMenuItemActionPerformed(evt);
             }
         });
         fileMenu.add(exportMenuItem);
 
         deleteMenuItem.setText("Delete table");
-        deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        deleteMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 deleteMenuItemActionPerformed(evt);
             }
         });
@@ -538,8 +541,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         fileMenu.add(jSeparator1);
 
         exitMenuItem.setText("Exit");
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 exitMenuItemActionPerformed(evt);
             }
         });
@@ -553,8 +558,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         helpMenu.setText("Help");
 
         aboutMenuItem.setText("About");
-        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
                 aboutMenuItemActionPerformed(evt);
             }
         });
@@ -595,13 +602,20 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_runButtonActionPerformed
     {//GEN-HEADEREND:event_runButtonActionPerformed
-        // TODO add your handling code here:
         try
         {
-            TokenTree tree = parser.parse(this.getCurrentWorksheet().getText()).pop();
-            view.load(tree);
+            queryTable.setModel(query.interpret(getCurrentWorksheet().getText()));
         }
-        catch (InvalidParsing ex)
+        catch (InvalidSchema ex)
+        {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (NoSuchDataset ex)
+        {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        catch (InvalidParameters ex)
         {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -935,7 +949,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JToolBar jToolBar3;
@@ -946,6 +959,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private javax.swing.JButton newSheetButton;
     private javax.swing.JButton piButton;
     private javax.swing.JButton productButton;
+    private javax.swing.JTable queryTable;
     private javax.swing.JTabbedPane queryView;
     private javax.swing.JList relationView;
     private javax.swing.JButton removeSheetButton;

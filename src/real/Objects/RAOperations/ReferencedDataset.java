@@ -5,6 +5,7 @@ import real.Objects.Dataset;
 import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.Kernel;
 import real.Objects.Services.DataManager;
+import real.Objects.Services.LocalDataManager;
 
 public class ReferencedDataset extends OperationBase
 {
@@ -23,7 +24,18 @@ public class ReferencedDataset extends OperationBase
     @Override
     public Dataset execute() throws NoSuchDataset
     {
-        return Kernel.GetService(DataManager.class).getDataset(this.name);
+        //always look for the local since it weighs more
+        Dataset dataset = Kernel.GetService(LocalDataManager.class).findDataset(this.name);
+        
+        if(dataset != null)
+        {
+            return dataset;
+        }
+        
+        else
+        {
+            return Kernel.GetService(DataManager.class).getDataset(this.name);
+        }
     }
 
 }

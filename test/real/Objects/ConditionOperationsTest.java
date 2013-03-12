@@ -1,7 +1,5 @@
 package real.Objects;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -9,7 +7,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import real.Objects.ConditionOperations.Add;
-import real.Objects.ConditionOperations.Atomic.AttributeLiteral;
 import real.Objects.ConditionOperations.Atomic.BooleanLiteral;
 import real.Objects.ConditionOperations.Atomic.NumberLiteral;
 import real.Objects.ConditionOperations.Atomic.StringLiteral;
@@ -59,6 +56,9 @@ public class ConditionOperationsTest
             assertFalse((boolean)new Equal(n1, n2).evaluate(null));
             assertTrue((boolean)new Equal(str1, str1).evaluate(null));
             assertTrue((boolean)new Equal(n1, n1).evaluate(null));
+            assertTrue((boolean)new Equal(new BooleanLiteral(true), new BooleanLiteral(true)).evaluate(null));
+            assertFalse((boolean)new Equal(new BooleanLiteral(true), new BooleanLiteral(false)).evaluate(null));
+            assertTrue((boolean)new Equal(a1, a1).evaluate(null));
         }
         
         catch (WrongType ex)
@@ -88,8 +88,6 @@ public class ConditionOperationsTest
         {
             assertTrue(true);
             System.out.println(ex.getMessage());
-        }
-       
-        
+        }       
     }
 }

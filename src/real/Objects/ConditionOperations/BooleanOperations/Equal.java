@@ -4,7 +4,6 @@ package real.Objects.ConditionOperations.BooleanOperations;
 import real.BaseClasses.BinaryConditionBase;
 import real.BaseClasses.ConditionBase;
 import real.Enumerations.DataType;
-import real.Objects.Column;
 import real.Objects.Exceptions.WrongType;
 import real.Objects.Row;
 
@@ -29,7 +28,7 @@ public class Equal extends BinaryConditionBase
     }
 
     @Override
-    public int evaluateNumber(Row row)
+    public float evaluateNumber(Row row)
     {
         throw new UnsupportedOperationException("only supports boolean");
     }
@@ -39,12 +38,16 @@ public class Equal extends BinaryConditionBase
     {
         if(operandA.getType() == DataType.BOOLEAN)
         {
-            return operandA.evaluate(row) == operandB.evaluate(row);
+            boolean a = (boolean)operandA.evaluate(row);
+            boolean b = (boolean)operandB.evaluate(row);          
+            return a == b;
         }
         
         else if(operandA.getType() == DataType.NUMBER)
         {
-            return operandA.evaluate(row) == operandB.evaluate(row);
+            float a = (float)operandA.evaluate(row);
+            float b = (float)operandB.evaluate(row);            
+            return a == b;
         }
         
         else

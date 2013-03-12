@@ -95,6 +95,11 @@ public class Dataset extends AbstractTableModel
         }
     }
 
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+    
     public boolean setColumnName(String columnName, String changeName)  
     {     
         for(int i = 0; i < this.columns.size(); ++i)

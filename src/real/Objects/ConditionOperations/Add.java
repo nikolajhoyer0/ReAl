@@ -27,7 +27,7 @@ public class Add extends BinaryConditionBase
     }
 
     @Override
-    public int evaluateNumber(Row row)
+    public float evaluateNumber(Row row)
     {     
         return operandA.evaluateNumber(row) + operandB.evaluateNumber(row);
     }
