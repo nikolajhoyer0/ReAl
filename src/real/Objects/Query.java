@@ -38,18 +38,17 @@ import real.Objects.RAOperations.NaturalJoin;
 import real.Objects.RAOperations.ReferencedDataset;
 import real.Objects.RAOperations.Selection;
 import real.Objects.RAOperations.Union;
+import real.Objects.Services.LocalDataManager;
 
 public class Query
 {
     private ExpressionParser parser;
     private TokenTree current;
-    private HashMap<String, OperationBase> datasets;
     private OperationBase currentData;
             
     public Query()
     {
         TokenOpManager opManager = new TokenOpManager();
-        datasets = new HashMap<>();
         
         opManager.addOp(new Token("+", 4, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token("-", 4, EnumSet.of(OpTypes.LEFT, OpTypes.UNARY)));
@@ -104,7 +103,11 @@ public class Query
     public Dataset interpret(String str) throws InvalidSchema, NoSuchDataset
     {
         LinkedList<TokenTree> trees = parse(str);
-              
+        LocalDataManager local = Kernel.GetService(LocalDataManager.class);  
+        Dataset localData = null;
+        
+        local.clearLocal();
+        
         if (trees != null)
         {
             for (int i = 0; i < trees.size(); ++i)
@@ -115,8 +118,12 @@ public class Query
                 if(current.getToken().getSymbol().equals("="))
                 {
                     TokenTree[] children = current.getChildren();                    
-                    currentData = interpretOperation(children[1]);
-                    datasets.put(children[0].getToken().getSymbol(), currentData);
+                    currentData = interpretOperation(children[1]);                                  
+                    String name = children[0].getChildren()[0].getToken().getSymbol();
+                    localData = currentData.execute().clone();
+                    localData.setName(name);
+                    local.LoadDataset(localData);
+                    
                 }
                 
                 else
@@ -128,7 +135,7 @@ public class Query
                 }                         
             }
             
-             return currentData.execute();
+             return localData;
         }
         
         return null;
