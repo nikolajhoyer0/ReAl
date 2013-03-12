@@ -1,7 +1,5 @@
 package real.Objects;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -9,7 +7,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import real.Objects.ConditionOperations.Add;
-import real.Objects.ConditionOperations.Atomic.AttributeLiteral;
 import real.Objects.ConditionOperations.Atomic.BooleanLiteral;
 import real.Objects.ConditionOperations.Atomic.NumberLiteral;
 import real.Objects.ConditionOperations.Atomic.StringLiteral;

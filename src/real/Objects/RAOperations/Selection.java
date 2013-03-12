@@ -6,6 +6,7 @@ import real.BaseClasses.ConditionBase;
 import real.BaseClasses.OperationBase;
 import real.BaseClasses.UnaryOperationBase;
 import real.Objects.Dataset;
+import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.Row;
@@ -22,7 +23,7 @@ public class Selection extends UnaryOperationBase
     }
     
     @Override
-    public Dataset execute() throws InvalidSchema, NoSuchDataset
+    public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters
     {      
         Dataset resultA = operand.execute();
         ArrayList<Row> rows = new ArrayList<>();

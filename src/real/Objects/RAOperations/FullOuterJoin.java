@@ -6,6 +6,7 @@ import real.BaseClasses.BinaryOperationBase;
 import real.BaseClasses.OperationBase;
 import real.Objects.Column;
 import real.Objects.Dataset;
+import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.Row;
@@ -21,7 +22,7 @@ public class FullOuterJoin extends BinaryOperationBase {
     }
 
     @Override
-    public Dataset execute() throws InvalidSchema, NoSuchDataset
+    public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters
     {
         Dataset resultA = this.operandA.execute();
         Dataset resultB = this.operandB.execute();

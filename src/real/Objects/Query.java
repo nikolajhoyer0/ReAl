@@ -24,6 +24,7 @@ import real.Objects.ConditionOperations.BooleanOperations.Or;
 import real.Objects.ConditionOperations.Div;
 import real.Objects.ConditionOperations.Mult;
 import real.Objects.ConditionOperations.Sub;
+import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidParsing;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
@@ -100,7 +101,7 @@ public class Query
         }   
     }
     
-    public Dataset interpret(String str) throws InvalidSchema, NoSuchDataset
+    public Dataset interpret(String str) throws InvalidSchema, NoSuchDataset, InvalidParameters
     {
         LinkedList<TokenTree> trees = parse(str);
         LocalDataManager local = Kernel.GetService(LocalDataManager.class);  
@@ -186,10 +187,15 @@ public class Query
             System.out.println(ex.getMessage());
         }
         
+        catch(InvalidParameters ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+        
         return null;
     }
     
-    public ConditionBase interpretCondition(TokenTree tree, OperationBase relation) throws WrongType, InvalidSchema, NoSuchDataset
+    public ConditionBase interpretCondition(TokenTree tree, OperationBase relation) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters
     {
         String word = tree.getToken().getSymbol();
         TokenTree[] children = tree.getChildren();

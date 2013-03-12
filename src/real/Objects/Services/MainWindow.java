@@ -17,6 +17,7 @@ import real.Interfaces.IService;
 import real.Objects.Dataset;
 import real.Objects.Exceptions.DatasetDuplicate;
 import real.Objects.Exceptions.InvalidDataset;
+import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.GUI.TextQueryView;
@@ -610,6 +611,11 @@ public class MainWindow extends javax.swing.JFrame implements IService
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (NoSuchDataset ex)
+        {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        catch (InvalidParameters ex)
         {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
         }
