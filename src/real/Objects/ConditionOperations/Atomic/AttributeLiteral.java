@@ -16,6 +16,11 @@ public class AttributeLiteral extends UnaryConditionBase
         super(null, type);
         attributeName = value;
     }
+    
+    public String getColumnName()
+    {
+        return attributeName;
+    }
 
     @Override
     public String evaluateString(Row row)

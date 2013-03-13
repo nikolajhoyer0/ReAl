@@ -92,4 +92,14 @@ public class Utility
         }
         return builder.toString();
     }
+
+    public static String trimTrailingZeros(String number)
+    {
+        if (!number.contains("."))
+        {
+            return number;
+        }
+
+        return number.replaceAll("\\.?0*$", "");
+    }
 }

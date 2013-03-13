@@ -609,21 +609,21 @@ public class MainWindow extends javax.swing.JFrame implements IService
         }
         catch (InvalidSchema ex)
         {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, "caught in window", ex);
         }
         catch (NoSuchDataset ex)
         {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, "caught in window", ex);
         }
         
         catch (InvalidParameters ex)
         {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, "caught in window", ex);
         }
         
         catch(InvalidEvaluation ex)
         {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, "caught in window", ex);
         }
     }//GEN-LAST:event_runButtonActionPerformed
 

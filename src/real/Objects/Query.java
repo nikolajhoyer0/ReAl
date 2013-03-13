@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import real.BaseClasses.ConditionBase;
 import real.BaseClasses.OperationBase;
+import real.Enumerations.DataType;
 import real.Enumerations.OpTypes;
 import real.Objects.ConditionOperations.Add;
 import real.Objects.ConditionOperations.Atomic.AttributeLiteral;
@@ -23,6 +24,7 @@ import real.Objects.ConditionOperations.BooleanOperations.Not;
 import real.Objects.ConditionOperations.BooleanOperations.Or;
 import real.Objects.ConditionOperations.Div;
 import real.Objects.ConditionOperations.Mult;
+import real.Objects.ConditionOperations.Rename;
 import real.Objects.ConditionOperations.Sub;
 import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
@@ -110,7 +112,7 @@ public class Query
         Dataset localData = null;
         
         local.clearLocal();
-        
+          
         if (trees != null)
         {
             for (int i = 0; i < trees.size(); ++i)
@@ -123,7 +125,15 @@ public class Query
                     TokenTree[] children = current.getChildren();                    
                     currentData = interpretOperation(children[1]);                                  
                     String name = children[0].getChildren()[0].getToken().getSymbol();
-                    localData = currentData.execute().clone();
+                    
+                    Dataset data = currentData.execute();
+                    
+                    if(data == null)
+                    {
+                        throw new InvalidEvaluation("invalid statement.");
+                    }
+                    
+                    localData = data.clone();
                     localData.setName(name);
                     local.LoadDataset(localData);                  
                 }
@@ -236,9 +246,22 @@ public class Query
                 return new And(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
             case "Or":
                 return new Or(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+            case "→":
+                return new Rename(interpretCondition(children[0], relation),interpretCondition(children[1], null));    
             case "Attribute":
                 String value = children[0].getToken().getSymbol();
-                return new AttributeLiteral(value, relation.execute().getColumn(value).getDataType());
+                
+                if(relation == null)
+                {
+                    return new AttributeLiteral(value, DataType.UNKNOWN);
+                }
+                
+                //if the relation is not known atm - ie renaming
+                else
+                {
+                    return new AttributeLiteral(value, relation.execute().getColumn(value).getDataType());
+                }
+               
             case "String":
                 return new StringLiteral(children[0].getToken().getSymbol());
             case "Number":
@@ -246,7 +269,7 @@ public class Query
                 return new NumberLiteral(number);
             case "Boolean":
                 boolean b = Boolean.parseBoolean(children[0].getToken().getSymbol());
-                return new BooleanLiteral(b);
+                return new BooleanLiteral(b);           
         }
         
         
@@ -262,7 +285,7 @@ public class Query
         {
             bases.add(interpretCondition(children[i], relation));
         }
-        
+      
         return bases.toArray(new ConditionBase[1]);
     }
 }
