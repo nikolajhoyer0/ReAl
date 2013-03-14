@@ -25,11 +25,11 @@ import real.Objects.Exceptions.WrongType;
 import real.Objects.GUI.TextQueryView;
 import real.Objects.Kernel;
 import real.Objects.Query;
-import real.Objects.GUI.TreeView;
+import real.Objects.GUI.TreeViewTest;
 
 public class MainWindow extends javax.swing.JFrame implements IService
 {
-    private TreeView view;
+    private TreeViewTest view;
     private DefaultListModel relationModel = new DefaultListModel();
     private Query query;
     

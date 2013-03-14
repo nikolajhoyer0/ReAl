@@ -13,6 +13,8 @@ import real.Objects.ConditionOperations.Atomic.StringLiteral;
 import real.Objects.ConditionOperations.BooleanOperations.Equal;
 import real.Objects.Exceptions.WrongType;
 
+/*
+
 public class ConditionOperationsTest
 {
     
@@ -91,3 +93,4 @@ public class ConditionOperationsTest
         }       
     }
 }
+*/

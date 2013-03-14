@@ -34,7 +34,7 @@ import real.Objects.Exceptions.InvalidParsing;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.Exceptions.WrongType;
-import real.Objects.GUI.TreeView;
+import real.Objects.GUI.TreeViewTest;
 import real.Objects.Parser.ExpressionParser;
 import real.Objects.Parser.Token;
 import real.Objects.Parser.TokenOpManager;
@@ -63,13 +63,13 @@ public class Query
     private TokenTree current;
     private OperationBase currentData;
     //will be removed.
-    private TreeView view;
+    private TreeViewTest view;
             
     public Query()
     {
         
         //will be removed
-        view = new TreeView();
+        view = new TreeViewTest();
         view.setSize(800, 820);
         view.setVisible(true);
         
