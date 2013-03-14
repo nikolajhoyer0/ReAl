@@ -26,8 +26,8 @@ public class NaturalJoin extends BinaryOperationBase
     @Override
     public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
     {
-        Dataset resultA = this.operandA.execute();
-        Dataset resultB = this.operandB.execute();
+        Dataset resultA = this.operandA.execute().clone();
+        Dataset resultB = this.operandB.execute().clone();
 
         ArrayList<Row> includeRows = new ArrayList<>();
         ArrayList<Column> includeColumns = new ArrayList<>();
@@ -49,7 +49,7 @@ public class NaturalJoin extends BinaryOperationBase
         {
             for (int k=0; k < resultA.getColumnCount(); k++)
             {
-                if(resultA.getColumnName(j).equals(resultB.getColumnName(k)))
+                if(resultA.getColumnName(k).equals(resultB.getColumnName(j)))
                 {
                     return true;
                 }
@@ -94,7 +94,7 @@ public class NaturalJoin extends BinaryOperationBase
             {
                 if(hasMatchingAttribute(resultA.getRows().get(m),
                                         resultB.getRows().get(n),
-                                        includeColumns))
+                                        commonColumns(resultA, resultB)))
                 {
                     includeRows.add(joinRows(resultA.getRows().get(m),
                                              resultB.getRows().get(n),
@@ -106,30 +106,46 @@ public class NaturalJoin extends BinaryOperationBase
 
     private Row joinRows(Row rowA, Row rowB, ArrayList<Column> columns)
     {
-        HashMap temp = new HashMap();
-        for(Column c : columns)
+        HashMap combinedRow = new HashMap();
+        for(Column column : columns)
         {
-            if(rowA.getValue(c.getName()) != null)
+            if(! rowA.getValue(column.getName()).isEmpty())
             {
-                temp.put(c.getName(), rowA.getValue(c.getName()));
+                combinedRow.put(column.getName(), rowA.getValue(column.getName()));
             }
             else
             {
-                temp.put(c.getName(), rowB.getValue(c.getName()));
+                combinedRow.put(column.getName(), rowB.getValue(column.getName()));
             }
         }
-        return new Row(temp);
+        return new Row(combinedRow);
     }
 
     private boolean hasMatchingAttribute(Row rowA, Row rowB, ArrayList<Column> columns)
     {
         for(Column c : columns)
         {
-            if(rowA.getValue(c.getName()).equals(rowB.getValue(c.getName())))
+            if(!rowA.getValue(c.getName()).equals(rowB.getValue(c.getName())))
             {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
+    }
+    
+    private ArrayList<Column> commonColumns(Dataset resultA, Dataset resultB)
+    {
+        ArrayList<Column> columns = new ArrayList<>();
+        for(int j=0; j < resultB.getColumnCount(); j++)
+        {
+            for (int k=0; k < resultA.getColumnCount(); k++)
+            {
+                if(resultA.getColumnName(k).equals(resultB.getColumnName(j)))
+                {
+                    columns.add(resultA.getColumn(resultA.getColumnName(k)));
+                }
+            }
+        }
+        return columns;
     }
 }
