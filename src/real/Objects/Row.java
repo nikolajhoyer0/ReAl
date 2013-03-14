@@ -4,6 +4,7 @@ package real.Objects;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Scanner;
 
 
 /**
@@ -85,7 +86,7 @@ public class Row
     }
 
     private void Load(String value, String[] columns)
-    {
+    {   
         int idx = 0;
         String[] values = value.split(",");
         for (String column : columns)

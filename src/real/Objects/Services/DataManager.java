@@ -64,7 +64,6 @@ public class DataManager extends ServiceBase
                 while (scanner.hasNextLine())
                 {
                     nextLine = scanner.nextLine();
-                    nextLine = nextLine.replaceAll("\\s+", "");
                     rows.add(new Row(nextLine, columns));
                 }
                 scanner.close();
