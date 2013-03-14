@@ -20,16 +20,16 @@ public abstract class AggregateCondition extends UnaryConditionBase
         super(operand);
     }
     
-    public Object aggregateEvaluate(ArrayList<Row> rows) throws InvalidEvaluation
+    public String aggregateEvaluate(ArrayList<Row> rows) throws InvalidEvaluation
     {
         if(getType() == DataType.BOOLEAN)
         {
-            return aggregateBoolean(rows);
+            return String.valueOf(aggregateBoolean(rows));
         }
         
         else if(getType() == DataType.NUMBER)
         {
-            return aggregateNumber(rows);
+            return String.valueOf(aggregateNumber(rows));
         }
         
         else if(getType() == DataType.STRING)

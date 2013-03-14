@@ -11,6 +11,7 @@ import real.Enumerations.DataType;
 import real.Enumerations.OpTypes;
 import real.Objects.ConditionOperations.Add;
 import real.Objects.ConditionOperations.AggregateFunctions.Max;
+import real.Objects.ConditionOperations.AggregateFunctions.Sum;
 import real.Objects.ConditionOperations.Atomic.AttributeLiteral;
 import real.Objects.ConditionOperations.Atomic.BooleanLiteral;
 import real.Objects.ConditionOperations.Atomic.NumberLiteral;
@@ -39,6 +40,7 @@ import real.Objects.Parser.TokenOpManager;
 import real.Objects.Parser.TokenStream;
 import real.Objects.Parser.TokenTree;
 import real.Objects.RAOperations.Difference;
+import real.Objects.RAOperations.DuplicateElimination;
 import real.Objects.RAOperations.Grouping;
 import real.Objects.RAOperations.Intersection;
 import real.Objects.RAOperations.NaturalJoin;
@@ -80,6 +82,7 @@ public class Query
         opManager.addOp(new Token("ρ", 0, EnumSet.of(OpTypes.NONE)));   
         opManager.addOp(new Token("γ", 0, EnumSet.of(OpTypes.NONE))); 
         opManager.addOp(new Token("τ", 0, EnumSet.of(OpTypes.NONE)));
+        opManager.addOp(new Token("δ", 0, EnumSet.of(OpTypes.NONE)));
         
         //relational binary operators      
         //todo: figure out the proper precendence for each operator.
@@ -92,7 +95,7 @@ public class Query
         opManager.addOp(new Token("⟕", 6, EnumSet.of(OpTypes.LEFT)));   
         opManager.addOp(new Token("⟖", 6, EnumSet.of(OpTypes.LEFT)));   
         opManager.addOp(new Token("⟗", 6, EnumSet.of(OpTypes.LEFT))); 
-        
+
         TokenStream tokenStream = new TokenStream(opManager);
 
         parser = new ExpressionParser(tokenStream);
@@ -200,9 +203,11 @@ public class Query
                     return new Sorting(relation, conditions);
                 case "γ":
                     relation = interpretOperation(children[children.length - 1]);       
-                    ConditionBase groupBy = interpretCondition(children[children.length - 2], relation, false);       
+                    ConditionBase groupBy = interpretCondition(children[0], relation, false);       
                     conditions = getGroupConditions(children, relation, false);
                     return new Grouping(relation, groupBy, conditions);
+                case "δ":
+                    return new DuplicateElimination(interpretOperation(children[0]));
                 default:
                     System.out.println(word + "is not a supported operator");
 
@@ -275,6 +280,8 @@ public class Query
                 return new Rename(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, true));    
             case "Max":
                 return new Max(interpretCondition(children[0], relation, ignoreNoAttribute));
+            case "Sum":
+                return new Sum(interpretCondition(children[0], relation, ignoreNoAttribute));
             case "Attribute":
                 String value = children[0].getToken().getSymbol();
                 

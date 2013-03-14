@@ -255,6 +255,9 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                     textArea.replaceRange("π", start, end);
                     break;
                 case "selection":
+                    textArea.replaceRange("σ", start, end);
+                    break;
+                case "removeDub":
                     textArea.replaceRange("δ", start, end);
                     break;
                 case "rename":

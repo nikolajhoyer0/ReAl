@@ -96,8 +96,14 @@ public class ExpressionParser
             
             
         //}
+       
+        else if(token.getSymbol().equals("δ"))
+        {
+            tokenStream.consume();
+            TokenTree[] tree = {primary()};
+            return new TokenTree(tree, token);   
+        }
         
-        // TODO: Selection does not work for strings with spaces!!!
         else if (token.getSymbol().equals("σ"))
         {
             tokenStream.consume();
@@ -105,7 +111,7 @@ public class ExpressionParser
             return new TokenTree(tree, token);           
         }
         
-        else if (token.getSymbol().equals("ρ") || token.getSymbol().equals("π") || token.getSymbol().equals("τ"))
+        else if (token.getSymbol().equals("ρ") || token.getSymbol().equals("π") || token.getSymbol().equals("τ") || token.getSymbol().equals("γ"))
         {
             tokenStream.consume();
             LinkedList<TokenTree> list = new LinkedList<>();
@@ -129,7 +135,7 @@ public class ExpressionParser
             return new TokenTree(trees, token);
         }
         
-        else if (token.getSymbol().equals("MAX"))
+        else if (token.getSymbol().equals("Max") || token.getSymbol().equals("Sum") || token.getSymbol().equals("Average") || token.getSymbol().equals("Count"))
         {
             tokenStream.consume();
             TokenTree[] tree = {primary()};

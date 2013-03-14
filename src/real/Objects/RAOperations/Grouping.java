@@ -1,6 +1,7 @@
 package real.Objects.RAOperations;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import real.BaseClasses.ConditionBase;
 import real.BaseClasses.OperationBase;
 import real.BaseClasses.UnaryOperationBase;
@@ -30,90 +31,124 @@ public class Grouping extends UnaryOperationBase
     
     @Override
     public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
-    {      
-        
-        ArrayList<Column> columns = new ArrayList<>();
+    {           
         ArrayList<Row> includeRows = new ArrayList<>();
-        Dataset dataset = operand.execute();
+        Dataset dataset = operand.execute().clone();
+        ArrayList<Column> columns = getColumnsAndCheck(conditions, dataset);
         
         if(!(groupBy instanceof AttributeLiteral))
         {
-            throw new InvalidParameters("Order by attribute invalid.");
+            throw new InvalidParameters("Invalid group");
         }
         
         AttributeLiteral groupatt = (AttributeLiteral)groupBy;
         
-        ArrayList<ArrayList<Row>> rowsOfRows = getRowsWithColumn(groupatt.getColumnName(), dataset);
+        columns.add(0, new Column(groupatt.getColumnName(), dataset.getColumn(groupatt.getColumnName()).getDataType()));
         
-        for(ConditionBase condition : conditions)
+        ArrayList<ArrayList<Row>> rowsOfRows = getRowsWithColumn(groupatt.getColumnName(), dataset);
+
+        for (ArrayList<Row> rows : rowsOfRows)
         {
+            Row addRow = new Row(new HashMap<String, String>());
             
-            if(condition instanceof Rename)
+            //set the group by value
+            addRow.setValue(groupatt.getColumnName(), rows.get(0).getValue(groupatt.getColumnName()));
+            
+            for (ConditionBase condition : conditions)
             {
-                Rename rename = (Rename)condition;
-                
-                if(!(rename.getOperandA() instanceof AttributeLiteral))
+
+                if (condition instanceof Rename)
+                {
+                    Rename rename = (Rename) condition;
+                    AttributeLiteral att = (AttributeLiteral) rename.getOperandB();
+                    AggregateCondition agg = (AggregateCondition) rename.getOperandA();
+                    
+                    //sett the aggreation value
+                    addRow.setValue(att.getColumnName(), agg.aggregateEvaluate(rows));                    
+                }
+                else
                 {
                     throw new InvalidParameters("invalid grouping");
                 }
-    
                 
-                if(!(rename.getOperandB() instanceof AggregateCondition))
-                {
-                    throw new InvalidParameters("invalid grouping.");
-                }
-                
-                AttributeLiteral att = (AttributeLiteral)rename.getOperandA();
-                AggregateCondition agg = (AggregateCondition)rename.getOperandB();
-                
-                columns.add(new Column(att.getColumnName(), dataset.getColumn(att.getColumnName()).getDataType()));
-                
-                
-                for(ArrayList<Row> rows : rowsOfRows)
-                {
-                    //includeRows.add()agg.aggregateEvaluate(rows);
-                }
-                
-                
-            }
-            
-            else
-            {
-                throw new InvalidParameters("Grouping needs aggregate functions.");
+                includeRows.add(addRow);
             }
         }
-        
-        return null;
+      
+        return new Dataset("", columns, includeRows);
     }
     
-    ArrayList<ArrayList<Row>> getRowsWithColumn(String columnName, Dataset dataset)
+    private ArrayList<ArrayList<Row>> getRowsWithColumn(String columnName, Dataset dataset)
     {
-        ArrayList<ArrayList<Row>> rowOfRows = new ArrayList<>();
-        ArrayList<Row> includeRows = new ArrayList<>();
+        ArrayList<ArrayList<Row>> rowOfRows = new ArrayList<>();       
         ArrayList<Row> rows = dataset.getRows();
         
+        
+
         while (!rows.isEmpty())
         {
             Row check = null;
+            ArrayList<Row> includeRows = new ArrayList<>();
             
-            for (Row row : rows)
+            for (int i = 0; i < rows.size(); ++i)
             {
                 if(check == null)
                 {
-                    check = row;
+                    check = rows.get(i);
+                    includeRows.add(check);
+                    rows.remove(i);
+                    i--;
                 }
-                
-                if(check.getValue(columnName).equals(row.getValue(columnName)))
+                          
+                else if(check.getValue(columnName).equals(rows.get(i).getValue(columnName)))
                 {
-                    includeRows.add(row);
-                    rows.remove(row);
+                    includeRows.add(rows.get(i));
+                    rows.remove(i);
+                    i--;
                 }  
             }
             
             rowOfRows.add(includeRows);
-            includeRows.clear();
         }
         
         return rowOfRows;
+    }
+    
+  
+    
+    
+    //gets the columns and checks if the conditions are valid
+    private ArrayList<Column> getColumnsAndCheck(ConditionBase[] conditions, Dataset dataset) throws InvalidParameters
+    {
+        ArrayList<Column> columns = new ArrayList<>();
+        
+        for (ConditionBase condition : conditions)
+        {
+            if (condition instanceof Rename)
+            {
+                Rename rename = (Rename) condition;
+                
+                if (!(rename.getOperandA() instanceof AggregateCondition))
+                {
+                    throw new InvalidParameters("invalid grouping");
+                }
+
+
+                if (!(rename.getOperandB() instanceof AttributeLiteral))
+                {
+                    throw new InvalidParameters("invalid grouping.");
+                }
+                
+                AttributeLiteral att = (AttributeLiteral) rename.getOperandB();
+                AggregateCondition agg = (AggregateCondition) rename.getOperandA();
+                AttributeLiteral att2 = (AttributeLiteral) agg.getOperand();
+                
+                columns.add(new Column(att.getColumnName(), dataset.getColumn(att2.getColumnName()).getDataType()));
+            }
+            
+            
+        }
+        
+        return columns;
     }
 }
