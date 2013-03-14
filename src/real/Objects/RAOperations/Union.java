@@ -28,9 +28,23 @@ public class Union extends BinaryOperationBase
         if (resultA.equalsSchema(resultB))
         {
             includeRows.addAll(resultA.getRows());
-            Difference difference = new Difference(operandA, operandB);
             
-            for (Row row : difference.execute().getRows())
+            // Testing
+            // Difference difference = new Difference(operandA, operandB);
+            ArrayList<Row> tempRowA = resultA.getRows();
+            ArrayList<Row> tempRowB = resultB.getRows();
+            for (Row row : tempRowA)
+            {
+                if (tempRowB.contains(row))
+                {
+                    tempRowA.remove(row);
+                    tempRowB.remove(row);
+                }
+            }
+            
+            //
+            
+            for (Row row : tempRowA) //difference.execute().getRows())
             {
                 includeRows.add(row);
             }
