@@ -34,6 +34,7 @@ import real.Objects.Exceptions.InvalidParsing;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.Exceptions.WrongType;
+import real.Objects.GUI.TreeView;
 import real.Objects.Parser.ExpressionParser;
 import real.Objects.Parser.Token;
 import real.Objects.Parser.TokenOpManager;
@@ -61,9 +62,18 @@ public class Query
     private ExpressionParser parser;
     private TokenTree current;
     private OperationBase currentData;
+    //will be removed.
+    private TreeView view;
             
     public Query()
     {
+        
+        //will be removed
+        view = new TreeView();
+        view.setSize(800, 820);
+        view.setVisible(true);
+        
+        
         TokenOpManager opManager = new TokenOpManager();
         
         opManager.addOp(new Token("+", 4, EnumSet.of(OpTypes.LEFT)));
@@ -94,7 +104,7 @@ public class Query
         opManager.addOp(new Token("‒", 6, EnumSet.of(OpTypes.LEFT)));   
         opManager.addOp(new Token("×", 6, EnumSet.of(OpTypes.LEFT)));   
         opManager.addOp(new Token("⋈", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("→", 2, EnumSet.of(OpTypes.LEFT))); 
+        opManager.addOp(new Token("→", 3, EnumSet.of(OpTypes.LEFT))); 
         opManager.addOp(new Token("⟕", 6, EnumSet.of(OpTypes.LEFT)));   
         opManager.addOp(new Token("⟖", 6, EnumSet.of(OpTypes.LEFT)));   
         opManager.addOp(new Token("⟗", 6, EnumSet.of(OpTypes.LEFT))); 
@@ -103,7 +113,7 @@ public class Query
 
         parser = new ExpressionParser(tokenStream);
     }
-    
+      
     private LinkedList<TokenTree> parse(String str)
     {
         try
@@ -117,7 +127,7 @@ public class Query
         }   
     }
     
-    public Dataset interpret(String str) throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    public Dataset interpret(String str) throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation, WrongType
     {
         LinkedList<TokenTree> trees = parse(str);
         LocalDataManager local = Kernel.GetService(LocalDataManager.class);  
@@ -127,6 +137,9 @@ public class Query
           
         if (trees != null)
         {
+            //will be removed
+            view.load(trees.get(0));
+            
             for (int i = 0; i < trees.size(); ++i)
             {
                 current = trees.get(i);
@@ -166,90 +179,57 @@ public class Query
     }
 
     //inteprets the relation alg and uses interpret condition to interpret the condtions.
-    public OperationBase interpretOperation(TokenTree tree)
+    public OperationBase interpretOperation(TokenTree tree) throws InvalidSchema, InvalidParameters, InvalidEvaluation, WrongType, NoSuchDataset
     {
         String word = tree.getToken().getSymbol();
         TokenTree[] children = tree.getChildren();
-        
-        try
-        {
 
-            switch (word)
-            {
-                case "∪":
-                    return new Union(interpretOperation(children[0]), interpretOperation(children[1]));
-                case "∩":
-                    return new Intersection(interpretOperation(children[0]), interpretOperation(children[1]));
-                case "Attribute":
-                    return new ReferencedDataset(children[0].getToken().getSymbol());
-                case "⋈":
-                    return new NaturalJoin(interpretOperation(children[0]), interpretOperation(children[1]));
-                case "⟕":
-                    return new LeftOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]));
-                case "⟖":
-                    return new RightOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]));
-                case "⟗":
-                    return new FullOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]));
-                case "σ":
-                    OperationBase relation = interpretOperation(children[1]);
-                    ConditionBase condition = interpretCondition(children[0], relation, false);
-                    return new Selection(relation, condition);
-                case "π":
-                    relation = interpretOperation(children[children.length - 1]);
-                    ConditionBase[] conditions = getConditions(children, relation, false);
-                    return new Projection(relation, conditions);
-                case "ρ":
-                    relation = interpretOperation(children[children.length - 1]);
-                    conditions = getConditions(children, relation, false);
-                    return new Renaming(relation, conditions);
-                case "×":
-                    return new Product(interpretOperation(children[0]), interpretOperation(children[1]));
-                case "‒":
-                    return new Difference(interpretOperation(children[0]), interpretOperation(children[1]));
-                case "τ":
-                    relation = interpretOperation(children[children.length - 1]);
-                    conditions = getConditions(children, relation, false);
-                    return new Sorting(relation, conditions);
-                case "γ":
-                    relation = interpretOperation(children[children.length - 1]);       
-                    ConditionBase groupBy = interpretCondition(children[0], relation, false);       
-                    conditions = getGroupConditions(children, relation, false);
-                    return new Grouping(relation, groupBy, conditions);
-                case "δ":
-                    return new DuplicateElimination(interpretOperation(children[0]));
-                default:
-                    System.out.println(word + "is not a supported operator");
-
-            }
-
-        }
-        
-        catch(WrongType ex)
+        switch (word)
         {
-            System.out.println(ex.getMessage());
+            case "∪":
+                return new Union(interpretOperation(children[0]), interpretOperation(children[1]));
+            case "∩":
+                return new Intersection(interpretOperation(children[0]), interpretOperation(children[1]));
+            case "Attribute":
+                return new ReferencedDataset(children[0].getToken().getSymbol());
+            case "⋈":
+                return new NaturalJoin(interpretOperation(children[0]), interpretOperation(children[1]));
+            case "⟕":
+                return new LeftOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]));
+            case "⟖":
+                return new RightOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]));
+            case "⟗":
+                return new FullOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]));
+            case "σ":
+                OperationBase relation = interpretOperation(children[1]);
+                ConditionBase condition = interpretCondition(children[0], relation, false);
+                return new Selection(relation, condition);
+            case "π":
+                relation = interpretOperation(children[children.length - 1]);
+                ConditionBase[] conditions = getConditions(children, relation, false);
+                return new Projection(relation, conditions);
+            case "ρ":
+                relation = interpretOperation(children[children.length - 1]);
+                conditions = getConditions(children, relation, false);
+                return new Renaming(relation, conditions);
+            case "×":
+                return new Product(interpretOperation(children[0]), interpretOperation(children[1]));
+            case "‒":
+                return new Difference(interpretOperation(children[0]), interpretOperation(children[1]));
+            case "τ":
+                relation = interpretOperation(children[children.length - 1]);
+                conditions = getConditions(children, relation, false);
+                return new Sorting(relation, conditions);
+            case "γ":
+                relation = interpretOperation(children[children.length - 1]);
+                ConditionBase groupBy = interpretCondition(children[0], relation, false);
+                conditions = getGroupConditions(children, relation, false);
+                return new Grouping(relation, groupBy, conditions);
+            case "δ":
+                return new DuplicateElimination(interpretOperation(children[0]));
+            default:
+                throw new InvalidEvaluation("invalid syntax");
         }
-        
-        catch(InvalidSchema ex)
-        {
-            System.out.println(ex.getMessage());
-        }
-        
-        catch(NoSuchDataset ex)
-        {
-            System.out.println(ex.getMessage());
-        }
-        
-        catch(InvalidParameters ex)
-        {
-            System.out.println(ex.getMessage());
-        }
-        
-        catch(InvalidEvaluation ex)
-        {
-            System.out.println(ex.getMessage());
-        }
-        
-        return null;
     }
     
     public ConditionBase interpretCondition(TokenTree tree, OperationBase relation, boolean ignoreNoAttribute) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
@@ -331,12 +311,10 @@ public class Query
                 return new NumberLiteral(number);
             case "Boolean":
                 boolean b = Boolean.parseBoolean(children[0].getToken().getSymbol());
-                return new BooleanLiteral(b);           
+                return new BooleanLiteral(b);       
+            default:
+                throw new InvalidEvaluation("Invalid syntax");
         }
-        
-        
-        //probably throw exception
-        return null;
     }
     
     //returns the conditions except the last one which is always a relation

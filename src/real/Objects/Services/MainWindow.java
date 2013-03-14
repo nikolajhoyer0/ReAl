@@ -21,6 +21,7 @@ import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
+import real.Objects.Exceptions.WrongType;
 import real.Objects.GUI.TextQueryView;
 import real.Objects.Kernel;
 import real.Objects.Query;
@@ -59,12 +60,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         ImageIcon image = new ImageIcon("assets/icon/icon.png");
         query = new Query();
         this.setIconImage(image.getImage());
-
-        relationView.setModel(relationModel);
-        
-        view = new TreeView();
-        view.setSize(800, 820);
-        view.setVisible(true);
+        relationView.setModel(relationModel);   
     }
 
     @Override
@@ -565,6 +561,11 @@ public class MainWindow extends javax.swing.JFrame implements IService
         }
         
         catch(InvalidEvaluation ex)
+        {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, "caught in window", ex);
+        }
+        
+        catch(WrongType ex)
         {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, "caught in window", ex);
         }
