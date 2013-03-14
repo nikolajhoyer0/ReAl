@@ -37,7 +37,7 @@ public class AttributeLiteral extends UnaryConditionBase
     @Override
     public boolean evaluateBoolean(Row row)
     {
-        return Boolean.parseBoolean(row.getValue(attributeName));
+        return Boolean.parseBoolean(row.getValue(attributeName));   
     }
     
 }

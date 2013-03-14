@@ -46,7 +46,13 @@ public class ExpressionParser
         {
             tokenStream.consume();
             TokenTree tree = expression(0);
-                             
+                    
+            //if it ends op reading the ")"
+            if(tree.getChildren()[0].getToken().getSymbol().equals(")"))
+            {
+                throw new InvalidParsing("No expression in parathense.");
+            }
+            
             if(tokenStream.next().getSymbol().equals(")"))
             {
                 tokenStream.consume();             

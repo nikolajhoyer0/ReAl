@@ -41,6 +41,7 @@ import real.Objects.Parser.TokenStream;
 import real.Objects.Parser.TokenTree;
 import real.Objects.RAOperations.Difference;
 import real.Objects.RAOperations.DuplicateElimination;
+import real.Objects.RAOperations.FullOuterJoin;
 import real.Objects.RAOperations.Grouping;
 import real.Objects.RAOperations.Intersection;
 import real.Objects.RAOperations.LeftOuterJoin;
