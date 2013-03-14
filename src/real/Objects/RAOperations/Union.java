@@ -28,25 +28,35 @@ public class Union extends BinaryOperationBase
 
         if (resultA.equalsSchema(resultB))
         {
-            includeRows.addAll(resultA.getRows());
+            Dataset largestTable;
+            Dataset smallestTable;
             
-            // Testing
-            // Difference difference = new Difference(operandA, operandB);
-            ArrayList<Row> tempRowA = resultA.getRows();
-            ArrayList<Row> tempRowB = resultB.getRows();
-            for (Row row : tempRowA)
-            {
-                if (tempRowB.contains(row))
-                {
-                    tempRowA.remove(row);
-                    tempRowB.remove(row);
+            if (resultA.getRowCount() > resultB.getRowCount()) {
+                largestTable = resultA;
+                smallestTable = resultB;
+            }
+            else {
+                largestTable = resultB;
+                smallestTable = resultA;
+            }
+            
+            int lowestRowCount = smallestTable.getRowCount();
+            int highestRowCount = largestTable.getRowCount();
+            for (int i = 0; i < lowestRowCount; i++) {
+                for (int k = 0; k < highestRowCount; k++) {
+                    if (smallestTable.getRows().get(i).equals(largestTable.getRows().get(k))) {
+                        largestTable.getRows().remove(k);
+                        k--;
+                        highestRowCount = largestTable.getRowCount();
+                    }
                 }
             }
             
-            //
-            
-            for (Row row : tempRowA) //difference.execute().getRows())
+            for (Row row : largestTable.getRows())
             {
+                includeRows.add(row);
+            }
+            for (Row row : smallestTable.getRows()) {
                 includeRows.add(row);
             }
             return new Dataset("", resultA.getColumns(), includeRows);
