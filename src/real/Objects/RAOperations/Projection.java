@@ -56,14 +56,16 @@ public class Projection extends UnaryOperationBase
                 {
 
                     Rename rename = (Rename) conditions[i];
-                    //find the attribute that is used to find which column we need to change
                     
+                    //find the attribute that is used to find which column we need to change                 
                     if(amountCondition(rename.getOperandA()) != 1 && rename.getOperandB() instanceof AttributeLiteral)
                     {
-                        throw new InvalidParameters("Only one expression on each side.");
+                        throw new InvalidParameters("Only one attribute on each side.");
                     }
+                               
                     AttributeLiteral newAttribute = (AttributeLiteral)rename.getOperandB();
                     AttributeLiteral attribute = findAttribute(rename.getOperandA());
+  
                     Column column = new Column(newAttribute.getColumnName(), result.getColumn(attribute.getColumnName()).getDataType());
                     columns.add(column);
                     
@@ -141,6 +143,11 @@ public class Projection extends UnaryOperationBase
             
         }
  
+        if(Utility.haveDuplicates(columns.toArray(new Column[0])))
+        {
+            throw new InvalidParameters("Can't have multiple columns with the same name.");
+        }
+        
         return new Dataset("", columns, rows);
     }
     

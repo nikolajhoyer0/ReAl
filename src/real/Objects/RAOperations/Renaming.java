@@ -1,24 +1,28 @@
 
 package real.Objects.RAOperations;
 
+import java.util.ArrayList;
+import real.BaseClasses.ConditionBase;
 import real.BaseClasses.OperationBase;
 import real.BaseClasses.UnaryOperationBase;
+import real.Objects.Column;
+import real.Objects.ConditionOperations.Atomic.AttributeLiteral;
+import real.Objects.ConditionOperations.Rename;
 import real.Objects.Dataset;
 import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
+import real.Objects.Utility;
 
 public class Renaming extends UnaryOperationBase
 {
-    private final String[] columnsToChange;
-    private final String[] changeColumns;
+    private final ConditionBase[] conditions;
     
-    public Renaming(OperationBase operand, String[] columns, String[] change)
+    public Renaming(OperationBase operand, ConditionBase[] conditions)
     {
         super(operand);
-        this.columnsToChange = columns;
-        this.changeColumns = change;
+        this.conditions = conditions;
     }
 
     @Override
@@ -27,19 +31,39 @@ public class Renaming extends UnaryOperationBase
         Dataset result = this.operand.execute();          
         Dataset dataset = result.clone();
         
-        //atm it doesn't check if the name you are changing it to is used  
-        if(columnsToChange.length == changeColumns.length) 
+        for(ConditionBase condition : conditions)
         {
-            for(int i = 0; i < changeColumns.length; ++i)
+            if(condition instanceof Rename)
             {
-                if(!dataset.setColumnName(this.columnsToChange[i], this.changeColumns[i]))
+                Rename rename = (Rename)condition;
+                
+                if(rename.getOperandA() instanceof AttributeLiteral && rename.getOperandB() instanceof AttributeLiteral)
                 {
-                    //must likely change the exception
-                    throw new InvalidSchema();
+                    AttributeLiteral at1 = (AttributeLiteral) rename.getOperandA();
+                    AttributeLiteral at2 = (AttributeLiteral) rename.getOperandB();
+                    
+                    dataset.setColumnName(at1.getColumnName(), at2.getColumnName());
+                }
+                     
+                else
+                {
+                    System.out.println("There must only be one attribute on each rename side.");
                 }
             }
+            
+            else
+            {
+                System.out.println("Missing '->' operator");
+            }
         }
-         
+        
+        //check if the rename changes will be valid.
+        //O(n^2) operation - shouldn't be a problem
+        if(Utility.haveDuplicates(dataset.getColumns().toArray(new Column[0])))
+        {
+            throw new InvalidParameters("Can't have multiple columns with the same name.");
+        }
+              
         return dataset;
     }
 }

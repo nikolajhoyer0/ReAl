@@ -102,4 +102,22 @@ public class Utility
 
         return number.replaceAll("\\.?0*$", "");
     }
+
+    //O(n^2) but since it only will handle 1-16 columns the bad scale won't really matter.
+    public static boolean haveDuplicates(final Column[] columns)
+    {
+        boolean duplicates = false;
+        for (int j = 0; j < columns.length; j++)
+        {
+            for (int k = j + 1; k < columns.length; k++)
+            {
+                if (k != j && columns[k].getName().equals(columns[j].getName()))
+                {
+                    duplicates = true;
+                }
+            }
+        }
+
+        return duplicates;
+    }
 }

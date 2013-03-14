@@ -37,10 +37,13 @@ import real.Objects.Parser.Token;
 import real.Objects.Parser.TokenOpManager;
 import real.Objects.Parser.TokenStream;
 import real.Objects.Parser.TokenTree;
+import real.Objects.RAOperations.Difference;
 import real.Objects.RAOperations.Intersection;
 import real.Objects.RAOperations.NaturalJoin;
+import real.Objects.RAOperations.Product;
 import real.Objects.RAOperations.Projection;
 import real.Objects.RAOperations.ReferencedDataset;
+import real.Objects.RAOperations.Renaming;
 import real.Objects.RAOperations.Selection;
 import real.Objects.RAOperations.Union;
 import real.Objects.Services.LocalDataManager;
@@ -178,8 +181,16 @@ public class Query
                     return new Selection(relation, condition);
                 case "π":
                     relation = interpretOperation(children[children.length-1]);
-                    ConditionBase[] conditions = getProjectionConditions(children, relation);
-                    return new Projection(relation, conditions);                                 
+                    ConditionBase[] conditions = getConditions(children, relation);
+                    return new Projection(relation, conditions);         
+                case "ρ":
+                    relation = interpretOperation(children[children.length-1]);
+                    conditions = getConditions(children, relation);
+                    return new Renaming(relation, conditions);
+                case "×":
+                    return new Product(interpretOperation(children[0]), interpretOperation(children[1]));
+                case "‒":
+                    return new Difference(interpretOperation(children[0]), interpretOperation(children[1]));
                 default:
                     System.out.println(word + "is not a supported operator");
 
@@ -220,6 +231,8 @@ public class Query
         String word = tree.getToken().getSymbol();
         TokenTree[] children = tree.getChildren();
         
+        
+        
         switch(word)
         {
             case "+":
@@ -251,15 +264,25 @@ public class Query
             case "Attribute":
                 String value = children[0].getToken().getSymbol();
                 
+                //if the relation is not known atm - ie renaming
                 if(relation == null)
                 {
                     return new AttributeLiteral(value, DataType.UNKNOWN);
                 }
-                
-                //if the relation is not known atm - ie renaming
+                             
                 else
                 {
-                    return new AttributeLiteral(value, relation.execute().getColumn(value).getDataType());
+                    Column column = relation.execute().getColumn(value);
+                    
+                    if(column == null)
+                    {
+                        throw new InvalidParameters(value + " String is not a valid attribute.");
+                    }
+                    
+                    else
+                    {
+                        return new AttributeLiteral(value, column.getDataType());
+                    }
                 }
                
             case "String":
@@ -277,11 +300,12 @@ public class Query
         return null;
     }
     
-    public ConditionBase[] getProjectionConditions(TokenTree[] children, OperationBase relation) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    //returns the conditions except the last one which is always a relation
+    public ConditionBase[] getConditions(TokenTree[] children, OperationBase relation) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
     {
         ArrayList<ConditionBase> bases = new ArrayList<>();
         
-        for(int i = 0; i < children.length-1; ++i)
+        for (int i = 0; i < children.length - 1; ++i)
         {
             bases.add(interpretCondition(children[i], relation));
         }
