@@ -1,12 +1,13 @@
 package real.Objects;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import real.BaseClasses.ConditionBase;
 import real.BaseClasses.OperationBase;
+import real.Enumerations.DataType;
 import real.Enumerations.OpTypes;
 import real.Objects.ConditionOperations.Add;
 import real.Objects.ConditionOperations.Atomic.AttributeLiteral;
@@ -23,7 +24,9 @@ import real.Objects.ConditionOperations.BooleanOperations.Not;
 import real.Objects.ConditionOperations.BooleanOperations.Or;
 import real.Objects.ConditionOperations.Div;
 import real.Objects.ConditionOperations.Mult;
+import real.Objects.ConditionOperations.Rename;
 import real.Objects.ConditionOperations.Sub;
+import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidParsing;
 import real.Objects.Exceptions.InvalidSchema;
@@ -34,9 +37,13 @@ import real.Objects.Parser.Token;
 import real.Objects.Parser.TokenOpManager;
 import real.Objects.Parser.TokenStream;
 import real.Objects.Parser.TokenTree;
+import real.Objects.RAOperations.Difference;
 import real.Objects.RAOperations.Intersection;
 import real.Objects.RAOperations.NaturalJoin;
+import real.Objects.RAOperations.Product;
+import real.Objects.RAOperations.Projection;
 import real.Objects.RAOperations.ReferencedDataset;
+import real.Objects.RAOperations.Renaming;
 import real.Objects.RAOperations.Selection;
 import real.Objects.RAOperations.Union;
 import real.Objects.Services.LocalDataManager;
@@ -101,14 +108,14 @@ public class Query
         }   
     }
     
-    public Dataset interpret(String str) throws InvalidSchema, NoSuchDataset, InvalidParameters
+    public Dataset interpret(String str) throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
     {
         LinkedList<TokenTree> trees = parse(str);
         LocalDataManager local = Kernel.GetService(LocalDataManager.class);  
         Dataset localData = null;
         
         local.clearLocal();
-        
+          
         if (trees != null)
         {
             for (int i = 0; i < trees.size(); ++i)
@@ -121,10 +128,17 @@ public class Query
                     TokenTree[] children = current.getChildren();                    
                     currentData = interpretOperation(children[1]);                                  
                     String name = children[0].getChildren()[0].getToken().getSymbol();
-                    localData = currentData.execute().clone();
-                    localData.setName(name);
-                    local.LoadDataset(localData);
                     
+                    Dataset data = currentData.execute();
+                    
+                    if(data == null)
+                    {
+                        throw new InvalidEvaluation("invalid statement.");
+                    }
+                    
+                    localData = data.clone();
+                    localData.setName(name);
+                    local.LoadDataset(localData);                  
                 }
                 
                 else
@@ -165,6 +179,18 @@ public class Query
                     OperationBase relation = interpretOperation(children[1]);
                     ConditionBase condition = interpretCondition(children[0], relation);
                     return new Selection(relation, condition);
+                case "π":
+                    relation = interpretOperation(children[children.length-1]);
+                    ConditionBase[] conditions = getConditions(children, relation);
+                    return new Projection(relation, conditions);         
+                case "ρ":
+                    relation = interpretOperation(children[children.length-1]);
+                    conditions = getConditions(children, relation);
+                    return new Renaming(relation, conditions);
+                case "×":
+                    return new Product(interpretOperation(children[0]), interpretOperation(children[1]));
+                case "‒":
+                    return new Difference(interpretOperation(children[0]), interpretOperation(children[1]));
                 default:
                     System.out.println(word + "is not a supported operator");
 
@@ -192,13 +218,20 @@ public class Query
             System.out.println(ex.getMessage());
         }
         
+        catch(InvalidEvaluation ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+        
         return null;
     }
     
-    public ConditionBase interpretCondition(TokenTree tree, OperationBase relation) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters
+    public ConditionBase interpretCondition(TokenTree tree, OperationBase relation) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
     {
         String word = tree.getToken().getSymbol();
         TokenTree[] children = tree.getChildren();
+        
+        
         
         switch(word)
         {
@@ -226,9 +259,32 @@ public class Query
                 return new And(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
             case "Or":
                 return new Or(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+            case "→":
+                return new Rename(interpretCondition(children[0], relation),interpretCondition(children[1], null));    
             case "Attribute":
                 String value = children[0].getToken().getSymbol();
-                return new AttributeLiteral(value, relation.execute().getColumn(value).getDataType());
+                
+                //if the relation is not known atm - ie renaming
+                if(relation == null)
+                {
+                    return new AttributeLiteral(value, DataType.UNKNOWN);
+                }
+                             
+                else
+                {
+                    Column column = relation.execute().getColumn(value);
+                    
+                    if(column == null)
+                    {
+                        throw new InvalidParameters(value + " String is not a valid attribute.");
+                    }
+                    
+                    else
+                    {
+                        return new AttributeLiteral(value, column.getDataType());
+                    }
+                }
+               
             case "String":
                 return new StringLiteral(children[0].getToken().getSymbol());
             case "Number":
@@ -236,11 +292,24 @@ public class Query
                 return new NumberLiteral(number);
             case "Boolean":
                 boolean b = Boolean.parseBoolean(children[0].getToken().getSymbol());
-                return new BooleanLiteral(b);
+                return new BooleanLiteral(b);           
         }
         
         
         //probably throw exception
         return null;
+    }
+    
+    //returns the conditions except the last one which is always a relation
+    public ConditionBase[] getConditions(TokenTree[] children, OperationBase relation) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    {
+        ArrayList<ConditionBase> bases = new ArrayList<>();
+        
+        for (int i = 0; i < children.length - 1; ++i)
+        {
+            bases.add(interpretCondition(children[i], relation));
+        }
+      
+        return bases.toArray(new ConditionBase[1]);
     }
 }

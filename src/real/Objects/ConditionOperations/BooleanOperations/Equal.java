@@ -4,6 +4,7 @@ package real.Objects.ConditionOperations.BooleanOperations;
 import real.BaseClasses.BinaryConditionBase;
 import real.BaseClasses.ConditionBase;
 import real.Enumerations.DataType;
+import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.WrongType;
 import real.Objects.Row;
 
@@ -34,7 +35,7 @@ public class Equal extends BinaryConditionBase
     }
 
     @Override
-    public boolean evaluateBoolean(Row row)
+    public boolean evaluateBoolean(Row row) throws InvalidEvaluation
     {
         if(operandA.getType() == DataType.BOOLEAN)
         {

@@ -4,6 +4,7 @@ package real.Objects.ConditionOperations;
 import real.BaseClasses.ConditionBase;
 import real.BaseClasses.UnaryConditionBase;
 import real.Enumerations.DataType;
+import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.WrongType;
 import real.Objects.Row;
 
@@ -27,7 +28,7 @@ public class Neg extends UnaryConditionBase
     }
 
     @Override
-    public float evaluateNumber(Row row)
+    public float evaluateNumber(Row row) throws InvalidEvaluation
     {
         return -(float)operand.evaluateNumber(row);
     }

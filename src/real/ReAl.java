@@ -19,12 +19,12 @@ public class ReAl
             Kernel.AddService(new DataManager());
             Kernel.AddService(new MainWindow());
             Kernel.AddService(new LocalDataManager());
-            Kernel.Run();      
+            Kernel.Run();       
         }
-
+        
         catch (Exception e)
         {
             e.printStackTrace();
-        }
+        }        
     }
 }

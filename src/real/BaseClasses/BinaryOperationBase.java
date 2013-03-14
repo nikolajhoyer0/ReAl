@@ -16,7 +16,7 @@ public abstract class BinaryOperationBase extends OperationBase
         return this.operandA;
     }
     
-        public OperationBase getOperandB()
+    public OperationBase getOperandB()
     {
         return this.operandB;
     }
