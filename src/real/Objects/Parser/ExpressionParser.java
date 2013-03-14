@@ -97,7 +97,8 @@ public class ExpressionParser
             
         //}
         
-        else if (token.getSymbol().equals("δ"))
+        // TODO: Selection does not work for strings with spaces!!!
+        else if (token.getSymbol().equals("σ"))
         {
             tokenStream.consume();
             TokenTree[] tree = {expression(0), primary()};
