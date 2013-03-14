@@ -18,7 +18,6 @@ import real.Objects.Row;
  */
 public class NaturalJoin extends BinaryOperationBase
 {
-
     public NaturalJoin(OperationBase operandA, OperationBase operandB)
     {
         super(operandA, operandB);
@@ -27,83 +26,126 @@ public class NaturalJoin extends BinaryOperationBase
     @Override
     public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
     {
-        Dataset resultA = this.operandA.execute();
-        Dataset resultB = this.operandB.execute();
-        
+        Dataset resultA = this.operandA.execute().clone();
+        Dataset resultB = this.operandB.execute().clone();
+
         ArrayList<Row> includeRows = new ArrayList<>();
         ArrayList<Column> includeColumns = new ArrayList<>();
-        
-        // Checks if the schemas match in any way and throws an exception otherwise
-        if (! hasMatchingSchemas(resultA, resultB)) {
+
+        if (! hasPartlyMatchingSchemas(resultA, resultB)) {
             throw new InvalidSchema();
         }
-        
-        // Adds column names of A
-        for(int i=0; i < resultA.getColumnCount(); i++) {
-            includeColumns.add(resultA.getColumns().get(i));
-        }
-        
-        // Add column names of B not in A
-        for(int j=0; j < resultB.getColumnCount(); j++) {
-            for (int k=0; k < resultA.getColumnCount(); k++) {
-                if(! resultA.getColumnName(k).equals(resultB.getColumnName(j))) {
-                    Column column = resultB.getColumns().get(j);
-                    if(!includeColumns.contains(column)) {
-                        includeColumns.add(column);
-                    }
-                }
-            }
-        }
-        
-        // Add rows
-        for(int m=0; m < resultA.getRowCount(); m++) {
-            for (int n=0; n < resultB.getRowCount(); n++) {
-                if(hasMatchingAttribute(resultA.getRows().get(m),
-                                        resultB.getRows().get(n),
-                                        includeColumns)) {
-                    includeRows.add(joinRows(resultA.getRows().get(m),
-                                             resultB.getRows().get(n),
-                                             includeColumns));
-                }
-            }
-        }
-        
-        return new Dataset("", resultA.getColumns(), includeRows);
+
+        addColumns(resultA, resultB, includeColumns);
+
+        addRows(resultA, resultB, includeColumns, includeRows);
+
+        return new Dataset("", includeColumns, includeRows);
     }
-    
-    private boolean hasMatchingSchemas(Dataset resultA, Dataset resultB) {
-        for(int j=0; j < resultB.getColumnCount(); j++) {
-            for (int k=0; k < resultA.getColumnCount(); k++) {
-                if(resultA.getColumnName(j).equals(resultB.getColumnName(k))) {
+
+    private boolean hasPartlyMatchingSchemas(Dataset resultA, Dataset resultB)
+    {
+        for(int j=0; j < resultB.getColumnCount(); j++)
+        {
+            for (int k=0; k < resultA.getColumnCount(); k++)
+            {
+                if(resultA.getColumnName(k).equals(resultB.getColumnName(j)))
+                {
                     return true;
                 }
             }
         }
         return false;
     }
-    
-    private Row joinRows(Row rowA, Row rowB, ArrayList<Column> columns) {
-        HashMap temp = new HashMap();
-        
-        for(Column c : columns) {
-            if(rowA.getValue(c.getName()) != null) {
-                temp.put(c.getName(), rowA.getValue(c.getName()));
-            }
-            else {
-                temp.put(c.getName(), rowB.getValue(c.getName()));
+
+    private void addColumns(Dataset resultA,
+                            Dataset resultB,
+                            ArrayList<Column> includeColumns)
+    {        
+        for(int i=0; i < resultA.getColumnCount(); i++)
+        {
+            includeColumns.add(resultA.getColumns().get(i));
+        }
+
+        for(int j=0; j < resultB.getColumnCount(); j++)
+        {
+            for (int k=0; k < resultA.getColumnCount(); k++)
+            {
+                if(! resultA.getColumnName(k).equals(resultB.getColumnName(j)))
+                {
+                    Column column = resultB.getColumns().get(j);
+                    if(!includeColumns.contains(column))
+                    {
+                        includeColumns.add(column);
+                    }
+                }
             }
         }
-        
-        return new Row(temp);
+    }
+
+    private void addRows(Dataset resultA,
+                         Dataset resultB,
+                         ArrayList<Column> includeColumns,
+                         ArrayList<Row> includeRows)
+    {
+        for(int m=0; m < resultA.getRowCount(); m++)
+        {
+            for (int n=0; n < resultB.getRowCount(); n++)
+            {
+                if(hasMatchingAttribute(resultA.getRows().get(m),
+                                        resultB.getRows().get(n),
+                                        commonColumns(resultA, resultB)))
+                {
+                    includeRows.add(joinRows(resultA.getRows().get(m),
+                                             resultB.getRows().get(n),
+                                             includeColumns));
+                }
+            }
+        }
+    }
+
+    private Row joinRows(Row rowA, Row rowB, ArrayList<Column> columns)
+    {
+        HashMap combinedRow = new HashMap();
+        for(Column column : columns)
+        {
+            if(! rowA.getValue(column.getName()).isEmpty())
+            {
+                combinedRow.put(column.getName(), rowA.getValue(column.getName()));
+            }
+            else
+            {
+                combinedRow.put(column.getName(), rowB.getValue(column.getName()));
+            }
+        }
+        return new Row(combinedRow);
+    }
+
+    private boolean hasMatchingAttribute(Row rowA, Row rowB, ArrayList<Column> columns)
+    {
+        for(Column c : columns)
+        {
+            if(!rowA.getValue(c.getName()).equals(rowB.getValue(c.getName())))
+            {
+                return false;
+            }
+        }
+        return true;
     }
     
-    private boolean hasMatchingAttribute(Row rowA, Row rowB, ArrayList<Column> columns) {
-        for(Column c : columns) {
-            if(rowA.getValue(c.getName()).equals(rowB.getValue(c.getName()))) {
-                return true;
+    private ArrayList<Column> commonColumns(Dataset resultA, Dataset resultB)
+    {
+        ArrayList<Column> columns = new ArrayList<>();
+        for(int j=0; j < resultB.getColumnCount(); j++)
+        {
+            for (int k=0; k < resultA.getColumnCount(); k++)
+            {
+                if(resultA.getColumnName(k).equals(resultB.getColumnName(j)))
+                {
+                    columns.add(resultA.getColumn(resultA.getColumnName(k)));
+                }
             }
-            
         }
-        return false;
+        return columns;
     }
 }

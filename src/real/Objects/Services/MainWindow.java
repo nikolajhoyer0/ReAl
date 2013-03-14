@@ -86,8 +86,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents()
-    {
+    private void initComponents() {
 
         loadFileChooser = new javax.swing.JFileChooser();
         saveFileChooser = new javax.swing.JFileChooser();
@@ -106,7 +105,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         saveButton = new javax.swing.JButton();
         jToolBar3 = new javax.swing.JToolBar();
         piButton = new javax.swing.JButton();
-        deltaButton = new javax.swing.JButton();
+        sigmaButton = new javax.swing.JButton();
         rhoButton = new javax.swing.JButton();
         gammaButton = new javax.swing.JButton();
         tauButton = new javax.swing.JButton();
@@ -153,10 +152,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         runButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         runButton.setText("Run");
-        runButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        runButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 runButtonActionPerformed(evt);
             }
         });
@@ -165,10 +162,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         newSheetButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         newSheetButton.setText("New sheet");
-        newSheetButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        newSheetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newSheetButtonActionPerformed(evt);
             }
         });
@@ -180,25 +175,21 @@ public class MainWindow extends javax.swing.JFrame implements IService
         removeSheetButton.setFocusable(false);
         removeSheetButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         removeSheetButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        removeSheetButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        removeSheetButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 removeSheetButtonActionPerformed(evt);
             }
         });
         jToolBar2.add(removeSheetButton);
 
         queryTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
+            new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String []
-            {
+            new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
@@ -212,10 +203,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         saveButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         saveButton.setText("Save");
-        saveButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
             }
         });
@@ -229,38 +218,32 @@ public class MainWindow extends javax.swing.JFrame implements IService
         piButton.setFocusable(false);
         piButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         piButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        piButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        piButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 piButtonActionPerformed(evt);
             }
         });
         jToolBar3.add(piButton);
 
-        deltaButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
-        deltaButton.setText("δ");
-        deltaButton.setFocusable(false);
-        deltaButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        deltaButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        deltaButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
-                deltaButtonActionPerformed(evt);
+        sigmaButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
+        sigmaButton.setText("σ");
+        sigmaButton.setFocusable(false);
+        sigmaButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        sigmaButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        sigmaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sigmaButtonActionPerformed(evt);
             }
         });
-        jToolBar3.add(deltaButton);
+        jToolBar3.add(sigmaButton);
 
         rhoButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
         rhoButton.setText("ρ");
         rhoButton.setFocusable(false);
         rhoButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rhoButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        rhoButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        rhoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rhoButtonActionPerformed(evt);
             }
         });
@@ -271,10 +254,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         gammaButton.setFocusable(false);
         gammaButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         gammaButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        gammaButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        gammaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gammaButtonActionPerformed(evt);
             }
         });
@@ -285,10 +266,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         tauButton.setFocusable(false);
         tauButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         tauButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        tauButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        tauButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tauButtonActionPerformed(evt);
             }
         });
@@ -299,10 +278,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         arrowButton.setFocusable(false);
         arrowButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         arrowButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        arrowButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        arrowButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 arrowButtonActionPerformed(evt);
             }
         });
@@ -313,10 +290,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         unionButton.setFocusable(false);
         unionButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         unionButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        unionButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        unionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 unionButtonActionPerformed(evt);
             }
         });
@@ -327,10 +302,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         intersectionButton.setFocusable(false);
         intersectionButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         intersectionButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        intersectionButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        intersectionButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 intersectionButtonActionPerformed(evt);
             }
         });
@@ -341,10 +314,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         differenceButton.setFocusable(false);
         differenceButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         differenceButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        differenceButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        differenceButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 differenceButtonActionPerformed(evt);
             }
         });
@@ -355,10 +326,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         productButton.setFocusable(false);
         productButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         productButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        productButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        productButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 productButtonActionPerformed(evt);
             }
         });
@@ -369,10 +338,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         joinButton.setFocusable(false);
         joinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         joinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        joinButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        joinButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 joinButtonActionPerformed(evt);
             }
         });
@@ -383,10 +350,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         leftouterjoinButton.setFocusable(false);
         leftouterjoinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         leftouterjoinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        leftouterjoinButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        leftouterjoinButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 leftouterjoinButtonActionPerformed(evt);
             }
         });
@@ -397,10 +362,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         rightouterjoinButton.setFocusable(false);
         rightouterjoinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         rightouterjoinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        rightouterjoinButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        rightouterjoinButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rightouterjoinButtonActionPerformed(evt);
             }
         });
@@ -411,10 +374,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         fullouterjoinButton.setFocusable(false);
         fullouterjoinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         fullouterjoinButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        fullouterjoinButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        fullouterjoinButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fullouterjoinButtonActionPerformed(evt);
             }
         });
@@ -439,7 +400,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                     .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(worksheetPane, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
+                .addComponent(worksheetPane, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -449,15 +410,13 @@ public class MainWindow extends javax.swing.JFrame implements IService
         combinedView.addTab("Query view", jPanel1);
 
         tableView.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
+            new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
-            new String []
-            {
+            new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
@@ -474,15 +433,13 @@ public class MainWindow extends javax.swing.JFrame implements IService
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
         );
 
         combinedView.addTab("Table view", jPanel2);
 
-        relationView.addMouseListener(new java.awt.event.MouseAdapter()
-        {
-            public void mouseClicked(java.awt.event.MouseEvent evt)
-            {
+        relationView.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
                 relationViewMouseClicked(evt);
             }
         });
@@ -491,50 +448,40 @@ public class MainWindow extends javax.swing.JFrame implements IService
         fileMenu.setText("File");
 
         loadMenuItem.setText("Load Project");
-        loadMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        loadMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadMenuItemActionPerformed(evt);
             }
         });
         fileMenu.add(loadMenuItem);
 
         saveMenuItem.setText("Save Project");
-        saveMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveMenuItemActionPerformed(evt);
             }
         });
         fileMenu.add(saveMenuItem);
 
         importMenuItem.setText("Import table");
-        importMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        importMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 importMenuItemActionPerformed(evt);
             }
         });
         fileMenu.add(importMenuItem);
 
         exportMenuItem.setText("Export table");
-        exportMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        exportMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exportMenuItemActionPerformed(evt);
             }
         });
         fileMenu.add(exportMenuItem);
 
         deleteMenuItem.setText("Delete table");
-        deleteMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        deleteMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteMenuItemActionPerformed(evt);
             }
         });
@@ -542,10 +489,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         fileMenu.add(jSeparator1);
 
         exitMenuItem.setText("Exit");
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 exitMenuItemActionPerformed(evt);
             }
         });
@@ -559,10 +504,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         helpMenu.setText("Help");
 
         aboutMenuItem.setText("About");
-        aboutMenuItem.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutMenuItemActionPerformed(evt);
             }
         });
@@ -632,10 +575,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         area.insert("π", area.getCaretPosition());
     }//GEN-LAST:event_piButtonActionPerformed
 
-    private void deltaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deltaButtonActionPerformed
+    private void sigmaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sigmaButtonActionPerformed
         JTextArea area = getCurrentWorksheet();
-        area.insert("δ", area.getCaretPosition());
-    }//GEN-LAST:event_deltaButtonActionPerformed
+        area.insert("σ", area.getCaretPosition());
+    }//GEN-LAST:event_sigmaButtonActionPerformed
 
     private void rhoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rhoButtonActionPerformed
         JTextArea area = getCurrentWorksheet();
@@ -935,7 +878,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private javax.swing.JButton arrowButton;
     private javax.swing.JTabbedPane combinedView;
     private javax.swing.JMenuItem deleteMenuItem;
-    private javax.swing.JButton deltaButton;
     private javax.swing.JButton differenceButton;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
@@ -975,6 +917,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private javax.swing.JButton saveButton;
     private javax.swing.JFileChooser saveFileChooser;
     private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JButton sigmaButton;
     private javax.swing.JTable tableView;
     private javax.swing.JButton tauButton;
     private javax.swing.JButton unionButton;

@@ -76,7 +76,7 @@ public class Query
         
         //function operators
         opManager.addOp(new Token("π", 0, EnumSet.of(OpTypes.NONE)));  
-        opManager.addOp(new Token("δ", 0, EnumSet.of(OpTypes.NONE)));   
+        opManager.addOp(new Token("σ", 0, EnumSet.of(OpTypes.NONE)));   
         opManager.addOp(new Token("ρ", 0, EnumSet.of(OpTypes.NONE)));   
         opManager.addOp(new Token("γ", 0, EnumSet.of(OpTypes.NONE))); 
         opManager.addOp(new Token("τ", 0, EnumSet.of(OpTypes.NONE)));
@@ -178,7 +178,7 @@ public class Query
                     return new ReferencedDataset(children[0].getToken().getSymbol());
                 case "⋈":
                     return new NaturalJoin(interpretOperation(children[0]), interpretOperation(children[1]));
-                case "δ":
+                case "σ":
                     OperationBase relation = interpretOperation(children[1]);
                     ConditionBase condition = interpretCondition(children[0], relation, false);
                     return new Selection(relation, condition);
