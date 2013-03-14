@@ -1,4 +1,4 @@
-package real.Objects;
+package real.Objects.GUI;
 
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import javax.swing.JFrame;

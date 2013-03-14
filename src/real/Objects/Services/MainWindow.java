@@ -24,7 +24,7 @@ import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.GUI.TextQueryView;
 import real.Objects.Kernel;
 import real.Objects.Query;
-import real.Objects.TreeView;
+import real.Objects.GUI.TreeView;
 
 public class MainWindow extends javax.swing.JFrame implements IService
 {
