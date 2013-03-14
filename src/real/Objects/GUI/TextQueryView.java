@@ -249,6 +249,8 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
         private void convertToSymbol(final int start, final int end, String str)
         {
+            System.out.println(str.substring(start, end));
+            
             switch (str.substring(start, end))
             {
                 case "projection":
@@ -283,7 +285,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
                 //if we are in the string we only look for one string
                 if (!Character.isSpaceChar(str.charAt(pos)))
-                {
+                {                  
                     int leftIndex = 0;
                     int rightIndex = 0;
 
@@ -303,7 +305,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
                         if (Character.isSpaceChar(str.charAt(rightIndex)))
                         {
-                            rightIndex--;
+                            //rightIndex--;
                             break;
                         }
 
