@@ -104,7 +104,7 @@ public class ExpressionParser
             return new TokenTree(tree, token);           
         }
         
-        else if (token.getSymbol().equals("ρ") || token.getSymbol().equals("π"))
+        else if (token.getSymbol().equals("ρ") || token.getSymbol().equals("π") || token.getSymbol().equals("τ"))
         {
             tokenStream.consume();
             LinkedList<TokenTree> list = new LinkedList<>();

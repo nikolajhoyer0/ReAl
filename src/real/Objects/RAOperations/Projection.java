@@ -143,7 +143,7 @@ public class Projection extends UnaryOperationBase
             
         }
  
-        if(Utility.haveDuplicates(columns.toArray(new Column[0])))
+        if(Utility.haveColumnDuplicates(columns.toArray(new Column[0])))
         {
             throw new InvalidParameters("Can't have multiple columns with the same name.");
         }

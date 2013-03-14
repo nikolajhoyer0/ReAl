@@ -59,7 +59,7 @@ public class Renaming extends UnaryOperationBase
         
         //check if the rename changes will be valid.
         //O(n^2) operation - shouldn't be a problem
-        if(Utility.haveDuplicates(dataset.getColumns().toArray(new Column[0])))
+        if(Utility.haveColumnDuplicates(dataset.getColumns().toArray(new Column[0])))
         {
             throw new InvalidParameters("Can't have multiple columns with the same name.");
         }

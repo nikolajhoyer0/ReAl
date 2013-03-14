@@ -10,6 +10,7 @@ import real.BaseClasses.OperationBase;
 import real.Enumerations.DataType;
 import real.Enumerations.OpTypes;
 import real.Objects.ConditionOperations.Add;
+import real.Objects.ConditionOperations.AggregateFunctions.Max;
 import real.Objects.ConditionOperations.Atomic.AttributeLiteral;
 import real.Objects.ConditionOperations.Atomic.BooleanLiteral;
 import real.Objects.ConditionOperations.Atomic.NumberLiteral;
@@ -38,6 +39,7 @@ import real.Objects.Parser.TokenOpManager;
 import real.Objects.Parser.TokenStream;
 import real.Objects.Parser.TokenTree;
 import real.Objects.RAOperations.Difference;
+import real.Objects.RAOperations.Grouping;
 import real.Objects.RAOperations.Intersection;
 import real.Objects.RAOperations.NaturalJoin;
 import real.Objects.RAOperations.Product;
@@ -45,6 +47,7 @@ import real.Objects.RAOperations.Projection;
 import real.Objects.RAOperations.ReferencedDataset;
 import real.Objects.RAOperations.Renaming;
 import real.Objects.RAOperations.Selection;
+import real.Objects.RAOperations.Sorting;
 import real.Objects.RAOperations.Union;
 import real.Objects.Services.LocalDataManager;
 
@@ -177,20 +180,29 @@ public class Query
                     return new NaturalJoin(interpretOperation(children[0]), interpretOperation(children[1]));
                 case "δ":
                     OperationBase relation = interpretOperation(children[1]);
-                    ConditionBase condition = interpretCondition(children[0], relation);
+                    ConditionBase condition = interpretCondition(children[0], relation, false);
                     return new Selection(relation, condition);
                 case "π":
-                    relation = interpretOperation(children[children.length-1]);
-                    ConditionBase[] conditions = getConditions(children, relation);
-                    return new Projection(relation, conditions);         
+                    relation = interpretOperation(children[children.length - 1]);
+                    ConditionBase[] conditions = getConditions(children, relation, false);
+                    return new Projection(relation, conditions);
                 case "ρ":
-                    relation = interpretOperation(children[children.length-1]);
-                    conditions = getConditions(children, relation);
+                    relation = interpretOperation(children[children.length - 1]);
+                    conditions = getConditions(children, relation, false);
                     return new Renaming(relation, conditions);
                 case "×":
                     return new Product(interpretOperation(children[0]), interpretOperation(children[1]));
                 case "‒":
                     return new Difference(interpretOperation(children[0]), interpretOperation(children[1]));
+                case "τ":
+                    relation = interpretOperation(children[children.length - 1]);
+                    conditions = getConditions(children, relation, false);
+                    return new Sorting(relation, conditions);
+                case "γ":
+                    relation = interpretOperation(children[children.length - 1]);       
+                    ConditionBase groupBy = interpretCondition(children[children.length - 2], relation, false);       
+                    conditions = getGroupConditions(children, relation, false);
+                    return new Grouping(relation, groupBy, conditions);
                 default:
                     System.out.println(word + "is not a supported operator");
 
@@ -226,7 +238,7 @@ public class Query
         return null;
     }
     
-    public ConditionBase interpretCondition(TokenTree tree, OperationBase relation) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    public ConditionBase interpretCondition(TokenTree tree, OperationBase relation, boolean ignoreNoAttribute) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
     {
         String word = tree.getToken().getSymbol();
         TokenTree[] children = tree.getChildren();
@@ -236,38 +248,49 @@ public class Query
         switch(word)
         {
             case "+":
-                return new Add(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+                return new Add(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
             case "-":
-                return new Sub(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+                return new Sub(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
             case "*":
-                return new Mult(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+                return new Mult(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
             case "/":
-                return new Div(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+                return new Div(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
             case "=":
-                return new Equal(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+                return new Equal(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
             case "<=":
-                return new LessEqual(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+                return new LessEqual(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
             case ">=":
-                return new GreaterEqual(interpretCondition(children[0], relation),interpretCondition(children[1], relation));    
+                return new GreaterEqual(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));    
             case ">":
-                return new Greater(interpretCondition(children[0], relation),interpretCondition(children[1], relation)); 
+                return new Greater(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute)); 
             case "<":
-                return new Less(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+                return new Less(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
             case "!=":
-                return new Not(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+                return new Not(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
             case "AND":
-                return new And(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+                return new And(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
             case "Or":
-                return new Or(interpretCondition(children[0], relation),interpretCondition(children[1], relation));
+                return new Or(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
             case "→":
-                return new Rename(interpretCondition(children[0], relation),interpretCondition(children[1], null));    
+                return new Rename(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, true));    
+            case "Max":
+                return new Max(interpretCondition(children[0], relation, ignoreNoAttribute));
             case "Attribute":
                 String value = children[0].getToken().getSymbol();
                 
-                //if the relation is not known atm - ie renaming
-                if(relation == null)
+                if(ignoreNoAttribute == true)
                 {
-                    return new AttributeLiteral(value, DataType.UNKNOWN);
+                    Column column = relation.execute().getColumn(value);
+                    
+                    if(column == null)
+                    {
+                        return new AttributeLiteral(value, DataType.UNKNOWN);
+                    }
+                    
+                    else
+                    {
+                        return new AttributeLiteral(value, column.getDataType());
+                    }
                 }
                              
                 else
@@ -276,7 +299,7 @@ public class Query
                     
                     if(column == null)
                     {
-                        throw new InvalidParameters(value + " String is not a valid attribute.");
+                        throw new InvalidParameters(value + "is not a valid attribute.");
                     }
                     
                     else
@@ -301,13 +324,26 @@ public class Query
     }
     
     //returns the conditions except the last one which is always a relation
-    public ConditionBase[] getConditions(TokenTree[] children, OperationBase relation) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    public ConditionBase[] getConditions(TokenTree[] children, OperationBase relation, boolean ignoreNoAttribute) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
     {
         ArrayList<ConditionBase> bases = new ArrayList<>();
         
         for (int i = 0; i < children.length - 1; ++i)
         {
-            bases.add(interpretCondition(children[i], relation));
+            bases.add(interpretCondition(children[i], relation, ignoreNoAttribute));
+        }
+      
+        return bases.toArray(new ConditionBase[1]);
+    }
+    
+    //returns the condition except the first and last, which are group and relation
+    public ConditionBase[] getGroupConditions(TokenTree[] children, OperationBase relation, boolean ignoreNoAttribute) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    {
+        ArrayList<ConditionBase> bases = new ArrayList<>();
+        
+        for (int i = 1; i < children.length - 1; ++i)
+        {
+            bases.add(interpretCondition(children[i], relation, ignoreNoAttribute));
         }
       
         return bases.toArray(new ConditionBase[1]);

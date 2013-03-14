@@ -57,11 +57,15 @@ public class DataManager extends ServiceBase
         {
             if (scanner.hasNextLine())
             {
-                String[] columns = scanner.nextLine().split(",");
+                String nextLine = scanner.nextLine();
+                nextLine = nextLine.replaceAll("\\s+", "");
+                String[] columns = nextLine.split(",");
                 ArrayList<Row> rows = new ArrayList<>();
                 while (scanner.hasNextLine())
                 {
-                    rows.add(new Row(scanner.nextLine(), columns));
+                    nextLine = scanner.nextLine();
+                    nextLine = nextLine.replaceAll("\\s+", "");
+                    rows.add(new Row(nextLine, columns));
                 }
                 scanner.close();
            
