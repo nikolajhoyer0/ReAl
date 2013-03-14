@@ -14,8 +14,7 @@ import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.Row;
 
 /*
- * Currently implements the Natural Join
- * TODO Left Outer Join
+ * Implements the Left Outer Join
  */
 public class LeftOuterJoin extends BinaryOperationBase
 {
@@ -89,8 +88,10 @@ public class LeftOuterJoin extends BinaryOperationBase
                          ArrayList<Column> includeColumns,
                          ArrayList<Row> includeRows)
     {
+        boolean hasMatch;
         for(int m=0; m < resultA.getRowCount(); m++)
         {
+            hasMatch = false;
             for (int n=0; n < resultB.getRowCount(); n++)
             {
                 if(hasMatchingAttribute(resultA.getRows().get(m),
@@ -100,7 +101,12 @@ public class LeftOuterJoin extends BinaryOperationBase
                     includeRows.add(joinRows(resultA.getRows().get(m),
                                              resultB.getRows().get(n),
                                              includeColumns));
+                    hasMatch = true;
                 }
+            }
+            if (! hasMatch)
+            {
+                includeRows.add(resultA.getRows().get(m));
             }
         }
     }
