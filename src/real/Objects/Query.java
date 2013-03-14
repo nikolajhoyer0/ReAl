@@ -43,11 +43,13 @@ import real.Objects.RAOperations.Difference;
 import real.Objects.RAOperations.DuplicateElimination;
 import real.Objects.RAOperations.Grouping;
 import real.Objects.RAOperations.Intersection;
+import real.Objects.RAOperations.LeftOuterJoin;
 import real.Objects.RAOperations.NaturalJoin;
 import real.Objects.RAOperations.Product;
 import real.Objects.RAOperations.Projection;
 import real.Objects.RAOperations.ReferencedDataset;
 import real.Objects.RAOperations.Renaming;
+import real.Objects.RAOperations.RightOuterJoin;
 import real.Objects.RAOperations.Selection;
 import real.Objects.RAOperations.Sorting;
 import real.Objects.RAOperations.Union;
@@ -181,6 +183,12 @@ public class Query
                     return new ReferencedDataset(children[0].getToken().getSymbol());
                 case "⋈":
                     return new NaturalJoin(interpretOperation(children[0]), interpretOperation(children[1]));
+                case "⟕":
+                    return new LeftOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]));
+                case "⟖":
+                    return new RightOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]));
+                case "⟗":
+                    return new FullOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]));
                 case "σ":
                     OperationBase relation = interpretOperation(children[1]);
                     ConditionBase condition = interpretCondition(children[0], relation, false);
