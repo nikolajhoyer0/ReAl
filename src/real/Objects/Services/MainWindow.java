@@ -16,7 +16,7 @@ import real.Interfaces.IService;
 import real.Objects.Dataset;
 import real.Objects.Exceptions.*;
 import real.Objects.GUI.TextQueryView;
-import real.Objects.GUI.TreeWindow;
+import real.Objects.GUI.TreeViewTest;
 import real.Objects.Kernel;
 import real.Objects.Query;
 
@@ -201,10 +201,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         saveButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         saveButton.setText("Save current table");
-        saveButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
             }
         });
@@ -302,10 +300,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         deltaButton.setFocusable(false);
         deltaButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         deltaButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        deltaButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        deltaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deltaButtonActionPerformed(evt);
             }
         });
@@ -968,14 +964,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
         JTextArea area = getCurrentWorksheet();
         area.insert("δ", area.getCaretPosition());
     }//GEN-LAST:event_deltaButtonActionPerformed
-
-    private void showTreeButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showTreeButtonActionPerformed
-    {//GEN-HEADEREND:event_showTreeButtonActionPerformed
-        //for now we'll just take the model since it is the current dataset in query.
-        Dataset dataset = (Dataset)queryTable.getModel();
-        TreeWindow window = new TreeWindow(this, true, Kernel.GetService(LocalDataManager.class).findOperation(dataset.getName()));
-        window.setVisible(true);
-    }//GEN-LAST:event_showTreeButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
