@@ -1,7 +1,6 @@
 package real.Objects.RAOperations;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import real.BaseClasses.OperationBase;
 import real.BaseClasses.UnaryOperationBase;
 import real.Objects.Dataset;
