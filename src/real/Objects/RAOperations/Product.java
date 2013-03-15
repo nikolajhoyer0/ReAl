@@ -12,18 +12,20 @@ import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.Row;
-
+/**
+ * Implements the Product operator
+ * similliar to natural join
+ */
 public class Product extends BinaryOperationBase
 {
-
-
     public Product(OperationBase operandA, OperationBase operandB)
     {
         super(operandA, operandB);
     }
 
     @Override
-    public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    public Dataset execute() throws InvalidSchema, NoSuchDataset,
+                                    InvalidParameters, InvalidEvaluation
     {
         Dataset resultA = this.operandA.execute().clone();
         Dataset resultB = this.operandB.execute().clone();
@@ -39,6 +41,8 @@ public class Product extends BinaryOperationBase
 
         return new Dataset("", includeColumns, includeRows);
     }
+    // adds the columns of the two tables together,
+    // for correct implmentation the names of the columns should not overlap
     private void addColumns(Dataset resultA,
                             Dataset resultB,
                             ArrayList<Column> includeColumns)
@@ -53,7 +57,8 @@ public class Product extends BinaryOperationBase
             includeColumns.add(resultB.getColumns().get(j));
         }
     }
-     private void addRows(Dataset resultA,
+    // adds the joined rows together under one schema defined by addColumns()
+    private void addRows(Dataset resultA,
                          Dataset resultB,
                          ArrayList<Column> includeColumns,
                          ArrayList<Row> includeRows)
@@ -68,7 +73,8 @@ public class Product extends BinaryOperationBase
             }
         }
     }
-
+    // joins the rows together creating one big row,
+    // for correct implementation the name of the columns should not overlap
     private Row joinRows(Row rowA, Row rowB, ArrayList<Column> columns)
     {
         HashMap combinedRow = new HashMap();
@@ -85,7 +91,7 @@ public class Product extends BinaryOperationBase
         }
         return new Row(combinedRow);
     }
-
+    // ensures no overlapping column names
     private void replaceMatchingNames(Dataset resultA, Dataset resultB)
     {
         for(int j=0; j < resultB.getColumnCount(); j++)
