@@ -1,6 +1,5 @@
 package real.Objects.RAOperations;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import real.BaseClasses.BinaryConditionBase;
