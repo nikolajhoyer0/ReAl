@@ -105,6 +105,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         rhoButton = new javax.swing.JButton();
         gammaButton = new javax.swing.JButton();
         tauButton = new javax.swing.JButton();
+        deltaButton = new javax.swing.JButton();
         arrowButton = new javax.swing.JButton();
         unionButton = new javax.swing.JButton();
         intersectionButton = new javax.swing.JButton();
@@ -269,6 +270,18 @@ public class MainWindow extends javax.swing.JFrame implements IService
         });
         jToolBar3.add(tauButton);
 
+        deltaButton.setFont(new java.awt.Font("Monospaced", 0, 20)); // NOI18N
+        deltaButton.setText("δ");
+        deltaButton.setFocusable(false);
+        deltaButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        deltaButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        deltaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deltaButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(deltaButton);
+
         arrowButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
         arrowButton.setText("→");
         arrowButton.setFocusable(false);
@@ -396,7 +409,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                     .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(worksheetPane, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                .addComponent(worksheetPane, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -429,7 +442,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
         );
 
         combinedView.addTab("Table view", jPanel2);
@@ -874,11 +887,17 @@ public class MainWindow extends javax.swing.JFrame implements IService
         }
     }//GEN-LAST:event_deleteMenuItemActionPerformed
 
+    private void deltaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deltaButtonActionPerformed
+        JTextArea area = getCurrentWorksheet();
+        area.insert("δ", area.getCaretPosition());
+    }//GEN-LAST:event_deltaButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JButton arrowButton;
     private javax.swing.JTabbedPane combinedView;
     private javax.swing.JMenuItem deleteMenuItem;
+    private javax.swing.JButton deltaButton;
     private javax.swing.JButton differenceButton;
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
