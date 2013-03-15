@@ -545,17 +545,16 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveButtonActionPerformed
     {//GEN-HEADEREND:event_saveButtonActionPerformed
-        JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
-// TODO: figure out how to implement
-//        String name = queryView.getTitleAt(queryView.getSelectedIndex());
-//        try {
-//            Dataset dataset = Kernel.GetService(DataManager.class).getDataset(name);
-//            Kernel.GetService(DataManager.class).setDataset(dataset);
-//            relationModel.addElement(name);
-//            TextQueryView.addTableAutoWords(name);
-//        } catch (NoSuchDataset ex) {
-//            System.out.println("No such dataset");
-//        }
+        //JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
+        String name = queryView.getTitleAt(queryView.getSelectedIndex());
+        try {
+            Dataset dataset = Kernel.GetService(DataManager.class).getDataset(name);
+            Kernel.GetService(DataManager.class).setDataset(dataset);
+            relationModel.addElement(name);
+            TextQueryView.addTableAutoWords(name);
+        } catch (NoSuchDataset ex) {
+            System.out.println("No such dataset");
+        }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_runButtonActionPerformed
@@ -563,6 +562,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
         try
         {
             Dataset data = query.interpret(getCurrentWorksheet().getText());
+            // Don't know if this is a good idea - but makes it possible to retrieve the dataset for later possible use
+            // (saving of the dataset)
+            Kernel.GetService(DataManager.class).setDataset(data);
             queryTable.setModel(data);
             queryView.setTitleAt(queryView.getSelectedIndex(), data.getName());
         }
