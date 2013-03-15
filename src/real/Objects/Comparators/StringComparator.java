@@ -19,6 +19,24 @@ public class StringComparator implements Comparator<Row>
         String str1 = o1.getValue(columnName);
         String str2 = o2.getValue(columnName);
         
+        if(str1.isEmpty() && str2.isEmpty())
+        {
+            return 0;
+        }
+        
+        else if(!str1.isEmpty() && str2.isEmpty())
+        {
+            return -1;
+        }
+        
+        else if(str1.isEmpty() && !str2.isEmpty())
+        {
+            return 1;
+        }
+        
+        
+        
+        
         return (str1.compareTo(str2) < 0 ? -1 : (str1.equals(str2) ? 0 : 1));
     }
     

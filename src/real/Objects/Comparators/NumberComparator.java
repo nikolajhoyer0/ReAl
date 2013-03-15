@@ -18,10 +18,31 @@ public class NumberComparator implements Comparator<Row>
     @Override
     public int compare(Row o1, Row o2)
     {
-        float f1 = Float.parseFloat(o1.getValue(columnName));
-        float f2 = Float.parseFloat(o2.getValue(columnName));
+        String v1 = o1.getValue(columnName);
+        String v2 = o2.getValue(columnName);
         
-        return (f1<f2 ? -1 : (f1==f2 ? 0 : 1));
+        
+        if(v1.isEmpty() && v2.isEmpty())
+        {
+            return 0;
+        }
+        
+        else if(!v1.isEmpty() && v2.isEmpty())
+        {
+            return -1;
+        }
+        
+        else if(v1.isEmpty() && !v2.isEmpty())
+        {
+            return 1;
+        }
+        
+        float f1 = Float.parseFloat(v1);
+        float f2 = Float.parseFloat(v2);
+        
+        
+        
+        return (f1<f2 ? 1 : (f1==f2 ? 0 : -1));
     }
     
 }
