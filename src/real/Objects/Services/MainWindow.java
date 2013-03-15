@@ -199,7 +199,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         jToolBar1.setRollover(true);
 
         saveButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        saveButton.setText("Save");
+        saveButton.setText("Save current table");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
@@ -550,7 +550,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveButtonActionPerformed
     {//GEN-HEADEREND:event_saveButtonActionPerformed
-
+        JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_runButtonActionPerformed
@@ -625,8 +625,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_differenceButtonActionPerformed
 
     private void productButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("×", area.getCaretPosition());
+//        JTextArea area = getCurrentWorksheet();
+//        area.insert("×", area.getCaretPosition());
+        JOptionPane.showMessageDialog(rootPane, "This feature is not implemented yet");
     }//GEN-LAST:event_productButtonActionPerformed
 
     private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinButtonActionPerformed
@@ -655,7 +656,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-        // TODO add your handling code here:
         JOptionPane.showMessageDialog(rootPane, "This is ReAl ver. 1E-10 \n\n"
                 + "Authors: \nDaniel Gavin \nTobias Kristoffer Scavenius \nNikolaj Høyer", "About", WIDTH);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
