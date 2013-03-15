@@ -21,8 +21,8 @@ public class Union extends BinaryOperationBase
     @Override
     public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
     {
-        Dataset resultA = this.operandA.execute();
-        Dataset resultB = this.operandB.execute();
+        Dataset resultA = this.operandA.execute().clone();
+        Dataset resultB = this.operandB.execute().clone();
         
         ArrayList<Row> includeRows = new ArrayList<>();
 

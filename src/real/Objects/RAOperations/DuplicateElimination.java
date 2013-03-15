@@ -22,33 +22,20 @@ public class DuplicateElimination extends UnaryOperationBase
     @Override
     public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
     {
-        
-        boolean duplicates = false;
         Dataset result = operand.execute().clone();
+        
         ArrayList<Row> includeRows = new ArrayList<>();
         ArrayList<Row> checkRows = new ArrayList<>(result.getRows());
         
-        
-        for (int j = 0; j < checkRows.size(); j++)
-        {
-            for (int k = 0; k < includeRows.size(); k++)
-            {
-               if(checkRows.get(j).equals(includeRows.get(k)))
-               {
-                   duplicates = true;
-               }
-            }
-            
-            if(!duplicates)
-            {
-                includeRows.add(checkRows.get(j));
-                duplicates = false;
+        includeRows.add(checkRows.get(0));
+        checkRows.remove(0);
+        for(int i=0; i < checkRows.size(); i++) {
+            if(! includeRows.contains(checkRows.get(i))) {
+                includeRows.add(checkRows.get(i));
             }
         }
-
-        
         
         return new Dataset("", result.getColumns(), includeRows);
     }
-    
+
 }

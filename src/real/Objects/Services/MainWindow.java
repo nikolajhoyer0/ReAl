@@ -14,15 +14,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import real.Interfaces.IService;
 import real.Objects.Dataset;
-import real.Objects.Exceptions.DatasetDuplicate;
-import real.Objects.Exceptions.InvalidDataset;
-import real.Objects.Exceptions.InvalidEvaluation;
-import real.Objects.Exceptions.InvalidParameters;
-import real.Objects.Exceptions.InvalidSchema;
-import real.Objects.Exceptions.NoSuchDataset;
-import real.Objects.Exceptions.WrongType;
+import real.Objects.Exceptions.*;
 import real.Objects.GUI.TextQueryView;
-import real.Objects.GUI.TreeWindow;
+import real.Objects.GUI.TreeViewTest;
 import real.Objects.Kernel;
 import real.Objects.Query;
 
@@ -30,7 +24,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
 {
     private DefaultListModel relationModel = new DefaultListModel();
     private Query query;
-    
+
     public MainWindow()
     {
         this.initComponents();
@@ -48,17 +42,17 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     public JTextArea getCurrentWorksheet()
     {
-        TextQueryView view = (TextQueryView)worksheetPane.getSelectedComponent(); 
+        TextQueryView view = (TextQueryView)worksheetPane.getSelectedComponent();
         return view.getTextArea();
     }
-    
+
     @Override
     public void Initialize()
     {
         ImageIcon image = new ImageIcon("assets/icon/icon.png");
         query = new Query();
         this.setIconImage(image.getImage());
-        relationView.setModel(relationModel);   
+        relationView.setModel(relationModel);
     }
 
     @Override
@@ -105,6 +99,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         rhoButton = new javax.swing.JButton();
         gammaButton = new javax.swing.JButton();
         tauButton = new javax.swing.JButton();
+        deltaButton = new javax.swing.JButton();
         arrowButton = new javax.swing.JButton();
         unionButton = new javax.swing.JButton();
         intersectionButton = new javax.swing.JButton();
@@ -129,7 +124,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
         deleteMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         exitMenuItem = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
 
@@ -206,11 +200,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
         jToolBar1.setRollover(true);
 
         saveButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        saveButton.setText("Save");
-        saveButton.addActionListener(new java.awt.event.ActionListener()
-        {
-            public void actionPerformed(java.awt.event.ActionEvent evt)
-            {
+        saveButton.setText("Save current table");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveButtonActionPerformed(evt);
             }
         });
@@ -302,6 +294,18 @@ public class MainWindow extends javax.swing.JFrame implements IService
             }
         });
         jToolBar3.add(tauButton);
+
+        deltaButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
+        deltaButton.setText("δ");
+        deltaButton.setFocusable(false);
+        deltaButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        deltaButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        deltaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deltaButtonActionPerformed(evt);
+            }
+        });
+        jToolBar3.add(deltaButton);
 
         arrowButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
         arrowButton.setText("→");
@@ -448,7 +452,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                     .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(worksheetPane, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                .addComponent(worksheetPane, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -483,7 +487,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
         );
 
         combinedView.addTab("Table view", jPanel2);
@@ -562,9 +566,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         jMenuBar1.add(fileMenu);
 
-        editMenu.setText("Edit");
-        jMenuBar1.add(editMenu);
-
         helpMenu.setText("Help");
 
         aboutMenuItem.setText("About");
@@ -607,14 +608,27 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveButtonActionPerformed
     {//GEN-HEADEREND:event_saveButtonActionPerformed
-
+        String name = queryView.getTitleAt(queryView.getSelectedIndex());
+        try {
+            Dataset dataset = Kernel.GetService(DataManager.class).getDataset(name);
+            Kernel.GetService(DataManager.class).setDataset(dataset);
+            relationModel.addElement(name);
+            TextQueryView.addTableAutoWords(name);
+        } catch (NoSuchDataset ex) {
+            System.out.println("No such dataset");
+        }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_runButtonActionPerformed
     {//GEN-HEADEREND:event_runButtonActionPerformed
         try
         {
-            queryTable.setModel(query.interpret(getCurrentWorksheet().getText()));
+            Dataset data = query.interpret(getCurrentWorksheet().getText());
+            // Don't know if this is a good idea - but makes it possible to retrieve the dataset for later possible use
+            // (saving of the dataset)
+            Kernel.GetService(DataManager.class).setDataset(data);
+            queryTable.setModel(data);
+            queryView.setTitleAt(queryView.getSelectedIndex(), data.getName());
         }
         catch (InvalidSchema ex)
         {
@@ -624,17 +638,17 @@ public class MainWindow extends javax.swing.JFrame implements IService
         {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, "caught in window", ex);
         }
-        
+
         catch (InvalidParameters ex)
         {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, "caught in window", ex);
         }
-        
+
         catch(InvalidEvaluation ex)
         {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, "caught in window", ex);
         }
-        
+
         catch(WrongType ex)
         {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, "caught in window", ex);
@@ -657,8 +671,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_rhoButtonActionPerformed
 
     private void gammaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gammaButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("γ", area.getCaretPosition());
+        JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
+//        JTextArea area = getCurrentWorksheet();
+//        area.insert("γ", area.getCaretPosition());
     }//GEN-LAST:event_gammaButtonActionPerformed
 
     private void tauButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tauButtonActionPerformed
@@ -677,8 +692,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_intersectionButtonActionPerformed
 
     private void differenceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_differenceButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("‒", area.getCaretPosition());
+        JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
+//        JTextArea area = getCurrentWorksheet();
+//        area.insert("‒", area.getCaretPosition());
     }//GEN-LAST:event_differenceButtonActionPerformed
 
     private void productButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productButtonActionPerformed
@@ -712,7 +728,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-        // TODO add your handling code here:
         JOptionPane.showMessageDialog(rootPane, "This is ReAl ver. 1E-10 \n\n"
                 + "Authors: \nDaniel Gavin \nTobias Kristoffer Scavenius \nNikolaj Høyer", "About", WIDTH);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
@@ -757,26 +772,26 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private void importMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importMenuItemActionPerformed
         //todo: need to write my own filechooser - not use the save and load from script
         int returnVal = loadFileChooser.showOpenDialog(this);
-        
+
         if (returnVal == JFileChooser.APPROVE_OPTION)
         {
             File file = loadFileChooser.getSelectedFile();
             try
             {
                 //ask for the table name
-                String str = (String) JOptionPane.showInputDialog(rootPane, 
+                String str = (String) JOptionPane.showInputDialog(rootPane,
                             "Please enter the name for the table.", "Table", JOptionPane.PLAIN_MESSAGE);
-                
+
                 if(str == null)
                 {
                     //user pressed cancel
                 }
-                
+
                 else if(str.isEmpty())
                 {
                     JOptionPane.showMessageDialog(rootPane, "Table name can't be empty");
                 }
-                
+
                 else
                 {
                     Kernel.GetService(DataManager.class).LoadDataset(file.getAbsolutePath(), str);
@@ -794,7 +809,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         else
         {
             System.out.println("File access cancelled by user.");
@@ -829,8 +844,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_exportMenuItemActionPerformed
 
     private void arrowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arrowButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("→", area.getCaretPosition());
+        JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
+//        JTextArea area = getCurrentWorksheet();
+//        area.insert("→", area.getCaretPosition());
     }//GEN-LAST:event_arrowButtonActionPerformed
 
     private void newSheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSheetButtonActionPerformed
@@ -840,12 +856,12 @@ public class MainWindow extends javax.swing.JFrame implements IService
         {
             //the user pressed exit
         }
-        
+
         else if(str.isEmpty())
         {
             JOptionPane.showMessageDialog(rootPane, "Can't accept empty name!");
         }
-                   
+
         else
         {
             boolean foundDup = false;
@@ -857,13 +873,13 @@ public class MainWindow extends javax.swing.JFrame implements IService
                     foundDup = true;
                 }
             }
-            
+
             //if we found the duplicate
             if(foundDup)
             {
                 JOptionPane.showMessageDialog(rootPane, "Worksheet name already exists!");
             }
-            
+
             else
             {
                 TextQueryView t = new TextQueryView();
@@ -874,7 +890,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_newSheetButtonActionPerformed
 
     private void removeSheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSheetButtonActionPerformed
-      
+
         //if the tabbedpane is empty no point in asking
         //todo: we have to discuss if we want to stop removing when there is one tab left
         if (worksheetPane.getTabCount() != 0)
@@ -891,7 +907,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 int index = worksheetPane.getSelectedIndex();
                 worksheetPane.removeTabAt(index);
             }
-            
+
             //no
             else
             {
@@ -928,7 +944,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_deleteMenuItemActionPerformed
     {//GEN-HEADEREND:event_deleteMenuItemActionPerformed
         String str = (String)relationModel.getElementAt(relationView.getSelectedIndex());
-        
+
         if(str != null)
         {
             relationModel.remove(relationView.getSelectedIndex());
@@ -944,20 +960,18 @@ public class MainWindow extends javax.swing.JFrame implements IService
         }
     }//GEN-LAST:event_deleteMenuItemActionPerformed
 
-    private void showTreeButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showTreeButtonActionPerformed
-    {//GEN-HEADEREND:event_showTreeButtonActionPerformed
-        Dataset dataset = (Dataset) queryTable.getModel();
-        TreeWindow window = new TreeWindow(this, false, Kernel.GetService(LocalDataManager.class).findOperation(dataset.getName()));      
-        window.setVisible(true);
-    }//GEN-LAST:event_showTreeButtonActionPerformed
+    private void deltaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deltaButtonActionPerformed
+        JTextArea area = getCurrentWorksheet();
+        area.insert("δ", area.getCaretPosition());
+    }//GEN-LAST:event_deltaButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JButton arrowButton;
     private javax.swing.JTabbedPane combinedView;
     private javax.swing.JMenuItem deleteMenuItem;
+    private javax.swing.JButton deltaButton;
     private javax.swing.JButton differenceButton;
-    private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenu fileMenu;
