@@ -14,17 +14,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import real.Interfaces.IService;
 import real.Objects.Dataset;
-import real.Objects.Exceptions.DatasetDuplicate;
-import real.Objects.Exceptions.InvalidDataset;
-import real.Objects.Exceptions.InvalidEvaluation;
-import real.Objects.Exceptions.InvalidParameters;
-import real.Objects.Exceptions.InvalidSchema;
-import real.Objects.Exceptions.NoSuchDataset;
-import real.Objects.Exceptions.WrongType;
+import real.Objects.Exceptions.*;
 import real.Objects.GUI.TextQueryView;
+import real.Objects.GUI.TreeViewTest;
 import real.Objects.Kernel;
 import real.Objects.Query;
-import real.Objects.GUI.TreeViewTest;
 
 public class MainWindow extends javax.swing.JFrame implements IService
 {
@@ -545,7 +539,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveButtonActionPerformed
     {//GEN-HEADEREND:event_saveButtonActionPerformed
-        //JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
         String name = queryView.getTitleAt(queryView.getSelectedIndex());
         try {
             Dataset dataset = Kernel.GetService(DataManager.class).getDataset(name);
