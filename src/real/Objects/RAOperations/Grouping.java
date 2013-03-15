@@ -15,6 +15,7 @@ import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.Row;
+import real.Objects.Utility;
 
 public class Grouping extends UnaryOperationBase
 {
@@ -64,7 +65,7 @@ public class Grouping extends UnaryOperationBase
                     AggregateCondition agg = (AggregateCondition) rename.getOperandA();
                     
                     //sett the aggreation value
-                    addRow.setValue(att.getColumnName(), agg.aggregateEvaluate(rows));                    
+                    addRow.setValue(att.getColumnName(), Utility.trimTrailingZeros(agg.aggregateEvaluate(rows)));                    
                 }
                 else
                 {

@@ -675,9 +675,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_rhoButtonActionPerformed
 
     private void gammaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gammaButtonActionPerformed
-        JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
-//        JTextArea area = getCurrentWorksheet();
-//        area.insert("γ", area.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("γ", area.getCaretPosition());
     }//GEN-LAST:event_gammaButtonActionPerformed
 
     private void tauButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tauButtonActionPerformed
