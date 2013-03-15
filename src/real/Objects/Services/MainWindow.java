@@ -270,7 +270,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         });
         jToolBar3.add(tauButton);
 
-        deltaButton.setFont(new java.awt.Font("Monospaced", 0, 20)); // NOI18N
+        deltaButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
         deltaButton.setText("δ");
         deltaButton.setFocusable(false);
         deltaButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
