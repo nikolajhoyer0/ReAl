@@ -14,6 +14,7 @@ import real.Objects.RAOperations.ReferencedDataset;
 
 public class TreeView extends JPanel {
     private mxGraph graph;
+    private mxGraphComponent graphComponent;
     
     public TreeView()
     {
@@ -22,13 +23,13 @@ public class TreeView extends JPanel {
         
         
         graph = new mxGraph();
-        graph.setCellsLocked(true);
+        graph.setCellsLocked(false);
         graph.setAllowDanglingEdges(false);
         graph.setConnectableEdges(false);   
 
         mxHierarchicalLayout layout = new mxHierarchicalLayout(graph);  
         layout.execute(graph.getDefaultParent());
-        final mxGraphComponent graphComponent = new mxGraphComponent(graph);
+        graphComponent = new mxGraphComponent(graph);
   
         graphComponent.addMouseWheelListener(new MouseWheelListener()
         {
@@ -70,6 +71,8 @@ public class TreeView extends JPanel {
         {
             graph.getModel().endUpdate();
         }    
+        
+        
     }
     
     private void traverseTree(OperationBase tree, Object parent, Object lastNode, int y)
@@ -94,6 +97,7 @@ public class TreeView extends JPanel {
             //end leafs
             else if(tree instanceof ReferencedDataset)
             {
+                ReferencedDataset ref = (ReferencedDataset)tree;
                 Object v2 = graph.insertVertex(parent, null, tree.toString(), 3, 2, 90, 40);
                 
                 if(lastNode != null)
@@ -101,7 +105,7 @@ public class TreeView extends JPanel {
                     graph.insertEdge(parent, null, null, lastNode,v2);
                 } 
                 
-                traverseTree(null, parent, v2, 0);
+                traverseTree(ref.getOperand(), parent, v2, 0);
             }
            
             else

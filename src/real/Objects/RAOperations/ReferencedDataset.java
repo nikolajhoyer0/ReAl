@@ -21,6 +21,11 @@ public class ReferencedDataset extends OperationBase
         return this.name;
     }
     
+    public OperationBase getOperand()
+    {
+        return Kernel.GetService(LocalDataManager.class).findOperation(name);
+    }
+    
     @Override
     public Dataset execute() throws NoSuchDataset
     {
