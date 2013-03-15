@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.EnumSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
@@ -606,8 +605,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_rhoButtonActionPerformed
 
     private void gammaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gammaButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("γ", area.getCaretPosition());
+        JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
+//        JTextArea area = getCurrentWorksheet();
+//        area.insert("γ", area.getCaretPosition());
     }//GEN-LAST:event_gammaButtonActionPerformed
 
     private void tauButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tauButtonActionPerformed
@@ -626,8 +626,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_intersectionButtonActionPerformed
 
     private void differenceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_differenceButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("‒", area.getCaretPosition());
+        JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
+//        JTextArea area = getCurrentWorksheet();
+//        area.insert("‒", area.getCaretPosition());
     }//GEN-LAST:event_differenceButtonActionPerformed
 
     private void productButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productButtonActionPerformed
@@ -777,8 +778,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_exportMenuItemActionPerformed
 
     private void arrowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arrowButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("→", area.getCaretPosition());
+        JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
+//        JTextArea area = getCurrentWorksheet();
+//        area.insert("→", area.getCaretPosition());
     }//GEN-LAST:event_arrowButtonActionPerformed
 
     private void newSheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSheetButtonActionPerformed
