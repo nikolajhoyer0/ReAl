@@ -44,8 +44,8 @@ public abstract class AggregateCondition extends UnaryConditionBase
     }
     
     abstract public String aggregateString(ArrayList<Row> rows) throws InvalidEvaluation;
-    abstract public float aggregateNumber(ArrayList<Row> rows) throws InvalidEvaluation;
-    abstract public boolean aggregateBoolean(ArrayList<Row> rows) throws InvalidEvaluation;
+    abstract public Float aggregateNumber(ArrayList<Row> rows) throws InvalidEvaluation;
+    abstract public Boolean aggregateBoolean(ArrayList<Row> rows) throws InvalidEvaluation;
     
     @Override
     public String evaluateString(Row row) throws InvalidEvaluation
@@ -54,13 +54,13 @@ public abstract class AggregateCondition extends UnaryConditionBase
     }
 
     @Override
-    public float evaluateNumber(Row row) throws InvalidEvaluation
+    public Float evaluateNumber(Row row) throws InvalidEvaluation
     {
         throw new InvalidEvaluation("Aggregate functions are only used in grouping operator.");
     }
 
     @Override
-    public boolean evaluateBoolean(Row row) throws InvalidEvaluation
+    public Boolean evaluateBoolean(Row row) throws InvalidEvaluation
     {
         throw new InvalidEvaluation("Aggregate functions are only used in grouping operator.");
     }  

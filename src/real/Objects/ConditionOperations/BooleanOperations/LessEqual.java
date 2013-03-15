@@ -26,18 +26,24 @@ public class LessEqual extends BinaryConditionBase
     }
 
     @Override
-    public float evaluateNumber(Row row)
+    public Float evaluateNumber(Row row)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public boolean evaluateBoolean(Row row) throws InvalidEvaluation
+    public Boolean evaluateBoolean(Row row) throws InvalidEvaluation
     {
         if (operandA.getType() == DataType.NUMBER)
         {
-            float a = (float) operandA.evaluate(row);
-            float b = (float) operandB.evaluate(row);
+            Float a = (Float) operandA.evaluate(row);
+            Float b = (Float) operandB.evaluate(row);
+            
+            if(a == null || b == null)
+            {
+                return false;
+            }
+            
             return a <= b;
         }
         else

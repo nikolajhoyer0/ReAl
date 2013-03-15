@@ -28,13 +28,13 @@ public class Rename extends BinaryConditionBase
     }
 
     @Override
-    public float evaluateNumber(Row row) throws InvalidEvaluation
+    public Float evaluateNumber(Row row) throws InvalidEvaluation
     {
         throw new InvalidEvaluation("can only use the rename operator in projection, renaming and grouping.");
     }
 
     @Override
-    public boolean evaluateBoolean(Row row) throws InvalidEvaluation
+    public Boolean evaluateBoolean(Row row) throws InvalidEvaluation
     {
         throw new InvalidEvaluation("can only use the rename operator in projection, renaming and grouping.");
     }

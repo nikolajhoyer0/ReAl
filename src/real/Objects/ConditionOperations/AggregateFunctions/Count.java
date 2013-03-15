@@ -19,13 +19,13 @@ public class Count extends AggregateCondition
     }
 
     @Override
-    public float aggregateNumber(ArrayList<Row> rows) throws InvalidEvaluation
+    public Float aggregateNumber(ArrayList<Row> rows) throws InvalidEvaluation
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public boolean aggregateBoolean(ArrayList<Row> rows) throws InvalidEvaluation
+    public Boolean aggregateBoolean(ArrayList<Row> rows) throws InvalidEvaluation
     { 
         throw new UnsupportedOperationException("Not supported yet.");
     }

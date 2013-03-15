@@ -26,25 +26,37 @@ public class Not extends BinaryConditionBase
     }
 
     @Override
-    public float evaluateNumber(Row row)
+    public Float evaluateNumber(Row row)
     {
         throw new UnsupportedOperationException("only supports boolean");
     }
 
     @Override
-    public boolean evaluateBoolean(Row row) throws InvalidEvaluation
+    public Boolean evaluateBoolean(Row row) throws InvalidEvaluation
     {
         if(operandA.getType() != DataType.BOOLEAN)
         {
-            boolean a = (boolean)operandA.evaluate(row);
-            boolean b = (boolean)operandB.evaluate(row);          
+            Boolean a = (Boolean)operandA.evaluate(row);
+            Boolean b = (Boolean)operandB.evaluate(row);          
+            
+            if(a == null || b == null)
+            {
+                return false;
+            }
+            
             return a == b;
         }
         
         else if(operandA.getType() != DataType.NUMBER)
         {
-            float a = (float)operandA.evaluate(row);
-            float b = (float)operandB.evaluate(row);            
+            Float a = (Float)operandA.evaluate(row);
+            Float b = (Float)operandB.evaluate(row); 
+            
+            if(a == null || b == null)
+            {
+                return false;
+            }
+            
             return a == b;
         }
         
@@ -52,6 +64,12 @@ public class Not extends BinaryConditionBase
         {
             String a = (String)operandA.evaluate(row);
             String b = (String)operandB.evaluate(row);
+            
+            if(a == null || b == null)
+            {
+                return false;
+            }
+            
             return !a.equals(b);
         }     
     }

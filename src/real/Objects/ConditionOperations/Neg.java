@@ -28,13 +28,20 @@ public class Neg extends UnaryConditionBase
     }
 
     @Override
-    public float evaluateNumber(Row row) throws InvalidEvaluation
+    public Float evaluateNumber(Row row) throws InvalidEvaluation
     {
-        return -(float)operand.evaluateNumber(row);
+        Float a = operand.evaluateNumber(row);
+        
+        if(a == null)
+        {
+            return null;
+        }
+        
+        return -a;
     }
 
     @Override
-    public boolean evaluateBoolean(Row row)
+    public Boolean evaluateBoolean(Row row)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }

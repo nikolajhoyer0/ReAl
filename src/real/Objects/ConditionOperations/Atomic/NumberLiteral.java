@@ -24,13 +24,13 @@ public class NumberLiteral extends UnaryConditionBase
     }
 
     @Override
-    public float evaluateNumber(Row row)
+    public Float evaluateNumber(Row row)
     {
         return this.value;
     }
 
     @Override
-    public boolean evaluateBoolean(Row row)
+    public Boolean evaluateBoolean(Row row)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }

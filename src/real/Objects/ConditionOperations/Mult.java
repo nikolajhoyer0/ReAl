@@ -26,13 +26,21 @@ public class Mult extends BinaryConditionBase
     }
 
     @Override
-    public float evaluateNumber(Row row) throws InvalidEvaluation
+    public Float evaluateNumber(Row row) throws InvalidEvaluation
     {
-        return operandA.evaluateNumber(row) * operandB.evaluateNumber(row);
+        Float a = operandA.evaluateNumber(row);
+        Float b = operandB.evaluateNumber(row);
+        
+        if(a == null || b == null)
+        {
+            return null;
+        }
+        
+        return a * b;
     }
 
     @Override
-    public boolean evaluateBoolean(Row row)
+    public Boolean evaluateBoolean(Row row)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }  

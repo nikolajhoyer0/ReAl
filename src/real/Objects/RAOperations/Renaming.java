@@ -1,7 +1,6 @@
 
 package real.Objects.RAOperations;
 
-import java.util.ArrayList;
 import real.BaseClasses.ConditionBase;
 import real.BaseClasses.OperationBase;
 import real.BaseClasses.UnaryOperationBase;

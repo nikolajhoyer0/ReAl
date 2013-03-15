@@ -22,13 +22,13 @@ public class StringLiteral extends UnaryConditionBase
     }
 
     @Override
-    public float evaluateNumber(Row row)
+    public Float evaluateNumber(Row row)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public boolean evaluateBoolean(Row row)
+    public Boolean evaluateBoolean(Row row)
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }

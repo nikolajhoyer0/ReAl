@@ -45,6 +45,6 @@ public abstract class ConditionBase
     }
     
     public abstract String evaluateString(Row row) throws InvalidEvaluation;
-    public abstract float evaluateNumber(Row row) throws InvalidEvaluation;;
-    public abstract boolean evaluateBoolean(Row row) throws InvalidEvaluation;;
+    public abstract Float evaluateNumber(Row row) throws InvalidEvaluation;;
+    public abstract Boolean evaluateBoolean(Row row) throws InvalidEvaluation;;
 }

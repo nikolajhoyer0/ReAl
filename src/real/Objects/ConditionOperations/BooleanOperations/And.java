@@ -12,7 +12,7 @@ public class And extends BinaryConditionBase
 
     public And(ConditionBase operandA, ConditionBase operandB) throws WrongType
     {
-        super(operandA, operandB);
+        super(operandA, operandB, DataType.BOOLEAN);
         
         if(getType() == DataType.UNKNOWN)
         {
@@ -28,16 +28,22 @@ public class And extends BinaryConditionBase
     }
 
     @Override
-    public float evaluateNumber(Row row)
+    public Float evaluateNumber(Row row)
     {
         throw new UnsupportedOperationException("must be a boolean expression");
     }
 
     @Override
-    public boolean evaluateBoolean(Row row) throws InvalidEvaluation
+    public Boolean evaluateBoolean(Row row) throws InvalidEvaluation
     {
-        boolean a = (boolean)operandA.evaluate(row);
-        boolean b = (boolean)operandB.evaluate(row);      
+        Boolean a = (Boolean)operandA.evaluate(row);
+        Boolean b = (Boolean)operandB.evaluate(row);     
+        
+        if(a == null || b == null)
+        {
+            return false;
+        }
+        
         return a && b;
     }  
 }

@@ -73,7 +73,13 @@ public class Projection extends UnaryOperationBase
                         Object value = rename.getOperandA().evaluate(result.getRows().get(r));
                         DataType type = rename.getOperandA().getType();
                         
-                        if (type == DataType.STRING)
+                        if(value == null)
+                        {
+                            //empty 
+                            rows.get(r).setValue(column.getName(), "");
+                        }
+                        
+                        else if (type == DataType.STRING)
                         {
                             rows.get(r).setValue(column.getName(), (String) value);
                         }
@@ -111,7 +117,13 @@ public class Projection extends UnaryOperationBase
                     Object value = conditions[i].evaluate(result.getRows().get(r));
                     DataType type = conditions[i].getType();
                     
-                    if (type == DataType.STRING)
+                    if (value == null)
+                    {
+                        //empty 
+                        rows.get(r).setValue(column.getName(), "");
+                    }
+                    
+                    else if (type == DataType.STRING)
                     {
                         rows.get(r).setValue(column.getName(), (String) value);
                     }

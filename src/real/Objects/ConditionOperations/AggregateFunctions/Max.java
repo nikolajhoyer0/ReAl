@@ -35,13 +35,20 @@ public class Max extends AggregateCondition
     }
 
     @Override
-    public float aggregateNumber(ArrayList<Row> rows) throws InvalidEvaluation
+    public Float aggregateNumber(ArrayList<Row> rows) throws InvalidEvaluation
     {
         float value = 0;
         
         for(Row row : rows)
         {
-            float f = Float.parseFloat(row.getValue(columnName));
+            String rowValue = row.getValue(columnName);
+            
+            if(rowValue.isEmpty())
+            {
+                throw new InvalidEvaluation("Can't Aggregate a column that have null values.");
+            }
+            
+            float f = Float.parseFloat(rowValue);
           
             if(value < f)
             {
@@ -53,7 +60,7 @@ public class Max extends AggregateCondition
     }
 
     @Override
-    public boolean aggregateBoolean(ArrayList<Row> rows) throws InvalidEvaluation
+    public Boolean aggregateBoolean(ArrayList<Row> rows) throws InvalidEvaluation
     { 
         throw new UnsupportedOperationException("Not supported yet.");
     }    

@@ -25,19 +25,40 @@ public class AttributeLiteral extends UnaryConditionBase
     @Override
     public String evaluateString(Row row)
     {
-        return row.getValue(attributeName);
+        String value = row.getValue(attributeName);
+        
+        if(value.isEmpty())
+        {
+            return null;
+        }
+        
+        return value;
     }
 
     @Override
-    public float evaluateNumber(Row row)
+    public Float evaluateNumber(Row row)
     {
-        return Float.parseFloat(row.getValue(attributeName));
+        String value = row.getValue(attributeName);
+        
+        if(value.isEmpty())
+        {
+            return null;
+        }
+        
+        return Float.parseFloat(value);
     }
 
     @Override
-    public boolean evaluateBoolean(Row row)
+    public Boolean evaluateBoolean(Row row)
     {
-        return Boolean.parseBoolean(row.getValue(attributeName));   
+        String value = row.getValue(attributeName);
+        
+        if(value.isEmpty())
+        {
+            return null;
+        }
+        
+        return Boolean.parseBoolean(value);   
     }
     
 }
