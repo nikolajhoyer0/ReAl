@@ -555,8 +555,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
         try
         {
             Dataset data = query.interpret(getCurrentWorksheet().getText());
+
             // Don't know if this is a good idea - but makes it possible to retrieve the dataset for later possible use
-            // (saving of the dataset)
+            // (saving of the dataset). However, datasets may pile up over time. Should probably implement a cleanup.
             Kernel.GetService(DataManager.class).setDataset(data);
             queryTable.setModel(data);
             queryView.setTitleAt(queryView.getSelectedIndex(), data.getName());
