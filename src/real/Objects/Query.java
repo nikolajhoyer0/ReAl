@@ -153,14 +153,15 @@ public class Query
                     
                     Dataset data = currentData.execute();
                     
-                    if(data == null)
+                    if(currentData == null || data == null)
                     {
                         throw new InvalidEvaluation("invalid statement.");
                     }
                     
                     localData = data.clone();
                     localData.setName(name);
-                    local.LoadDataset(localData);                  
+                    local.LoadDataset(localData);    
+                    local.LoadOperation(name, currentData);
                 }
                 
                 else

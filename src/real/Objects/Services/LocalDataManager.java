@@ -1,6 +1,7 @@
 package real.Objects.Services;
 
 import java.util.HashMap;
+import real.BaseClasses.OperationBase;
 import real.BaseClasses.ServiceBase;
 import real.Objects.Dataset;
 
@@ -8,10 +9,13 @@ import real.Objects.Dataset;
 public class LocalDataManager extends ServiceBase
 {
     private HashMap<String, Dataset> datasets;
-   
+    //store the condition for treeviewing.
+    private HashMap<String, OperationBase> operations;
+    
     public LocalDataManager()
     {
         this.datasets = new HashMap<>();
+        this.operations = new HashMap<>();
     }
     
     public void clearLocal()
@@ -25,9 +29,20 @@ public class LocalDataManager extends ServiceBase
         this.datasets.put(dataset.getName(), dataset);
     }
     
+    public void LoadOperation(String name, OperationBase operation)
+    {
+        this.operations.remove(name);
+        this.operations.put(name, operation);
+    }
+    
     public Dataset findDataset(String name)
     {
         return this.datasets.get(name);
+    }
+    
+    public OperationBase findOperation(String name)
+    {
+        return this.operations.get(name);
     }
     
     public Dataset[] getAllDatasets()
