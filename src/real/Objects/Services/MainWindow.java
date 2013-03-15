@@ -562,7 +562,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
     {//GEN-HEADEREND:event_runButtonActionPerformed
         try
         {
-            queryTable.setModel(query.interpret(getCurrentWorksheet().getText()));
+            Dataset data = query.interpret(getCurrentWorksheet().getText());
+            queryTable.setModel(data);
+            queryView.setTitleAt(queryView.getSelectedIndex(), data.getName());
         }
         catch (InvalidSchema ex)
         {
