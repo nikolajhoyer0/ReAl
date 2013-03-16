@@ -69,9 +69,9 @@ public class Query
     {
         
         //will be removed
-        view = new TreeViewTest();
-        view.setSize(800, 820);
-        view.setVisible(true);
+        //view = new TreeViewTest();
+        //view.setSize(800, 820);
+        //view.setVisible(true);
         
         
         TokenOpManager opManager = new TokenOpManager();
