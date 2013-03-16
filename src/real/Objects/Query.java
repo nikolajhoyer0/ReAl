@@ -138,7 +138,7 @@ public class Query
         if (trees != null)
         {
             //will be removed
-            view.load(trees.get(0));
+            //view.load(trees.get(0));
             
             for (int i = 0; i < trees.size(); ++i)
             {
