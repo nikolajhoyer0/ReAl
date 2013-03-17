@@ -24,7 +24,7 @@ import real.Objects.Kernel;
 import real.Objects.Services.DataManager;
 
 /*
- Class is pretty much like JTextArea, except it also finishes table name words for you.
+ Class is pretty much like JTextArea, except it also finishes table name words for you and converts specific strings to symbols.
  pretty much ripped from the oracle example.
 */
 
@@ -249,6 +249,9 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
         private void convertToSymbol(final int start, final int end, String str)
         {
+            System.out.println(str.substring(start, end).length());
+            System.out.println(str.substring(start, end));
+            
             switch (str.substring(start, end))
             {
                 case "projection":
@@ -282,15 +285,15 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
 
                 //if we are in the string we only look for one string
-                if (!Character.isSpaceChar(str.charAt(pos)))
+                if (!Character.isWhitespace(str.charAt(pos)))
                 {                  
-                    int leftIndex = 0;
-                    int rightIndex = 0;
+                    int leftIndex;
+                    int rightIndex;
 
                     for (leftIndex = pos; leftIndex > 0; --leftIndex)
                     {
 
-                        if (Character.isSpaceChar(str.charAt(leftIndex)))
+                        if (Character.isWhitespace(str.charAt(leftIndex)))
                         {
                             leftIndex++;
                             break;
@@ -301,9 +304,8 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                     for (rightIndex = pos; rightIndex < str.length(); ++rightIndex)
                     {
 
-                        if (Character.isSpaceChar(str.charAt(rightIndex)))
+                        if (Character.isWhitespace(str.charAt(rightIndex)))
                         {
-                            //rightIndex--;
                             break;
                         }
 
@@ -312,9 +314,10 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                     convertToSymbol(leftIndex, rightIndex, str);
                 }
 
+                /*
                 //if we are in space we have to look for two words and compare
                 else
-                {
+                {               
                     int leftEndIndex;
                     int leftStartIndex;
                     int rightEndIndex;
@@ -323,9 +326,8 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                     //find the left start index word
                     for(leftStartIndex = pos; leftStartIndex > 0; --leftStartIndex)
                     {
-                        if(!Character.isSpaceChar(str.charAt(leftStartIndex)))
+                        if(Character.isLetterOrDigit(str.charAt(leftStartIndex)))
                         {
-                            leftStartIndex++;
                             break;
                         }
                     }
@@ -333,7 +335,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
                     for(leftEndIndex = leftStartIndex; leftEndIndex > 0; --leftEndIndex)
                     {
-                        if(Character.isSpaceChar(str.charAt(leftEndIndex)))
+                        if(Character.isWhitespace(str.charAt(leftEndIndex)))
                         {
                             break;
                         }
@@ -342,7 +344,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                     //find the right start index word
                     for(rightStartIndex = pos; rightStartIndex < str.length(); ++rightStartIndex)
                     {
-                        if(!Character.isSpaceChar(str.charAt(rightStartIndex)))
+                        if(Character.isLetterOrDigit(str.charAt(rightStartIndex)))
                         {
                             break;
                         }
@@ -351,7 +353,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                     //find the index where the right word finish
                     for(rightEndIndex = rightStartIndex; rightEndIndex < str.length(); ++rightEndIndex)
                     {
-                        if(Character.isSpaceChar(str.charAt(rightEndIndex)))
+                        if(Character.isWhitespace(str.charAt(rightEndIndex)))
                         {
                             break;
                         }
@@ -360,7 +362,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                     convertToSymbol(leftEndIndex, leftStartIndex+1, str);
                     convertToSymbol(rightStartIndex, rightEndIndex, str);
                 }
-
+                */
             }
         }
     }
