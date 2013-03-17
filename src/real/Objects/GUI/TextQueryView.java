@@ -52,6 +52,12 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
         textArea.setBorder(null);
         scrollPane = new JScrollPane(textArea);
         this.add(scrollPane);
+        
+        addAutoWord("projection");
+        addAutoWord("selection");
+        addAutoWord("rename");
+        addAutoWord("group");
+        
     }
 
     public static void addAutoWord(String word)
@@ -248,10 +254,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
         }
 
         private void convertToSymbol(final int start, final int end, String str)
-        {
-            System.out.println(str.substring(start, end).length());
-            System.out.println(str.substring(start, end));
-            
+        {  
             switch (str.substring(start, end))
             {
                 case "projection":
