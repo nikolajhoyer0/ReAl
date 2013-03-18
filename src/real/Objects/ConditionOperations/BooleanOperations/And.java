@@ -7,12 +7,12 @@ import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.WrongType;
 import real.Objects.Row;
 
-public class And extends BinaryConditionBase
+public class And extends BooleanOperator
 {
 
     public And(ConditionBase operandA, ConditionBase operandB) throws WrongType
     {
-        super(operandA, operandB, DataType.BOOLEAN);
+        super(operandA, operandB);
         
         if(getType() == DataType.UNKNOWN)
         {
@@ -21,18 +21,6 @@ public class And extends BinaryConditionBase
         
     }
    
-    @Override
-    public String evaluateString(Row row)
-    {
-        throw new UnsupportedOperationException("must be a boolean expression");
-    }
-
-    @Override
-    public Float evaluateNumber(Row row)
-    {
-        throw new UnsupportedOperationException("must be a boolean expression");
-    }
-
     @Override
     public Boolean evaluateBoolean(Row row) throws InvalidEvaluation
     {
