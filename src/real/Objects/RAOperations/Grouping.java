@@ -64,7 +64,7 @@ public class Grouping extends UnaryOperationBase
                     AttributeLiteral att = (AttributeLiteral) rename.getOperandB();
                     AggregateCondition agg = (AggregateCondition) rename.getOperandA();
                     
-                    //sett the aggreation value
+                    //set the aggreation value
                     addRow.setValue(att.getColumnName(), Utility.trimTrailingZeros(agg.aggregateEvaluate(rows)));                    
                 }
                 else
@@ -72,8 +72,9 @@ public class Grouping extends UnaryOperationBase
                     throw new InvalidParameters("invalid grouping");
                 }
                 
-                includeRows.add(addRow);
             }
+            
+            includeRows.add(addRow);
         }
       
         return new Dataset("", columns, includeRows);
