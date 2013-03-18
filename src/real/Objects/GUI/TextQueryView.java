@@ -99,11 +99,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
             for (int k = 0; k < datasets.get(i).getColumnCount(); k++)
             {
                 String keyword = datasets.get(i).getColumnName(k);
-
-                if (!words.contains(keyword))
-                {
-                    words.remove(keyword);
-                }
+                words.remove(keyword);        
             }
         }
 

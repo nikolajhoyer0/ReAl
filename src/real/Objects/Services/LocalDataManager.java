@@ -45,6 +45,11 @@ public class LocalDataManager extends ServiceBase
         return this.operations.get(name);
     }
     
+    public String[] getAllKeys()
+    {
+        return this.datasets.keySet().toArray(new String[0]);
+    }
+    
     public Dataset[] getAllDatasets()
     {
         return datasets.values().toArray(new Dataset[0]);

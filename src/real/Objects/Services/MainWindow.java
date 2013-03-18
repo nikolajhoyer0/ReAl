@@ -11,6 +11,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import real.Interfaces.IService;
 import real.Objects.Dataset;
@@ -19,6 +21,7 @@ import real.Objects.GUI.TextQueryView;
 import real.Objects.GUI.TreeWindow;
 import real.Objects.Kernel;
 import real.Objects.Query;
+import real.Objects.Utility;
 
 public class MainWindow extends javax.swing.JFrame implements IService
 {
@@ -46,6 +49,12 @@ public class MainWindow extends javax.swing.JFrame implements IService
         return view.getTextArea();
     }
 
+    public JTable getCurrentQueryTable()
+    {
+        JScrollPane scroll = (JScrollPane)queryView.getSelectedComponent();    
+        return (JTable)scroll.getViewport().getView();
+    }
+    
     @Override
     public void Initialize()
     {
@@ -67,6 +76,23 @@ public class MainWindow extends javax.swing.JFrame implements IService
     {
     }
 
+    public void setLocalTables()
+    {
+        LocalDataManager local = Kernel.GetService(LocalDataManager.class);
+        queryView.removeAll();
+        String[] tables = local.getAllKeys();
+        
+        for(int i = tables.length-1; i >= 0;i--)
+        {
+            JTable table = new JTable();
+            JScrollPane scroll = new JScrollPane();
+            table.setModel(local.findDataset(tables[i]));
+            table.setName(tables[i]);
+            scroll.setViewportView(table);
+            queryView.addTab(tables[i], scroll);          
+        }  
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -456,7 +482,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                     .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jToolBar3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(worksheetPane, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                .addComponent(worksheetPane, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -491,7 +517,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
         );
 
         combinedView.addTab("Table view", jPanel2);
@@ -613,13 +639,21 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_saveButtonActionPerformed
     {//GEN-HEADEREND:event_saveButtonActionPerformed
         String name = queryView.getTitleAt(queryView.getSelectedIndex());
-        try {
-            Dataset dataset = Kernel.GetService(DataManager.class).getDataset(name);
-            Kernel.GetService(DataManager.class).setDataset(dataset);
-            relationModel.addElement(name);
-            TextQueryView.addTableAutoWords(name);
-        } catch (NoSuchDataset ex) {
-            System.out.println("No such dataset");
+        Dataset dataset = Kernel.GetService(LocalDataManager.class).findDataset(name);
+        
+        if(dataset != null)
+        {
+            //There must not be another table with the same name.
+            if(!relationModel.contains(name))
+            {
+                Kernel.GetService(DataManager.class).setDataset(dataset);
+                relationModel.addElement(name);
+                TextQueryView.addTableAutoWords(name);
+            }
+            else
+            {
+                System.out.println("Table name already exists.");
+            }      
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
@@ -628,11 +662,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         try
         {
             Dataset data = query.interpret(getCurrentWorksheet().getText());
-            // Don't know if this is a good idea - but makes it possible to retrieve the dataset for later possible use
-            // (saving of the dataset)
-            Kernel.GetService(DataManager.class).setDataset(data);
-            queryTable.setModel(data);
-            queryView.setTitleAt(queryView.getSelectedIndex(), data.getName());
+            setLocalTables();
         }
         catch (InvalidSchema ex)
         {
@@ -783,7 +813,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
             {
                 //ask for the table name
                 String str = (String) JOptionPane.showInputDialog(rootPane,
-                            "Please enter the name for the table.", "Table", JOptionPane.PLAIN_MESSAGE);
+                            "Please enter the name for the table.", "Table", JOptionPane.PLAIN_MESSAGE, null, null, Utility.filename(file.getName()));
 
                 if(str == null)
                 {
@@ -894,7 +924,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private void removeSheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeSheetButtonActionPerformed
 
         //if the tabbedpane is empty no point in asking
-        //todo: we have to discuss if we want to stop removing when there is one tab left
         if (worksheetPane.getTabCount() != 0)
         {
             int n = JOptionPane.showConfirmDialog(
@@ -919,38 +948,49 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private void relationViewMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_relationViewMouseClicked
     {//GEN-HEADEREND:event_relationViewMouseClicked
-        //if the user double clicks.
-        if (evt.getClickCount() == 1)
-        {
-            int index = relationView.getSelectedIndex();
-            String str = (String) relationModel.getElementAt(index);
+        int index = relationView.getSelectedIndex();
+        String str = (String) relationModel.getElementAt(index);
 
-            if (str != null)
+        if (str != null)
+        {
+            try
             {
-                try
-                {
-                    Dataset dataset = Kernel.GetService(DataManager.class).getDataset(str);
-                    tableView.setModel(dataset);
-                    //focus it for cool effect
-                    //1 is table view.
-                    combinedView.setSelectedIndex(1);
-                }
-                catch (NoSuchDataset ex)
-                {
-                    ex.printStackTrace();
-                }
+                Dataset dataset = Kernel.GetService(DataManager.class).getDataset(str);
+                tableView.setModel(dataset);
+                //focus it for cool effect
+                //1 is table view.
+                combinedView.setSelectedIndex(1);
+            }
+            catch (NoSuchDataset ex)
+            {
+                ex.printStackTrace();
             }
         }
+
     }//GEN-LAST:event_relationViewMouseClicked
 
     private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_deleteMenuItemActionPerformed
     {//GEN-HEADEREND:event_deleteMenuItemActionPerformed
-        String str = (String)relationModel.getElementAt(relationView.getSelectedIndex());
-
-        if(str != null)
+        
+        int index = relationView.getSelectedIndex();
+        String str = "";
+        
+        if(index == -1)
+        {
+            System.out.println("You must select at table to delete.");      
+        }
+ 
+        else
+        {
+            str = (String)relationModel.getElementAt(index);
+        }
+            
+            
+        if(!str.isEmpty())
         {
             relationModel.remove(relationView.getSelectedIndex());
-
+            TextQueryView.removeTableAutoWords(str);
+            
             try
             {
                 Kernel.GetService(DataManager.class).removeDataset(str);
@@ -970,7 +1010,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private void showTreeButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showTreeButtonActionPerformed
     {//GEN-HEADEREND:event_showTreeButtonActionPerformed
         //wiil probably be changed.
-        Dataset dataset = (Dataset)queryTable.getModel();
+        Dataset dataset = (Dataset)getCurrentQueryTable().getModel();
         TreeWindow window = new TreeWindow(this, true, Kernel.GetService(LocalDataManager.class).findOperation(dataset.getName()));
         window.setVisible(true);
     }//GEN-LAST:event_showTreeButtonActionPerformed

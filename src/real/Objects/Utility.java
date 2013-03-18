@@ -137,4 +137,11 @@ public class Utility
 
         return duplicates;
     }
+    
+    public static String filename(String filename)
+    {
+        int dot = filename.lastIndexOf(".");
+        int sep = filename.lastIndexOf("/");
+        return filename.substring(sep + 1, dot);
+    }
 }
