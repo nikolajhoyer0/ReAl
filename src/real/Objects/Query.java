@@ -10,7 +10,9 @@ import real.BaseClasses.OperationBase;
 import real.Enumerations.DataType;
 import real.Enumerations.OpTypes;
 import real.Objects.ConditionOperations.Add;
+import real.Objects.ConditionOperations.AggregateFunctions.Count;
 import real.Objects.ConditionOperations.AggregateFunctions.Max;
+import real.Objects.ConditionOperations.AggregateFunctions.Min;
 import real.Objects.ConditionOperations.AggregateFunctions.Sum;
 import real.Objects.ConditionOperations.Atomic.AttributeLiteral;
 import real.Objects.ConditionOperations.Atomic.BooleanLiteral;
@@ -272,6 +274,10 @@ public class Query
                 return new Max(interpretCondition(children[0], relation, ignoreNoAttribute));
             case "Sum":
                 return new Sum(interpretCondition(children[0], relation, ignoreNoAttribute));
+            case "Count":
+                return new Count(interpretCondition(children[0], relation, ignoreNoAttribute));
+            case "Min":
+                return new Min(interpretCondition(children[0], relation, ignoreNoAttribute));
             case "Attribute":
                 String value = children[0].getToken().getSymbol();
                 
