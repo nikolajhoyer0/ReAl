@@ -47,7 +47,7 @@ public class Equal extends BinaryConditionBase
                 return false;
             }
             
-            return a.equals(b);
+            return Boolean.compare(a, b) == 0;
         }
         
         else if(operandA.getType() == DataType.NUMBER)
@@ -60,7 +60,7 @@ public class Equal extends BinaryConditionBase
                 return false;
             }
             
-            return a.equals(b);
+            return Float.compare(a, b) == 0;
         }
         
         else
