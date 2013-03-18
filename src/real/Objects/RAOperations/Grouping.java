@@ -72,8 +72,9 @@ public class Grouping extends UnaryOperationBase
                     throw new InvalidParameters("invalid grouping");
                 }
                 
-                includeRows.add(addRow);
             }
+            
+            includeRows.add(addRow);
         }
       
         return new Dataset("", columns, includeRows);
