@@ -2,14 +2,26 @@ package real.Objects.ConditionOperations.AggregateFunctions;
 
 import java.util.ArrayList;
 import real.BaseClasses.ConditionBase;
+import real.Objects.ConditionOperations.Atomic.AttributeLiteral;
 import real.Objects.Exceptions.InvalidEvaluation;
+import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Row;
 
 public class Min extends AggregateCondition
 {
-    public Min(ConditionBase operand)
+    private String columnName;
+    
+    public Min(ConditionBase operand) throws InvalidParameters
     {
         super(operand);
+        
+        if(!(operand instanceof AttributeLiteral))
+        {
+            throw new InvalidParameters("Aggregate functions can only use one attribute.");
+        }
+        
+        AttributeLiteral att = (AttributeLiteral)operand;
+        columnName = att.getColumnName();
     }
     
     @Override
@@ -21,7 +33,26 @@ public class Min extends AggregateCondition
     @Override
     public Float aggregateNumber(ArrayList<Row> rows) throws InvalidEvaluation
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        float value = 0;
+        
+        for(Row row : rows)
+        {
+            String rowValue = row.getValue(columnName);
+            
+            if(rowValue.isEmpty())
+            {
+                throw new InvalidEvaluation("Can't Aggregate a column that have null values.");
+            }
+            
+            float f = Float.parseFloat(rowValue);
+          
+            if(value > f)
+            {
+                value = f;
+            }
+        }
+        
+        return value;
     }
 
     @Override

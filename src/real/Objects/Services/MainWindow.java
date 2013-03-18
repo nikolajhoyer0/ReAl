@@ -920,7 +920,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private void relationViewMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_relationViewMouseClicked
     {//GEN-HEADEREND:event_relationViewMouseClicked
         //if the user double clicks.
-        if (evt.getClickCount() == 2)
+        if (evt.getClickCount() == 1)
         {
             int index = relationView.getSelectedIndex();
             String str = (String) relationModel.getElementAt(index);
