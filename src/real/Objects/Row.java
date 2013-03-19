@@ -93,7 +93,30 @@ public class Row
         {
             if (idx < values.length)
             {
-                this.values.put(column, values[idx++]);
+                
+                int leftIndex;
+                int rightIndex;
+                
+                //find where the first letter starts.
+                for(leftIndex = 0; leftIndex < values[idx].length(); ++leftIndex)
+                {
+                    if(Character.isLetterOrDigit(values[idx].charAt(leftIndex)))
+                    {
+                        break;
+                    }
+                }
+                
+                //find where the last letter ends
+                for(rightIndex = values[idx].length()-1; rightIndex >= 0; --rightIndex)
+                {
+                    if(Character.isLetterOrDigit(values[idx].charAt(rightIndex)))
+                    {
+                        break;
+                    }
+                }
+                
+                
+                this.values.put(column, values[idx++].substring(leftIndex, rightIndex+1));
             }
             else
             {

@@ -88,6 +88,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
             JScrollPane scroll = new JScrollPane();
             table.setModel(local.findDataset(tables[i]));
             table.setName(tables[i]);
+            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
             scroll.setViewportView(table);
             queryView.addTab(tables[i], scroll);          
         }  
