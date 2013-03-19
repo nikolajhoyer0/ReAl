@@ -17,7 +17,7 @@ public class TokenTree
     public Token getToken()
     {
         return this.token;
-    }
+    } 
     
     private TokenTree[] children;
     private Token token;

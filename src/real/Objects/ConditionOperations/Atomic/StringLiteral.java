@@ -7,7 +7,7 @@ import real.Objects.Row;
 
 public class StringLiteral extends UnaryConditionBase
 {
-    String value;
+    private String value;
     
     public StringLiteral(String value)
     {

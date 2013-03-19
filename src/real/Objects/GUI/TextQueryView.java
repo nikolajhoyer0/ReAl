@@ -7,9 +7,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import javax.swing.AbstractAction;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -37,7 +34,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
     private JScrollPane scrollPane;
 
     //autocompletion words for textarea
-    static ArrayList<String> words = new ArrayList<>();
+    static private ArrayList<String> words = new ArrayList<>();
 
     public TextQueryView()
     {

@@ -8,7 +8,7 @@ import real.Objects.Row;
 public class BooleanLiteral extends UnaryConditionBase 
 {
 
-    boolean value;
+    private boolean value;
     
     public BooleanLiteral(boolean value)
     {

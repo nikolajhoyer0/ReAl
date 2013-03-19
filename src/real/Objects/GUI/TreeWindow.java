@@ -5,7 +5,7 @@ import real.BaseClasses.OperationBase;
 public class TreeWindow extends javax.swing.JDialog
 {
 
-    OperationBase tree;
+    private OperationBase tree;
     
     public TreeWindow(java.awt.Frame parent, boolean modal, OperationBase tree)
     {

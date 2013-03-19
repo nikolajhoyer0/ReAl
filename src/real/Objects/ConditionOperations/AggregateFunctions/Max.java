@@ -13,7 +13,7 @@ import real.Objects.Row;
 
 public class Max extends AggregateCondition
 {
-    String columnName;
+    private String columnName;
     
     public Max(ConditionBase operand) throws InvalidParameters
     {

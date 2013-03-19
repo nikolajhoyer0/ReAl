@@ -9,7 +9,7 @@ import real.Objects.Row;
 
 public class Sum extends AggregateCondition
 {
-    String columnName;
+    private String columnName;
     
     public Sum(ConditionBase operand) throws InvalidParameters
     {

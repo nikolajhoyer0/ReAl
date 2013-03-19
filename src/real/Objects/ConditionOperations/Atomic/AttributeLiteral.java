@@ -9,7 +9,7 @@ import real.Objects.Row;
 public class AttributeLiteral extends UnaryConditionBase
 {
     
-    String attributeName;
+    private String attributeName;
     
     public AttributeLiteral(String value, DataType type)
     {

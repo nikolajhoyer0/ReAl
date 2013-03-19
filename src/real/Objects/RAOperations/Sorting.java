@@ -22,7 +22,7 @@ import real.Objects.Utility;
 
 public class Sorting extends UnaryOperationBase
 {
-    ConditionBase[] conditions;
+    private ConditionBase[] conditions;
     
     public Sorting(OperationBase operand, ConditionBase[] conditions)
     {

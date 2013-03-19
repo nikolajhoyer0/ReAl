@@ -16,7 +16,7 @@ public class TreeViewTest extends JFrame
      */
     private static final long serialVersionUID = -2707712944901661771L;
 
-    final mxGraph graph;
+    private final mxGraph graph;
     
     public TreeViewTest()
     {
