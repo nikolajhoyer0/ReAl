@@ -64,6 +64,11 @@ public class Grouping extends UnaryOperationBase
                     AttributeLiteral att = (AttributeLiteral) rename.getOperandB();
                     AggregateCondition agg = (AggregateCondition) rename.getOperandA();
                     
+                    if(((AttributeLiteral)agg.getOperand()).getColumnName().equals(groupatt.getColumnName()))
+                    {
+                        throw new InvalidParameters("Can't aggregate the column you are ordering by.");
+                    }
+                    
                     //set the aggreation value
                     addRow.setValue(att.getColumnName(), Utility.trimTrailingZeros(agg.aggregateEvaluate(rows)));                    
                 }

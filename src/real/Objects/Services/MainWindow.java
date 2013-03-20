@@ -826,6 +826,11 @@ public class MainWindow extends javax.swing.JFrame implements IService
                     JOptionPane.showMessageDialog(rootPane, "Table name can't be empty");
                 }
 
+                else if(str.contains(" "))
+                {
+                    JOptionPane.showMessageDialog(rootPane, "Table name can't contain space");
+                }
+                
                 else
                 {
                     Kernel.GetService(DataManager.class).LoadDataset(file.getAbsolutePath(), str);
