@@ -309,56 +309,6 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
                     convertToSymbol(leftIndex, rightIndex, str);
                 }
-
-                /*
-                //if we are in space we have to look for two words and compare
-                else
-                {               
-                    int leftEndIndex;
-                    int leftStartIndex;
-                    int rightEndIndex;
-                    int rightStartIndex;
-
-                    //find the left start index word
-                    for(leftStartIndex = pos; leftStartIndex > 0; --leftStartIndex)
-                    {
-                        if(Character.isLetterOrDigit(str.charAt(leftStartIndex)))
-                        {
-                            break;
-                        }
-                    }
-                    //find the index where the left word finish
-
-                    for(leftEndIndex = leftStartIndex; leftEndIndex > 0; --leftEndIndex)
-                    {
-                        if(Character.isWhitespace(str.charAt(leftEndIndex)))
-                        {
-                            break;
-                        }
-                    }
-
-                    //find the right start index word
-                    for(rightStartIndex = pos; rightStartIndex < str.length(); ++rightStartIndex)
-                    {
-                        if(Character.isLetterOrDigit(str.charAt(rightStartIndex)))
-                        {
-                            break;
-                        }
-                    }
-
-                    //find the index where the right word finish
-                    for(rightEndIndex = rightStartIndex; rightEndIndex < str.length(); ++rightEndIndex)
-                    {
-                        if(Character.isWhitespace(str.charAt(rightEndIndex)))
-                        {
-                            break;
-                        }
-                    }
-
-                    convertToSymbol(leftEndIndex, leftStartIndex+1, str);
-                    convertToSymbol(rightStartIndex, rightEndIndex, str);
-                }
-                */
             }
         }
     }
