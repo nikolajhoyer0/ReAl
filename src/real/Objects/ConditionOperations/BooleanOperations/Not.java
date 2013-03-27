@@ -9,13 +9,13 @@ import real.Objects.Row;
 
 public class Not extends BooleanOperator
 {
-    public Not(ConditionBase operandA, ConditionBase operandB) throws WrongType
+    public Not(ConditionBase operandA, ConditionBase operandB, int linePosition) throws WrongType
     {
-        super(operandA, operandB);
+        super(operandA, operandB, linePosition);
                 
         if(getType() == DataType.UNKNOWN)
         {
-            throw new WrongType("can't compare with two different types");
+            throw new WrongType(linePosition, "can't compare with two different types");
         }            
     }
     

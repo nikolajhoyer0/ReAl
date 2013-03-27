@@ -13,7 +13,7 @@ import real.Objects.Dataset;
 import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
-import real.Objects.Exceptions.NoSuchDataset;
+import real.Objects.Exceptions.NoSuchAttribute;
 import real.Objects.Row;
 import real.Objects.Utility;
 
@@ -23,15 +23,15 @@ public class Grouping extends UnaryOperationBase
     private ConditionBase[] conditions;
     private ConditionBase groupBy;
     
-    public Grouping(OperationBase operand, ConditionBase groupBy, ConditionBase[] conditions)
+    public Grouping(OperationBase operand, ConditionBase groupBy, ConditionBase[] conditions, int linePosition)
     {
-        super(operand);
+        super(operand, linePosition);
         this.conditions = conditions;
         this.groupBy = groupBy;
     }
     
     @Override
-    public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    public Dataset execute() throws InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation
     {           
         ArrayList<Row> includeRows = new ArrayList<>();
         Dataset dataset = operand.execute().clone();
@@ -39,7 +39,7 @@ public class Grouping extends UnaryOperationBase
         
         if(!(groupBy instanceof AttributeLiteral))
         {
-            throw new InvalidParameters("Invalid group");
+            throw new InvalidParameters(getLinePosition(), "Invalid group");
         }
         
         AttributeLiteral groupatt = (AttributeLiteral)groupBy;
@@ -66,7 +66,7 @@ public class Grouping extends UnaryOperationBase
                     
                     if(((AttributeLiteral)agg.getOperand()).getColumnName().equals(groupatt.getColumnName()))
                     {
-                        throw new InvalidParameters("Can't aggregate the column you are ordering by.");
+                        throw new InvalidParameters(getLinePosition(), "Can't aggregate the column you are ordering by.");
                     }
                     
                     //set the aggreation value
@@ -74,7 +74,7 @@ public class Grouping extends UnaryOperationBase
                 }
                 else
                 {
-                    throw new InvalidParameters("invalid grouping");
+                    throw new InvalidParameters(getLinePosition(), "invalid grouping");
                 }
                 
             }
@@ -137,13 +137,13 @@ public class Grouping extends UnaryOperationBase
                 
                 if (!(rename.getOperandA() instanceof AggregateCondition))
                 {
-                    throw new InvalidParameters("invalid grouping");
+                    throw new InvalidParameters(getLinePosition(), "invalid grouping");
                 }
 
 
                 if (!(rename.getOperandB() instanceof AttributeLiteral))
                 {
-                    throw new InvalidParameters("invalid grouping.");
+                    throw new InvalidParameters(getLinePosition(), "invalid grouping.");
                 }
                 
                 AttributeLiteral att = (AttributeLiteral) rename.getOperandB();

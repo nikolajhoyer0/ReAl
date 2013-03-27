@@ -11,7 +11,7 @@ import real.Objects.Dataset;
 import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
-import real.Objects.Exceptions.NoSuchDataset;
+import real.Objects.Exceptions.NoSuchAttribute;
 import real.Objects.Row;
 
 
@@ -19,14 +19,14 @@ public class Selection extends UnaryOperationBase
 {
     private ConditionBase condition;
     
-    public Selection(OperationBase operand, ConditionBase condition)
+    public Selection(OperationBase operand, ConditionBase condition, int linePosition)
     {
-        super(operand);
+        super(operand, linePosition);
         this.condition = condition;
     }
     
     @Override
-    public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    public Dataset execute() throws InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation
     {      
         Dataset resultA = operand.execute();
         ArrayList<Row> rows = new ArrayList<>();
@@ -35,12 +35,12 @@ public class Selection extends UnaryOperationBase
         {
             if(condition.getType() != DataType.BOOLEAN)
             {
-                throw new InvalidParameters("Selection parameters must evaluate to boolean.");
+                throw new InvalidParameters(getLinePosition(), "Selection parameters must evaluate to boolean.");
             }
             
             if(!(condition instanceof BinaryConditionBase))
             {
-                throw new InvalidParameters("Parameter is invalid.");
+                throw new InvalidParameters(getLinePosition(), "Parameter is invalid.");
             }
             
             if(condition.evaluateBoolean(resultA.getRows().get(i)))

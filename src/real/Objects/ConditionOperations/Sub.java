@@ -11,13 +11,13 @@ import real.Objects.Row;
 public class Sub extends BinaryConditionBase
 {
     
-    public Sub(ConditionBase operandA, ConditionBase operandB) throws WrongType
+    public Sub(ConditionBase operandA, ConditionBase operandB, int linePosition) throws WrongType
     {
-        super(operandA, operandB);
+        super(operandA, operandB, linePosition);
         
         if(getType() == DataType.UNKNOWN)
         {
-            throw new WrongType("can't divide with two different types.");
+            throw new WrongType(linePosition, "can't divide with two different types.");
         }
     }
 

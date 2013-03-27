@@ -1,10 +1,10 @@
 
 package real.Objects.Exceptions;
 
-public class WrongType extends Exception
+public class WrongType extends RealException
 {
-    public WrongType(String message)
+    public WrongType(int linePosition, String message)
     {
-        super(message);
+        super(linePosition, message);
     }
 }

@@ -8,13 +8,13 @@ import real.Objects.Row;
 
 public class Greater extends BooleanOperator
 {
-    public Greater(ConditionBase operandA, ConditionBase operandB) throws WrongType
+    public Greater(ConditionBase operandA, ConditionBase operandB, int linePosition) throws WrongType
     {
-        super(operandA, operandB);
+        super(operandA, operandB, linePosition);
         
         if(getType() == DataType.UNKNOWN)
         {
-            throw new WrongType("Can't compare two different types");
+            throw new WrongType(linePosition, "Can't compare two different types");
         }
     }
 

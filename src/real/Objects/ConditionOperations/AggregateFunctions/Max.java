@@ -15,13 +15,13 @@ public class Max extends AggregateCondition
 {
     private String columnName;
     
-    public Max(ConditionBase operand) throws InvalidParameters
+    public Max(ConditionBase operand, int linePosition) throws InvalidParameters
     {
-        super(operand); 
+        super(operand, linePosition); 
         
         if(!(operand instanceof AttributeLiteral))
         {
-            throw new InvalidParameters("Aggregate functions can only use one attribute.");
+            throw new InvalidParameters(linePosition, "Aggregate functions can only use one attribute.");
         }
         
         AttributeLiteral att = (AttributeLiteral)operand;
@@ -45,7 +45,7 @@ public class Max extends AggregateCondition
             
             if(rowValue.isEmpty())
             {
-                throw new InvalidEvaluation("Can't Aggregate a column that have null values.");
+                throw new InvalidEvaluation(getLinePosition(), "Can't Aggregate a column that have null values.");
             }
             
             float f = Float.parseFloat(rowValue);

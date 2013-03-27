@@ -15,7 +15,7 @@ import real.Objects.Dataset;
 import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
-import real.Objects.Exceptions.NoSuchDataset;
+import real.Objects.Exceptions.NoSuchAttribute;
 import real.Objects.Row;
 import real.Objects.Utility;
 
@@ -23,14 +23,14 @@ public class Projection extends UnaryOperationBase
 {
     private ConditionBase[] conditions;
     
-    public Projection(OperationBase operand, ConditionBase[] conditions)
+    public Projection(OperationBase operand, ConditionBase[] conditions, int linePosition)
     {
-        super(operand);
+        super(operand, linePosition);
         this.conditions = conditions;
     }
 
     @Override
-    public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    public Dataset execute() throws InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation
     {
         Dataset result = this.operand.execute();
         ArrayList<Row> rows = new ArrayList<>();
@@ -59,7 +59,7 @@ public class Projection extends UnaryOperationBase
                     //find the attribute that is used to find which column we need to change                 
                     if(amountCondition(rename.getOperandA()) != 1 && rename.getOperandB() instanceof AttributeLiteral)
                     {
-                        throw new InvalidParameters("Only one attribute on each side.");
+                        throw new InvalidParameters(getLinePosition(), "Only one attribute on each side.");
                     }
                                
                     AttributeLiteral newAttribute = (AttributeLiteral)rename.getOperandB();
@@ -104,7 +104,7 @@ public class Projection extends UnaryOperationBase
                 
                 if(amountCondition(conditions[i]) != 1)
                 {
-                    throw new InvalidParameters("Only one attribute allowed in expression.");
+                    throw new InvalidParameters(getLinePosition(), "Only one attribute allowed in expression.");
                 }
                 
                 AttributeLiteral attribute = findAttribute(conditions[i]);
@@ -144,19 +144,19 @@ public class Projection extends UnaryOperationBase
             
             else if(renameAmount > 1)
             {
-                throw new InvalidParameters("There can only be one rename operator in each expression.");
+                throw new InvalidParameters(getLinePosition(), "There can only be one rename operator in each expression.");
             }
             
             else
             {
-                throw new InvalidParameters("Invalid Projection.");
+                throw new InvalidParameters(getLinePosition(), "Invalid Projection.");
             }
             
         }
  
         if(Utility.haveColumnDuplicates(columns.toArray(new Column[0])))
         {
-            throw new InvalidParameters("Can't have multiple columns with the same name.");
+            throw new InvalidParameters(getLinePosition(), "Can't have multiple columns with the same name.");
         }
         
         return new Dataset("", columns, rows);

@@ -7,20 +7,20 @@ import real.Objects.Dataset;
 import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
-import real.Objects.Exceptions.NoSuchDataset;
+import real.Objects.Exceptions.NoSuchAttribute;
 import real.Objects.Row;
 
 
 public class DuplicateElimination extends UnaryOperationBase
 {
 
-    public DuplicateElimination(OperationBase operand)
+    public DuplicateElimination(OperationBase operand, int linePosition)
     {
-        super(operand);
+        super(operand, linePosition);
     }
     
     @Override
-    public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    public Dataset execute() throws InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation
     {
         Dataset result = operand.execute().clone();
         

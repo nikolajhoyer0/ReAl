@@ -8,13 +8,13 @@ import real.Objects.Row;
 
 public class Or extends BooleanOperator
 {
-    public Or(ConditionBase operandA, ConditionBase operandB) throws WrongType
+    public Or(ConditionBase operandA, ConditionBase operandB, int linePosition) throws WrongType
     {
-        super(operandA, operandB);
+        super(operandA, operandB, linePosition);
         
         if(getType() == DataType.UNKNOWN)
         {
-            throw new WrongType("Can't create an Or expression with non booleans.");
+            throw new WrongType(linePosition, "Can't create an Or expression with non booleans.");
         }
     }
    

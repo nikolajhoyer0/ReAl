@@ -10,15 +10,22 @@ import real.Objects.Row;
 public abstract class ConditionBase
 {
     private DataType type;
+    private int linePosition;
     
-    public ConditionBase(DataType type)
+    public ConditionBase(DataType type, int linePosition)
     {
         this.type = type;
+        this.linePosition = linePosition;
     }
 
     public DataType getType()
     {
         return type;
+    }
+    
+    public int getLinePosition()
+    {
+        return this.linePosition;
     }
     
     public Object evaluate(Row row) throws InvalidEvaluation

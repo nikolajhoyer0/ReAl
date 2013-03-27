@@ -7,7 +7,7 @@ import real.Objects.Dataset;
 import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
-import real.Objects.Exceptions.NoSuchDataset;
+import real.Objects.Exceptions.NoSuchAttribute;
 import real.Objects.Row;
 
 /**
@@ -16,13 +16,13 @@ import real.Objects.Row;
 public class Difference extends BinaryOperationBase
 {
 
-    public Difference(OperationBase operandA, OperationBase operandB)
+    public Difference(OperationBase operandA, OperationBase operandB, int linePosition)
     {
-        super(operandA, operandB);
+        super(operandA, operandB, linePosition);
     }
 
     @Override
-    public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    public Dataset execute() throws InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation
     {
         Dataset resultA = this.operandA.execute().clone();
         Dataset resultB = this.operandB.execute().clone();
@@ -40,6 +40,6 @@ public class Difference extends BinaryOperationBase
             return new Dataset("", resultA.getColumns(), resultA.getRows());
         }
         
-        throw new InvalidSchema(); 
+        throw new InvalidSchema(getLinePosition(), resultA.getName() + " and " + resultB.getName() + " does not have matching schemas."); 
     }
 }

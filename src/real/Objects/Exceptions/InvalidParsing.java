@@ -1,14 +1,9 @@
 package real.Objects.Exceptions;
 
-public class InvalidParsing extends Exception
-{
-    public InvalidParsing()
+public class InvalidParsing extends RealException
+{ 
+    public InvalidParsing(int linePosition, String message)
     {
-        
-    }
-    
-    public InvalidParsing(String message)
-    {
-        super(message);
+        super(linePosition, message);
     }
 }

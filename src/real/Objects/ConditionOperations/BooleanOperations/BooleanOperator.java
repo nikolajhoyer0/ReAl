@@ -9,9 +9,9 @@ import real.Objects.Row;
 public abstract class BooleanOperator extends BinaryConditionBase
 {
 
-    public BooleanOperator(ConditionBase operandA, ConditionBase operandB)
+    public BooleanOperator(ConditionBase operandA, ConditionBase operandB, int linePosition)
     {
-        super(operandA, operandB, DataType.BOOLEAN);
+        super(operandA, operandB, DataType.BOOLEAN, linePosition);
     }
     
     @Override

@@ -28,14 +28,15 @@ public class DataManager extends ServiceBase
         this.datasetNames = new ArrayList<>();
     }
 
-    public Dataset getDataset(String name) throws NoSuchDataset
+    public Dataset getDataset(String name)
     {
         Dataset ds = this.find(name);
         if (ds != null)
         {
             return ds;
         }
-        throw new NoSuchDataset();
+        
+        return null;
     }
     
     public ArrayList<String> getAllNames()
@@ -70,7 +71,7 @@ public class DataManager extends ServiceBase
            
                 if(this.find(tableName) != null)
                 {
-                    throw new DatasetDuplicate();
+                    throw new DatasetDuplicate(tableName + " already exists.");
                 }
                 
                 else
@@ -82,7 +83,7 @@ public class DataManager extends ServiceBase
         }
         catch (ArrayIndexOutOfBoundsException | IOException e)
         {
-            throw new InvalidDataset();
+            throw new InvalidDataset("Couldn't load in" + " " + filepath);
         }
     }
 
@@ -92,7 +93,7 @@ public class DataManager extends ServiceBase
         
         if(dataset == null)
         {
-            throw new NoSuchDataset();
+            throw new NoSuchDataset("Couldn't remove " + remove + " because it doesn't exist.");
         }
         
         else

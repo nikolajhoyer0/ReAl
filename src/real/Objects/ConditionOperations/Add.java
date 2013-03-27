@@ -11,13 +11,13 @@ import real.Objects.Row;
 public class Add extends BinaryConditionBase 
 {
 
-    public Add(ConditionBase operandA, ConditionBase operandB) throws WrongType
+    public Add(ConditionBase operandA, ConditionBase operandB, int linePosition) throws WrongType
     {
-        super(operandA, operandB);
+        super(operandA, operandB, linePosition);
         
         if(getType() == DataType.UNKNOWN)
         {
-            throw new WrongType("can't add with two different types.");
+            throw new WrongType(linePosition, "can't add with two different types.");
         }
     }
     

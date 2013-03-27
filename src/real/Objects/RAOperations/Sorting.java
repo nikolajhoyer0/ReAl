@@ -16,7 +16,7 @@ import real.Objects.Dataset;
 import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
-import real.Objects.Exceptions.NoSuchDataset;
+import real.Objects.Exceptions.NoSuchAttribute;
 import real.Objects.Utility;
 
 
@@ -24,14 +24,14 @@ public class Sorting extends UnaryOperationBase
 {
     private ConditionBase[] conditions;
     
-    public Sorting(OperationBase operand, ConditionBase[] conditions)
+    public Sorting(OperationBase operand, ConditionBase[] conditions, int linePosition)
     {
-        super(operand);
+        super(operand, linePosition);
         this.conditions = conditions;
     }
 
     @Override
-    public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    public Dataset execute() throws InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation
     {
 
         ArrayList<Comparator> comparators = new ArrayList<>();
@@ -66,13 +66,13 @@ public class Sorting extends UnaryOperationBase
             
             else
             {
-                throw new InvalidParameters("Sort must only contain one attribute in each comma seperation.");
+                throw new InvalidParameters(getLinePosition(), "Sort must only contain one attribute in each comma seperation.");
             }
         }
         
         if(Utility.haveDuplicates(attributeNames.toArray(new String[0])) == true)
         {
-            throw new InvalidParameters("Can't have sorting keys that are the same.");
+            throw new InvalidParameters(getLinePosition(), "Can't have sorting keys that are the same.");
         }
         
         Collections.sort(result.getRows(), new ChainedComparator(comparators));

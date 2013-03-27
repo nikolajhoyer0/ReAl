@@ -10,10 +10,10 @@ public class NumberLiteral extends UnaryConditionBase
 
     private float value;
     
-    public NumberLiteral(float value)
+    public NumberLiteral(float value, int linePosition)
     {
         //the tree goes no further
-        super(null, DataType.NUMBER);
+        super(null, DataType.NUMBER, linePosition);
         this.value = value;
     }
     

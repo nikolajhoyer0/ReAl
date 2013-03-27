@@ -7,25 +7,25 @@ import real.Objects.Dataset;
 import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
-import real.Objects.Exceptions.NoSuchDataset;
+import real.Objects.Exceptions.NoSuchAttribute;
 
 /*
  * Implements Full Outer Join
  */
 public class FullOuterJoin extends BinaryOperationBase
 {
-    public FullOuterJoin(OperationBase operandA, OperationBase operandB)
+    public FullOuterJoin(OperationBase operandA, OperationBase operandB, int linePosition)
     {
-        super(operandA, operandB);
+        super(operandA, operandB, linePosition);
     }
 
     @Override
-    public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    public Dataset execute() throws InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation
     {
-        LeftOuterJoin leftJoin = new LeftOuterJoin(operandA, operandB);
-        RightOuterJoin rightJoin = new RightOuterJoin(operandA, operandB);  
+        LeftOuterJoin leftJoin = new LeftOuterJoin(operandA, operandB, getLinePosition());
+        RightOuterJoin rightJoin = new RightOuterJoin(operandA, operandB, getLinePosition());  
         
-        Union union = new Union(leftJoin, rightJoin);
+        Union union = new Union(leftJoin, rightJoin, getLinePosition());
         
         return union.execute();
     }

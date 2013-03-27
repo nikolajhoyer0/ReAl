@@ -9,13 +9,13 @@ import real.Objects.Row;
 
 public class Mult extends BinaryConditionBase
 {
-    public Mult(ConditionBase operandA, ConditionBase operandB) throws WrongType
+    public Mult(ConditionBase operandA, ConditionBase operandB, int linePosition) throws WrongType
     {
-        super(operandA, operandB);     
+        super(operandA, operandB, linePosition);     
         
         if(getType() == DataType.UNKNOWN)
         {
-            throw new WrongType("can't multiply with two different types.");
+            throw new WrongType(linePosition, "can't multiply with two different types.");
         }
     }
     

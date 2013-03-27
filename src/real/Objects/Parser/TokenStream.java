@@ -26,7 +26,6 @@ public class TokenStream
         consumed = 0;
         full = false;
         tokens = collectAllTokens(str + " end");
-        int d = 0;
     }
     
     public void ignoreNextToken(String ignore)
@@ -84,7 +83,7 @@ public class TokenStream
         
         else
         {
-            throw new InvalidParsing();
+            throw new InvalidParsing(0, "end of stream.");
         }
         
     }
@@ -98,7 +97,7 @@ public class TokenStream
         
         else
         {
-            throw new InvalidParsing("can't consume with buffer not full.");
+            throw new InvalidParsing(0, "can't consume with buffer not full.");
         }
     }
  
@@ -249,7 +248,7 @@ public class TokenStream
                     
                     if(token == null)
                     {
-                        throw new InvalidParsing("No such operator is defined: " + operatorBuffer);
+                        throw new InvalidParsing(linePosition, "No such operator is defined: " + operatorBuffer);
                     }
                     
                     else

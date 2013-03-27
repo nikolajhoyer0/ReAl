@@ -3,6 +3,7 @@ package real;
 import javax.swing.UIManager;
 import real.Objects.Kernel;
 import real.Objects.Services.DataManager;
+import real.Objects.Services.ErrorSystem;
 import real.Objects.Services.LocalDataManager;
 import real.Objects.Services.MainWindow;
 
@@ -16,9 +17,10 @@ public class ReAl
         try
         {
             UIManager.setLookAndFeel("com.jtattoo.plaf.smart.SmartLookAndFeel");
+            Kernel.AddService(new ErrorSystem());
             Kernel.AddService(new DataManager());
             Kernel.AddService(new MainWindow());
-            Kernel.AddService(new LocalDataManager());
+            Kernel.AddService(new LocalDataManager());      
             Kernel.Run();       
         }
         

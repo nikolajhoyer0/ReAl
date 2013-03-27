@@ -1,9 +1,9 @@
 package real.Objects.Exceptions;
 
-public class InvalidParameters extends Exception
+public class InvalidParameters extends RealException
 {
-    public InvalidParameters(String message)
+    public InvalidParameters(int linePosition, String message)
     {
-        super(message);
+        super(linePosition, message);
     }
 }

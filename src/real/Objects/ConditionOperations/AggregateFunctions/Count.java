@@ -12,13 +12,13 @@ public class Count extends AggregateCondition
     
     private String columnName;
     
-    public Count(ConditionBase operand) throws InvalidParameters
+    public Count(ConditionBase operand, int linePosition) throws InvalidParameters
     {
-        super(operand);
+        super(operand, linePosition);
         
         if(!(operand instanceof AttributeLiteral))
         {
-            throw new InvalidParameters("Aggregate functions can only use one attribute.");
+            throw new InvalidParameters(linePosition, "Aggregate functions can only use one attribute.");
         }
         
         AttributeLiteral att = (AttributeLiteral)operand;

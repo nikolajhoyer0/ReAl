@@ -11,13 +11,13 @@ import real.Objects.Row;
 
 public class Neg extends UnaryConditionBase
 {
-    public Neg(ConditionBase operand) throws WrongType
+    public Neg(ConditionBase operand, int linePosition) throws WrongType
     {
-        super(operand);
+        super(operand, linePosition);
         
         if(getType() == DataType.UNKNOWN)
         {
-            throw new WrongType("Can only negate numbers.");
+            throw new WrongType(linePosition, "Can only negate numbers.");
         }
     }
 

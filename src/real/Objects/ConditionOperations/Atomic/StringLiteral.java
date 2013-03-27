@@ -9,9 +9,9 @@ public class StringLiteral extends UnaryConditionBase
 {
     private String value;
     
-    public StringLiteral(String value)
+    public StringLiteral(String value, int linePosition)
     {
-        super(null, DataType.STRING);
+        super(null, DataType.STRING, linePosition);
         this.value = value;
     }
 

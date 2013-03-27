@@ -10,9 +10,9 @@ public class BooleanLiteral extends UnaryConditionBase
 
     private boolean value;
     
-    public BooleanLiteral(boolean value)
+    public BooleanLiteral(boolean value, int linePosition)
     {
-        super(null, DataType.BOOLEAN);
+        super(null, DataType.BOOLEAN, linePosition);
         this.value = value;
     }
     

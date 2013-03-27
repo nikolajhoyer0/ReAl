@@ -17,6 +17,7 @@ import javax.swing.JTextArea;
 import real.Interfaces.IService;
 import real.Objects.Dataset;
 import real.Objects.Exceptions.*;
+import real.Objects.GUI.ErrorView;
 import real.Objects.GUI.TextQueryView;
 import real.Objects.GUI.TreeWindow;
 import real.Objects.Kernel;
@@ -27,11 +28,14 @@ public class MainWindow extends javax.swing.JFrame implements IService
 {
     private DefaultListModel relationModel = new DefaultListModel();
     private Query query;
+    private ErrorView errorView;
 
     public MainWindow()
     {
         this.initComponents();
-
+        errorView = new ErrorView();
+        Kernel.GetService(ErrorSystem.class).addObserver(errorView);
+        queryView.add(errorView, "Run Errors");       
         // Setup listener so closing the window will close the kernel.
         this.addWindowListener(new java.awt.event.WindowAdapter()
         {
@@ -79,10 +83,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
     public void setLocalTables()
     {
         LocalDataManager local = Kernel.GetService(LocalDataManager.class);
-        queryView.removeAll();
         String[] tables = local.getAllKeys();
-        
-        for(int i = tables.length-1; i >= 0;i--)
+  
+        //ignore the last one which is the error pane
+        for(int i = 0; i < tables.length;i++)
         {
             JTable table = new JTable();
             JScrollPane scroll = new JScrollPane();
@@ -90,7 +94,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
             table.setName(tables[i]);
             table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
             scroll.setViewportView(table);
-            queryView.addTab(tables[i], scroll);          
+            queryView.insertTab(tables[i], null, scroll, null, 0);          
         }  
     }
     
@@ -653,7 +657,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
             }
             else
             {
-                System.out.println("Table name already exists.");
+                JOptionPane.showMessageDialog(rootPane,"Table name already exists.");
             }      
         }
     }//GEN-LAST:event_saveButtonActionPerformed
@@ -662,31 +666,28 @@ public class MainWindow extends javax.swing.JFrame implements IService
     {//GEN-HEADEREND:event_runButtonActionPerformed
         try
         {
+            //set the errorview to no errors.
+            //remove all tabs except the errorview pane.
+            for (int i = 0; i < queryView.getTabCount() - 1; ++i)
+            {
+                queryView.remove(i);
+            }
+            
+            errorView.setText("");
             Dataset data = query.interpret(getCurrentWorksheet().getText());
+            //if no throws we can assume that i went without errors 
+            errorView.setText("Successful run");           
             setLocalTables();
         }
-        catch (InvalidSchema ex)
+        catch (InvalidSchema | NoSuchAttribute | InvalidParameters | InvalidEvaluation | WrongType ex)
         {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, "caught in window", ex);
+            Kernel.GetService(ErrorSystem.class).print(ex);
         }
-        catch (NoSuchDataset ex)
+        
+        finally
         {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, "caught in window", ex);
-        }
-
-        catch (InvalidParameters ex)
-        {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, "caught in window", ex);
-        }
-
-        catch(InvalidEvaluation ex)
-        {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, "caught in window", ex);
-        }
-
-        catch(WrongType ex)
-        {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, "caught in window", ex);
+            //add focus to the error tab
+            queryView.setSelectedIndex(queryView.getTabCount()-1);
         }
     }//GEN-LAST:event_runButtonActionPerformed
 
@@ -775,7 +776,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 this.getCurrentWorksheet().write(fw);
             }
             catch (IOException ex) {
-                System.out.println("Problem saving file at " + file.getAbsolutePath());
+                JOptionPane.showMessageDialog(rootPane,"Problem saving file at " + file.getAbsolutePath());
             }
         }
         else {
@@ -794,7 +795,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
             }
             catch (IOException ex)
             {
-                System.out.println("Problem accessing file " + file.getAbsolutePath());
+                JOptionPane.showMessageDialog(rootPane, "Problem accessing file " + file.getAbsolutePath());
             }
         }
         else
@@ -865,15 +866,21 @@ public class MainWindow extends javax.swing.JFrame implements IService
             {
                 FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
                 Dataset dataset = Kernel.GetService(DataManager.class).getDataset((String) relationModel.getElementAt(relationView.getSelectedIndex()));
-                fw.write(dataset.getCSV());
-                fw.flush();
+                
+                if(dataset != null)
+                {
+                    fw.write(dataset.getCSV());
+                    fw.flush();
+                }
+                
+                else
+                {
+                    JOptionPane.showMessageDialog(rootPane,"problem saving file at " + file.getAbsolutePath());
+                }
             }
             catch (IOException ex)
             {
-                System.out.println("Problem saving file at " + file.getAbsolutePath());
-            }
-            catch (NoSuchDataset ex)
-            {
+                JOptionPane.showMessageDialog(rootPane,"Problem saving file at " + file.getAbsolutePath());
             }
         }
         else
@@ -959,18 +966,22 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         if (str != null)
         {
-            try
-            {
-                Dataset dataset = Kernel.GetService(DataManager.class).getDataset(str);
+
+            Dataset dataset = Kernel.GetService(DataManager.class).getDataset(str);
+            
+            if(dataset != null)
+            {          
                 tableView.setModel(dataset);
                 //focus it for cool effect
                 //1 is table view.
                 combinedView.setSelectedIndex(1);
             }
-            catch (NoSuchDataset ex)
+            
+            else
             {
-                ex.printStackTrace();
+                System.out.println("couldn't find " + str);
             }
+
         }
 
     }//GEN-LAST:event_relationViewMouseClicked
@@ -983,7 +994,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         
         if(index == -1)
         {
-            System.out.println("You must select at table to delete.");      
+            JOptionPane.showMessageDialog(rootPane, "You must select at table to delete.");      
         }
  
         else
@@ -1003,7 +1014,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
             }
             catch (NoSuchDataset ex)
             {
-                ex.printStackTrace();
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
             }
         }
     }//GEN-LAST:event_deleteMenuItemActionPerformed

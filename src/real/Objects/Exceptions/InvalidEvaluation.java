@@ -1,10 +1,10 @@
 package real.Objects.Exceptions;
 
 
-public class InvalidEvaluation extends Exception
+public class InvalidEvaluation extends RealException
 {
-    public InvalidEvaluation(String message)
+    public InvalidEvaluation(int linePosition, String message)
     {
-        super(message);
+        super(linePosition, message);
     }
 }

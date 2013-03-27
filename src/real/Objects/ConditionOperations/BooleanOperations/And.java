@@ -10,13 +10,13 @@ import real.Objects.Row;
 public class And extends BooleanOperator
 {
 
-    public And(ConditionBase operandA, ConditionBase operandB) throws WrongType
+    public And(ConditionBase operandA, ConditionBase operandB, int linePosition) throws WrongType
     {
-        super(operandA, operandB);
+        super(operandA, operandB, linePosition);
         
         if(getType() == DataType.UNKNOWN)
         {
-            throw new WrongType("And expressions must contain to boolean values.");
+            throw new WrongType(linePosition, "And expressions must contain to boolean values.");
         }
         
     }

@@ -34,6 +34,7 @@ import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidParsing;
 import real.Objects.Exceptions.InvalidSchema;
+import real.Objects.Exceptions.NoSuchAttribute;
 import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.Exceptions.WrongType;
 import real.Objects.GUI.TreeViewTest;
@@ -129,12 +130,12 @@ public class Query
         }   
     }
     
-    public Dataset interpret(String str) throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation, WrongType
+    public Dataset interpret(String str) throws InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation, WrongType
     {
         LinkedList<TokenTree> trees = parse(str);
         LocalDataManager local = Kernel.GetService(LocalDataManager.class);  
         Dataset localData = null;
-        
+        int defaultNumber = 0;
         local.clearLocal();
           
         if (trees != null)
@@ -157,7 +158,7 @@ public class Query
                     
                     if(currentData == null || data == null)
                     {
-                        throw new InvalidEvaluation("invalid statement.");
+                        throw new InvalidEvaluation(current.getToken().getLinePosition(), "invalid statement.");
                     }
                     
                     localData = data.clone();
@@ -166,12 +167,25 @@ public class Query
                     local.LoadOperation(name, currentData);
                 }
                 
+                //default value given
                 else
-                {
-                    //we need to make a observer error class so we can send
-                    //errors to the errorview
-                    System.out.println("must declare sentence with 'var = expression'.");
-                    break;
+                {                                                    
+                    String name = "Default_" + defaultNumber;
+                    defaultNumber++;
+                    
+                    currentData = interpretOperation(current);
+                    
+                    Dataset data = currentData.execute();
+                    
+                    if(currentData == null || data == null)
+                    {
+                        throw new InvalidEvaluation(current.getToken().getLinePosition(), "invalid statement.");
+                    }
+                    
+                    localData = data.clone();
+                    localData.setName(name);
+                    local.LoadDataset(localData);    
+                    local.LoadOperation(name, currentData);
                 }                         
             }
             
@@ -182,102 +196,103 @@ public class Query
     }
 
     //inteprets the relation alg and uses interpret condition to interpret the condtions.
-    public OperationBase interpretOperation(TokenTree tree) throws InvalidSchema, InvalidParameters, InvalidEvaluation, WrongType, NoSuchDataset
+    public OperationBase interpretOperation(TokenTree tree) throws InvalidSchema, InvalidParameters, InvalidEvaluation, WrongType, NoSuchAttribute
     {
         String word = tree.getToken().getSymbol();
         TokenTree[] children = tree.getChildren();
+        int linePosition = tree.getToken().getLinePosition();
 
         switch (word)
         {
             case "∪":
-                return new Union(interpretOperation(children[0]), interpretOperation(children[1]));
+                return new Union(interpretOperation(children[0]), interpretOperation(children[1]), linePosition);
             case "∩":
-                return new Intersection(interpretOperation(children[0]), interpretOperation(children[1]));
+                return new Intersection(interpretOperation(children[0]), interpretOperation(children[1]), linePosition);
             case "Attribute":
-                return new ReferencedDataset(children[0].getToken().getSymbol());
+                return new ReferencedDataset(children[0].getToken().getSymbol(), children[0].getToken().getLinePosition());
             case "⋈":
-                return new NaturalJoin(interpretOperation(children[0]), interpretOperation(children[1]));
+                return new NaturalJoin(interpretOperation(children[0]), interpretOperation(children[1]), linePosition);
             case "⟕":
-                return new LeftOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]));
+                return new LeftOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]), linePosition);
             case "⟖":
-                return new RightOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]));
+                return new RightOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]), linePosition);
             case "⟗":
-                return new FullOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]));
+                return new FullOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]), linePosition);
             case "σ":
                 OperationBase relation = interpretOperation(children[1]);
                 ConditionBase condition = interpretCondition(children[0], relation, false);
-                return new Selection(relation, condition);
+                return new Selection(relation, condition, linePosition);
             case "π":
                 relation = interpretOperation(children[children.length - 1]);
                 ConditionBase[] conditions = getConditions(children, relation, false);
-                return new Projection(relation, conditions);
+                return new Projection(relation, conditions, linePosition);
             case "ρ":
                 relation = interpretOperation(children[children.length - 1]);
                 conditions = getConditions(children, relation, false);
-                return new Renaming(relation, conditions);
+                return new Renaming(relation, conditions, linePosition);
             case "×":
-                return new Product(interpretOperation(children[0]), interpretOperation(children[1]));
+                return new Product(interpretOperation(children[0]), interpretOperation(children[1]), linePosition);
             case "‒":
-                return new Difference(interpretOperation(children[0]), interpretOperation(children[1]));
+                return new Difference(interpretOperation(children[0]), interpretOperation(children[1]), linePosition);
             case "τ":
                 relation = interpretOperation(children[children.length - 1]);
                 conditions = getConditions(children, relation, false);
-                return new Sorting(relation, conditions);
+                return new Sorting(relation, conditions, linePosition);
             case "γ":
                 relation = interpretOperation(children[children.length - 1]);
                 ConditionBase groupBy = interpretCondition(children[0], relation, false);
                 conditions = getGroupConditions(children, relation, false);
-                return new Grouping(relation, groupBy, conditions);
+                return new Grouping(relation, groupBy, conditions, linePosition);
             case "δ":
-                return new DuplicateElimination(interpretOperation(children[0]));
+                return new DuplicateElimination(interpretOperation(children[0]), linePosition);
             default:
-                throw new InvalidEvaluation("invalid syntax");
+                throw new InvalidEvaluation(tree.getToken().getLinePosition(), "invalid syntax");
         }
     }
     
-    public ConditionBase interpretCondition(TokenTree tree, OperationBase relation, boolean ignoreNoAttribute) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    public ConditionBase interpretCondition(TokenTree tree, OperationBase relation, boolean ignoreNoAttribute) throws WrongType, 
+                InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation
     {
         String word = tree.getToken().getSymbol();
         TokenTree[] children = tree.getChildren();
-        
-        
+        int linePosition = tree.getToken().getLinePosition();          
         
         switch(word)
         {
             case "+":
-                return new Add(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
+                return new Add(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case "-":
-                return new Sub(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
+                return new Sub(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case "*":
-                return new Mult(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
+                return new Mult(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case "/":
-                return new Div(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
+                return new Div(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case "=":
-                return new Equal(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
+                return new Equal(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case "<=":
-                return new LessEqual(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
+                return new LessEqual(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case ">=":
-                return new GreaterEqual(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));    
+                return new GreaterEqual(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);    
             case ">":
-                return new Greater(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute)); 
+                return new Greater(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition); 
             case "<":
-                return new Less(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
+                return new Less(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case "!=":
-                return new Not(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
+                return new Not(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case "AND":
-                return new And(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
+                return new And(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case "OR":
-                return new Or(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute));
+                return new Or(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case "→":
-                return new Rename(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, true));    
+                return new Rename(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, true), linePosition);    
             case "Max":
-                return new Max(interpretCondition(children[0], relation, ignoreNoAttribute));
+                return new Max(interpretCondition(children[0], relation, ignoreNoAttribute), linePosition);
             case "Sum":
-                return new Sum(interpretCondition(children[0], relation, ignoreNoAttribute));
+                return new Sum(interpretCondition(children[0], relation, ignoreNoAttribute), linePosition);
             case "Count":
-                return new Count(interpretCondition(children[0], relation, ignoreNoAttribute));
+                return new Count(interpretCondition(children[0], relation, ignoreNoAttribute), linePosition);
             case "Min":
-                return new Min(interpretCondition(children[0], relation, ignoreNoAttribute));
+                return new Min(interpretCondition(children[0], relation, ignoreNoAttribute), linePosition);
             case "Attribute":
                 String value = children[0].getToken().getSymbol();
                 
@@ -287,12 +302,12 @@ public class Query
                     
                     if(column == null)
                     {
-                        return new AttributeLiteral(value, DataType.UNKNOWN);
+                        return new AttributeLiteral(value, DataType.UNKNOWN, children[0].getToken().getLinePosition());
                     }
                     
                     else
                     {
-                        return new AttributeLiteral(value, column.getDataType());
+                        return new AttributeLiteral(value, column.getDataType(), children[0].getToken().getLinePosition());
                     }
                 }
                              
@@ -302,30 +317,30 @@ public class Query
                     
                     if(column == null)
                     {
-                        throw new InvalidParameters(value + "is not a valid attribute.");
+                        throw new InvalidParameters(children[0].getToken().getLinePosition(), value + "is not a valid attribute.");
                     }
                     
                     else
                     {
-                        return new AttributeLiteral(value, column.getDataType());
+                        return new AttributeLiteral(value, column.getDataType(), children[0].getToken().getLinePosition());
                     }
                 }
                
             case "String":
-                return new StringLiteral(children[0].getToken().getSymbol());
+                return new StringLiteral(children[0].getToken().getSymbol(), linePosition);
             case "Number":
                 float number = Float.parseFloat(children[0].getToken().getSymbol());
-                return new NumberLiteral(number);
+                return new NumberLiteral(number, linePosition);
             case "Boolean":
                 boolean b = Boolean.parseBoolean(children[0].getToken().getSymbol());
-                return new BooleanLiteral(b);       
+                return new BooleanLiteral(b, linePosition);       
             default:
-                throw new InvalidEvaluation("Invalid syntax");
+                throw new InvalidEvaluation(tree.getToken().getLinePosition(), "Invalid syntax");
         }
     }
     
     //returns the conditions except the last one which is always a relation
-    public ConditionBase[] getConditions(TokenTree[] children, OperationBase relation, boolean ignoreNoAttribute) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    public ConditionBase[] getConditions(TokenTree[] children, OperationBase relation, boolean ignoreNoAttribute) throws WrongType, InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation
     {
         ArrayList<ConditionBase> bases = new ArrayList<>();
         
@@ -338,7 +353,7 @@ public class Query
     }
     
     //returns the condition except the first and last, which are group and relation
-    public ConditionBase[] getGroupConditions(TokenTree[] children, OperationBase relation, boolean ignoreNoAttribute) throws WrongType, InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    public ConditionBase[] getGroupConditions(TokenTree[] children, OperationBase relation, boolean ignoreNoAttribute) throws WrongType, InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation
     {
         ArrayList<ConditionBase> bases = new ArrayList<>();
         

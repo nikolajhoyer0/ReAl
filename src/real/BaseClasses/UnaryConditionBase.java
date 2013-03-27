@@ -9,15 +9,15 @@ public abstract class UnaryConditionBase extends ConditionBase
 {
     protected ConditionBase operand;
     
-    public UnaryConditionBase(ConditionBase operand)
+    public UnaryConditionBase(ConditionBase operand, int linePosition)
     {
-        super(operand.getType());
+        super(operand.getType(), linePosition);
         this.operand = operand;
     }
     
-    public UnaryConditionBase(ConditionBase operandA, DataType type)
+    public UnaryConditionBase(ConditionBase operandA, DataType type, int linePosition)
     {
-        super(type);
+        super(type, linePosition);
         this.operand = operandA;
     }
 

@@ -11,9 +11,9 @@ public class AttributeLiteral extends UnaryConditionBase
     
     private String attributeName;
     
-    public AttributeLiteral(String value, DataType type)
+    public AttributeLiteral(String value, DataType type, int linePosition)
     {
-        super(null, type);
+        super(null, type, linePosition);
         attributeName = value;
     }
     

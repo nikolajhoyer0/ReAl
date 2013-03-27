@@ -1,8 +1,9 @@
 package real.Objects.Exceptions;
 
-public class InvalidSchema extends Exception
+public class InvalidSchema extends RealException
 {
-    public InvalidSchema()
+    public InvalidSchema(int linePosition, String message)
     {
+        super(linePosition, message);
     }
 }

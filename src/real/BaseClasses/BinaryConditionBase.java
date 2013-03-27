@@ -11,16 +11,16 @@ public abstract class BinaryConditionBase extends ConditionBase
     protected ConditionBase operandB;
     
     
-    public BinaryConditionBase(ConditionBase operandA, ConditionBase operandB)
+    public BinaryConditionBase(ConditionBase operandA, ConditionBase operandB, int linePosition)
     {
-        super((operandA.getType() == operandB.getType()) ? operandB.getType() : DataType.UNKNOWN);
+        super((operandA.getType() == operandB.getType()) ? operandB.getType() : DataType.UNKNOWN, linePosition);
         this.operandA = operandA;
         this.operandB = operandB;
     }
     
-    public BinaryConditionBase(ConditionBase operandA, ConditionBase operandB, DataType type)
+    public BinaryConditionBase(ConditionBase operandA, ConditionBase operandB, DataType type, int linePosition)
     {
-        super((operandA.getType() == operandB.getType()) ? type : DataType.UNKNOWN);
+        super((operandA.getType() == operandB.getType()) ? type : DataType.UNKNOWN, linePosition);
         this.operandA = operandA;
         this.operandB = operandB;
     }

@@ -4,6 +4,7 @@ import real.Objects.Dataset;
 import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
+import real.Objects.Exceptions.NoSuchAttribute;
 import real.Objects.Exceptions.NoSuchDataset;
 
 /**
@@ -11,9 +12,17 @@ import real.Objects.Exceptions.NoSuchDataset;
  */
 public abstract class OperationBase
 {
-    public OperationBase()
+    int linePosition;
+    
+    public OperationBase(int linePosition)
     {
+        this.linePosition = linePosition;
+    }
+    
+    public int getLinePosition()
+    {
+        return this.linePosition;
     }
 
-    public abstract Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation;
+    public abstract Dataset execute() throws InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation;
 }

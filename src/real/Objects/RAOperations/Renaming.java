@@ -11,21 +11,21 @@ import real.Objects.Dataset;
 import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
-import real.Objects.Exceptions.NoSuchDataset;
+import real.Objects.Exceptions.NoSuchAttribute;
 import real.Objects.Utility;
 
 public class Renaming extends UnaryOperationBase
 {
     private final ConditionBase[] conditions;
     
-    public Renaming(OperationBase operand, ConditionBase[] conditions)
+    public Renaming(OperationBase operand, ConditionBase[] conditions, int linePosition)
     {
-        super(operand);
+        super(operand, linePosition);
         this.conditions = conditions;
     }
 
     @Override
-    public Dataset execute() throws InvalidSchema, NoSuchDataset, InvalidParameters, InvalidEvaluation
+    public Dataset execute() throws InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation
     {
         Dataset result = this.operand.execute();          
         Dataset dataset = result.clone();
@@ -46,13 +46,13 @@ public class Renaming extends UnaryOperationBase
                      
                 else
                 {
-                    System.out.println("There must only be one attribute on each rename side.");
+                    throw new InvalidEvaluation(getLinePosition(), "There must only be one attribute on each rename side.");
                 }
             }
             
             else
             {
-                System.out.println("Missing '->' operator");
+                throw new InvalidEvaluation(getLinePosition(), "Missing '->' operator");
             }
         }
         
@@ -60,7 +60,7 @@ public class Renaming extends UnaryOperationBase
         //O(n^2) operation - shouldn't be a problem
         if(Utility.haveColumnDuplicates(dataset.getColumns().toArray(new Column[0])))
         {
-            throw new InvalidParameters("Can't have multiple columns with the same name.");
+            throw new InvalidParameters(getLinePosition(), "Can't have multiple columns with the same name.");
         }
               
         return dataset;

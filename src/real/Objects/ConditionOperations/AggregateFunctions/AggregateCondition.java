@@ -15,9 +15,9 @@ import real.Objects.Row;
 //the evaluators do nothing, but insures that the aggregate functions are only used in grouping operator
 public abstract class AggregateCondition extends UnaryConditionBase
 {
-    public AggregateCondition(ConditionBase operand)
+    public AggregateCondition(ConditionBase operand, int linePosition)
     {
-        super(operand);
+        super(operand, linePosition);
     }
     
     public String aggregateEvaluate(ArrayList<Row> rows) throws InvalidEvaluation
@@ -39,7 +39,7 @@ public abstract class AggregateCondition extends UnaryConditionBase
         
         else
         {
-            throw new InvalidEvaluation("booleans, numbers and strings are only supported.");
+            throw new InvalidEvaluation(getLinePosition(), "booleans, numbers and strings are only supported.");
         }
     }
     
@@ -50,18 +50,18 @@ public abstract class AggregateCondition extends UnaryConditionBase
     @Override
     public String evaluateString(Row row) throws InvalidEvaluation
     {
-        throw new InvalidEvaluation("Aggregate functions are only used in grouping operator.");
+        throw new InvalidEvaluation(getLinePosition(), "Aggregate functions are only used in grouping operator.");
     }
 
     @Override
     public Float evaluateNumber(Row row) throws InvalidEvaluation
     {
-        throw new InvalidEvaluation("Aggregate functions are only used in grouping operator.");
+        throw new InvalidEvaluation(getLinePosition(), "Aggregate functions are only used in grouping operator.");
     }
 
     @Override
     public Boolean evaluateBoolean(Row row) throws InvalidEvaluation
     {
-        throw new InvalidEvaluation("Aggregate functions are only used in grouping operator.");
+        throw new InvalidEvaluation(getLinePosition(), "Aggregate functions are only used in grouping operator.");
     }  
 }

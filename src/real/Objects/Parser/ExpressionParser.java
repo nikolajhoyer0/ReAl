@@ -50,7 +50,7 @@ public class ExpressionParser
             //if it ends op reading the ")"
             if(tree.getChildren()[0].getToken().getSymbol().equals(")"))
             {
-                throw new InvalidParsing("No expression in parathense.");
+                throw new InvalidParsing(tree.getChildren()[0].getToken().getLinePosition(), "No expression in parathense.");
             }
             
             if(tokenStream.next().getSymbol().equals(")"))
@@ -60,7 +60,7 @@ public class ExpressionParser
             
             else
             {
-                throw new InvalidParsing("Expecting end paranthese");
+                throw new InvalidParsing(tokenStream.next().getLinePosition(), "Expecting end paranthese");
             }
               
             return tree;

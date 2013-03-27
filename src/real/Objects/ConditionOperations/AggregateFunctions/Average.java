@@ -7,9 +7,9 @@ import real.Objects.Row;
 
 public class Average extends AggregateCondition
 {
-    public Average(ConditionBase operand)
+    public Average(ConditionBase operand, int linePosition)
     {
-        super(operand);
+        super(operand, linePosition);
     }
     
     @Override

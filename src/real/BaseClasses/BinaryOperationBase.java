@@ -5,8 +5,9 @@ public abstract class BinaryOperationBase extends OperationBase
     protected OperationBase operandA;
     protected OperationBase operandB;
     
-    public BinaryOperationBase(OperationBase operandA, OperationBase operandB)
+    public BinaryOperationBase(OperationBase operandA, OperationBase operandB, int linePosition)
     {
+        super(linePosition);
         this.operandA = operandA;
         this.operandB = operandB;
     }

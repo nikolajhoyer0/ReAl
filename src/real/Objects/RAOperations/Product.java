@@ -10,7 +10,7 @@ import real.Objects.Dataset;
 import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
-import real.Objects.Exceptions.NoSuchDataset;
+import real.Objects.Exceptions.NoSuchAttribute;
 import real.Objects.Row;
 /**
  * Implements the Product operator
@@ -18,13 +18,13 @@ import real.Objects.Row;
  */
 public class Product extends BinaryOperationBase
 {
-    public Product(OperationBase operandA, OperationBase operandB)
+    public Product(OperationBase operandA, OperationBase operandB, int linePosition)
     {
-        super(operandA, operandB);
+        super(operandA, operandB, linePosition);
     }
 
     @Override
-    public Dataset execute() throws InvalidSchema, NoSuchDataset,
+    public Dataset execute() throws InvalidSchema, NoSuchAttribute,
                                     InvalidParameters, InvalidEvaluation
     {
         Dataset resultA = this.operandA.execute().clone();
