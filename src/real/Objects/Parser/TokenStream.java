@@ -105,6 +105,7 @@ public class TokenStream
     {
         //fields for string literal, making sure that they give the right line and word positions.
         boolean isStringLiteral = false;
+        boolean goNextLine = false;
         
         int length = str.length();
         int linePosition = 1;
@@ -219,7 +220,7 @@ public class TokenStream
                         wordList.clear();
                     }
                     
-                    linePosition++;
+                    goNextLine = true;
                     wordPosition = 1;
                 }
                 
@@ -269,6 +270,12 @@ public class TokenStream
                 {                    
                     tokenList.add(new Token(" ", 0, EnumSet.of(OpTypes.NONE)));
                     isSpace = false;                   
+                }
+                
+                if(goNextLine)
+                {
+                    linePosition++;
+                    goNextLine = false;
                 }
                 
                 index++;     

@@ -8,7 +8,7 @@ public class RealException extends Exception
     
     public RealException(int linePosition, String message)
     {
-        this.message = "Error in line " + linePosition + ":" + message;
+        this.message = "Error in line " + linePosition + ": " + message;
     }
     
     public String getMessage()

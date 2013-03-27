@@ -81,12 +81,12 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }
 
     public void setLocalTables()
-    {
+    {      
         LocalDataManager local = Kernel.GetService(LocalDataManager.class);
         String[] tables = local.getAllKeys();
   
         //ignore the last one which is the error pane
-        for(int i = 0; i < tables.length;i++)
+        for(int i = tables.length-1; i >= 0;i--)
         {
             JTable table = new JTable();
             JScrollPane scroll = new JScrollPane();
@@ -94,8 +94,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
             table.setName(tables[i]);
             table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
             scroll.setViewportView(table);
-            queryView.insertTab(tables[i], null, scroll, null, 0);          
-        }  
+            queryView.insertTab(tables[i], null, scroll, null, queryView.getTabCount()-1); 
+        }    
     }
     
     /**
@@ -665,14 +665,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_runButtonActionPerformed
     {//GEN-HEADEREND:event_runButtonActionPerformed
         try
-        {
-            //set the errorview to no errors.
-            //remove all tabs except the errorview pane.
-            for (int i = 0; i < queryView.getTabCount() - 1; ++i)
-            {
-                queryView.remove(i);
-            }
-            
+        {    
+            //clear the tabs except run error
+            queryView.removeAll();
+            queryView.addTab("Run Errors", errorView);
             errorView.setText("");
             Dataset data = query.interpret(getCurrentWorksheet().getText());
             //if no throws we can assume that i went without errors 

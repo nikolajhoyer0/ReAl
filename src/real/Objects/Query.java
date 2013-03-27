@@ -142,11 +142,11 @@ public class Query
         {
             //will be removed
             //view.load(trees.get(0));
-            
+ 
             for (int i = 0; i < trees.size(); ++i)
             {
                 current = trees.get(i);
-                
+
                 //must be a value to be saved
                 if(current.getToken().getSymbol().equals("="))
                 {
@@ -160,7 +160,7 @@ public class Query
                     {
                         throw new InvalidEvaluation(current.getToken().getLinePosition(), "invalid statement.");
                     }
-                    
+                    System.out.print("passed");
                     localData = data.clone();
                     localData.setName(name);
                     local.LoadDataset(localData);    
@@ -189,10 +189,15 @@ public class Query
                 }                         
             }
             
+            if(localData == null)
+            {
+                throw new InvalidEvaluation(0, "Nothing to evaluate.");
+            }
+            
              return localData;
         }
         
-        return null;
+        throw new InvalidEvaluation(0, "Nothing to evaluate.");
     }
 
     //inteprets the relation alg and uses interpret condition to interpret the condtions.
@@ -317,7 +322,7 @@ public class Query
                     
                     if(column == null)
                     {
-                        throw new InvalidParameters(children[0].getToken().getLinePosition(), value + "is not a valid attribute.");
+                        throw new InvalidParameters(children[0].getToken().getLinePosition(), value + " is not a valid attribute.");
                     }
                     
                     else
