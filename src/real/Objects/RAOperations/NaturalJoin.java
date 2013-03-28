@@ -148,4 +148,10 @@ public class NaturalJoin extends BinaryOperationBase
         }
         return columns;
     }
+    
+    @Override
+    public String toString()
+    {
+        return "⋈";
+    }
 }

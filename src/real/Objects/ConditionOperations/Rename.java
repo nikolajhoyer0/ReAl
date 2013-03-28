@@ -39,4 +39,9 @@ public class Rename extends BinaryConditionBase
         throw new InvalidEvaluation(getLinePosition(), "can only use the rename operator in projection, renaming and grouping.");
     }
     
+    @Override
+    public String toString()
+    {
+        return operandA.toString() + " -> " + operandB.toString();
+    }
 }

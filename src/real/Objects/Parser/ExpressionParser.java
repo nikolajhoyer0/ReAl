@@ -35,11 +35,24 @@ public class ExpressionParser
         tokenStream.ignoreNextToken(" ");
         Token token = tokenStream.next();
         
+        
         if(token.getAssociativity().contains(OpTypes.UNARY))
         {
             tokenStream.consume();
             TokenTree[] tree = {expression(token.getPrecedence()+1)};
             return new TokenTree(tree, token);
+        }
+        
+        else if (tokenStream.next().getSymbol().equals(")"))
+        {
+            if (errorMessage.isEmpty())
+            {
+                throw new InvalidParsing(tokenStream.next().getLinePosition(), "Unexpected ')'");
+            }
+            else
+            {
+                throw new InvalidParsing(tokenStream.next().getLinePosition(), errorMessage);
+            }
         }
         
         else if(token.getSymbol().equals("("))
@@ -50,7 +63,15 @@ public class ExpressionParser
             //if it ends op reading the ")"
             if(tree.getChildren()[0].getToken().getSymbol().equals(")"))
             {
-                throw new InvalidParsing(tree.getChildren()[0].getToken().getLinePosition(), "No expression in parathense.");
+                if(errorMessage.isEmpty())
+                {
+                    throw new InvalidParsing(tree.getChildren()[0].getToken().getLinePosition(), "No expression in parathense.");
+                }
+                
+                else
+                {
+                    throw new InvalidParsing(tree.getChildren()[0].getToken().getLinePosition(), errorMessage);
+                }
             }
             
             if(tokenStream.next().getSymbol().equals(")"))
@@ -59,8 +80,16 @@ public class ExpressionParser
             }
             
             else
-            {
-                throw new InvalidParsing(tokenStream.next().getLinePosition(), "Expecting end paranthese");
+            {              
+                if(errorMessage.isEmpty())
+                {
+                    throw new InvalidParsing(tokenStream.next().getLinePosition(), "Expecting end paranthese");
+                }
+                
+                else
+                {
+                    throw new InvalidParsing(tokenStream.next().getLinePosition(), errorMessage);
+                }
             }
               
             return tree;
@@ -95,33 +124,80 @@ public class ExpressionParser
         
         //must be tuple generation
         //syntax {(value1, value2, ...), (tuble) ... }
-        //else if (token.getSymbol().equals("{"))
-        //{
-          
+        else if (token.getSymbol().equals("{"))
+        {
+            LinkedList<TokenTree> children = new LinkedList<>();
+            tokenStream.consume();
+            //first parse all the tubles       
+            while (!tokenStream.next().getSymbol().equals(","))
+            {
+                children.add(readTuble());
+
+                if (!tokenStream.next().getSymbol().equals(","))
+                {
+                    if (errorMessage.isEmpty())
+                    {
+                        throw new InvalidParsing(tokenStream.next().getLinePosition(), "Expecting ',' for tuple");
+                    }
+                    
+                    else
+                    {
+                        throw new InvalidParsing(tokenStream.next().getLinePosition(), errorMessage);
+                    }
+                }
+                
+                else
+                {
+                    tokenStream.consume();
+                }
+            }
             
+            if (!tokenStream.next().getSymbol().equals("}"))
+            {
+                if (errorMessage.isEmpty())
+                {
+                    throw new InvalidParsing(tokenStream.next().getLinePosition(), "Expecting '}' for table creation");
+                }
+                
+                else
+                {
+                    throw new InvalidParsing(tokenStream.next().getLinePosition(), errorMessage);
+                }
+            }
+
+            else
+            {
+                tokenStream.consume();
+            }
             
-            
-        //}
+            return new TokenTree(children.toArray(new TokenTree[0]), new Token("Table", 0, EnumSet.of(OpTypes.NONE), token.getLinePosition(), token.getWordPosition()));
+        }
        
         else if(token.getSymbol().equals("δ"))
         {
+            errorMessage = "Parsing error in " + token.getSymbol();
             tokenStream.consume();
             TokenTree[] tree = {primary()};
-            return new TokenTree(tree, token);   
+            errorMessage = "";
+            return new TokenTree(tree, token);           
         }
         
         else if (token.getSymbol().equals("σ"))
         {
+            errorMessage = "Parsing error in " + token.getSymbol();
             tokenStream.consume();
             TokenTree[] tree = {expression(0), primary()};
+            errorMessage = "";
             return new TokenTree(tree, token);           
         }
         
         else if (token.getSymbol().equals("ρ") || token.getSymbol().equals("π") || token.getSymbol().equals("τ") || token.getSymbol().equals("γ"))
-        {
+        {     
+            errorMessage = "Parsing error in " + token.getSymbol();
             tokenStream.consume();
             LinkedList<TokenTree> list = new LinkedList<>();
             list.add(expression(0));
+        
             while(true)
             {            
                 if(tokenStream.next().getSymbol().equals(","))
@@ -138,13 +214,17 @@ public class ExpressionParser
             }
             
             TokenTree[] trees = (TokenTree[])list.toArray(new TokenTree[0]);
+            errorMessage = "";
             return new TokenTree(trees, token);
         }
         
-        else if (token.getSymbol().equals("Max") || token.getSymbol().equals("Sum") || token.getSymbol().equals("Average") || token.getSymbol().equals("Count"))
+        else if (token.getSymbol().equals("Max") || token.getSymbol().equals("Sum") || 
+                    token.getSymbol().equals("Average") || token.getSymbol().equals("Count") || token.getSymbol().equals("Min"))
         {
+            errorMessage = "Parsing error in " + token.getSymbol();
             tokenStream.consume();
             TokenTree[] tree = {primary()};
+            errorMessage = "";
             return new TokenTree(tree, token);
         }
         
@@ -208,5 +288,69 @@ public class ExpressionParser
         return tree;
     }
     
+    private TokenTree readTuble() throws InvalidParsing
+    {
+        if (!tokenStream.next().getSymbol().equals("("))
+        {
+            if (errorMessage.isEmpty())
+            {
+                throw new InvalidParsing(tokenStream.next().getLinePosition(), "Expecting start paranthese");
+            }
+            else
+            {
+                throw new InvalidParsing(tokenStream.next().getLinePosition(), errorMessage);
+            }
+        }
+        
+        Token token = tokenStream.next();
+        tokenStream.consume();
+        
+        LinkedList<TokenTree> children = new LinkedList<>();
+
+        while (!tokenStream.next().getSymbol().equals(","))
+        {
+            children.add(new TokenTree(null, tokenStream.next()));
+            tokenStream.consume();
+
+            if (!tokenStream.next().getSymbol().equals(","))
+            {
+                if (errorMessage.isEmpty())
+                {
+                    throw new InvalidParsing(tokenStream.next().getLinePosition(), "Expecting ',' for tuple");
+                }
+                
+                else
+                {
+                    throw new InvalidParsing(tokenStream.next().getLinePosition(), errorMessage);
+                }
+            }
+            
+            else
+            {
+                tokenStream.consume();
+            }
+        }
+
+        if (!tokenStream.next().getSymbol().equals(")"))
+        {
+            if (errorMessage.isEmpty())
+            {
+                throw new InvalidParsing(tokenStream.next().getLinePosition(), "Expecting end paranthese");
+            }
+            else
+            {
+                throw new InvalidParsing(tokenStream.next().getLinePosition(), errorMessage);
+            }
+        }
+        
+        else
+        {
+            tokenStream.consume();
+        }
+        
+        return new TokenTree(children.toArray(new TokenTree[0]), new Token("Tuple", 0, EnumSet.of(OpTypes.NONE), token.getLinePosition(), token.getWordPosition()));
+    }
+
     private TokenStream tokenStream;
+    private String errorMessage;
 }

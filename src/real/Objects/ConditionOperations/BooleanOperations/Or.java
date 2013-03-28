@@ -41,4 +41,10 @@ public class Or extends BooleanOperator
         
         return a || b;
     }  
+    
+    @Override
+    public String toString()
+    {
+        return operandA.toString() + " OR " + operandB.toString();
+    }
 }

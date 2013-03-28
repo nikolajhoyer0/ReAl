@@ -40,4 +40,9 @@ public class Greater extends BooleanOperator
         }
     }
     
+    @Override
+    public String toString()
+    {
+        return operandA.toString() + " > " + operandB.toString();
+    }
 }

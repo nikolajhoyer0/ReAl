@@ -33,4 +33,10 @@ public class BooleanLiteral extends UnaryConditionBase
     {
         return value;
     }
+    
+    @Override
+    public String toString()
+    {
+        return Boolean.toString(value);
+    }
 }

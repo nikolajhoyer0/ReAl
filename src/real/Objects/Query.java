@@ -58,6 +58,7 @@ import real.Objects.RAOperations.RightOuterJoin;
 import real.Objects.RAOperations.Selection;
 import real.Objects.RAOperations.Sorting;
 import real.Objects.RAOperations.Union;
+import real.Objects.Services.ErrorSystem;
 import real.Objects.Services.LocalDataManager;
 
 public class Query
@@ -125,7 +126,7 @@ public class Query
         }
         catch (InvalidParsing ex)
         {
-            Logger.getLogger(Query.class.getName()).log(Level.SEVERE, null, ex);
+            Kernel.GetService(ErrorSystem.class).print(ex);
             return null;
         }   
     }
@@ -188,12 +189,7 @@ public class Query
                     local.LoadOperation(name, currentData);
                 }                         
             }
-            
-            if(localData == null)
-            {
-                throw new InvalidEvaluation(0, "Nothing to evaluate.");
-            }
-            
+  
              return localData;
         }
         

@@ -155,4 +155,10 @@ public class LeftOuterJoin extends BinaryOperationBase
         }
         return columns;
     }
+    
+    @Override
+    public String toString()
+    {
+        return "⟕";
+    }
 }

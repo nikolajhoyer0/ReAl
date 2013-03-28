@@ -64,4 +64,9 @@ public class Equal extends BooleanOperator
         }     
     }
     
+    @Override
+    public String toString()
+    {
+        return operandA.toString() + " = " + operandB.toString();
+    }
 }

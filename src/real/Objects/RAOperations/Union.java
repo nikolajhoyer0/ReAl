@@ -64,4 +64,10 @@ public class Union extends BinaryOperationBase
         
         throw new InvalidSchema(getLinePosition(), resultA.getName() + " and " + resultB.getName() + " does not have matching schemas.");
     }
+    
+    @Override
+    public String toString()
+    {
+        return "∪";
+    }
 }

@@ -61,4 +61,9 @@ public class Count extends AggregateCondition
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
+    @Override
+    public String toString()
+    {
+        return "Count(" + operand.toString() + ")";
+    }
 }

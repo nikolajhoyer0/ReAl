@@ -35,4 +35,9 @@ public class NumberLiteral extends UnaryConditionBase
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
+    @Override
+    public String toString()
+    {
+        return Float.toString(value);
+    }
 }

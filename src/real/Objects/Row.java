@@ -4,7 +4,7 @@ package real.Objects;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Scanner;
+import real.Objects.Exceptions.InvalidDataset;
 
 
 /**
@@ -15,7 +15,7 @@ public class Row
 {
     private Map<String, String> values;
 
-    public Row(String value, String[] columns)
+    public Row(String value, String[] columns) throws InvalidDataset
     {
         this.values = new HashMap<>();
         this.Load(value, columns);
@@ -85,15 +85,20 @@ public class Row
         return true;
     }
 
-    private void Load(String value, String[] columns)
+    private void Load(String value, String[] columns) throws InvalidDataset
     {   
         int idx = 0;
         String[] values = value.split(",");
+        
+        if(columns.length != values.length)
+        {
+            throw new InvalidDataset("more values then columns in: " + values.toString());
+        }
+        
         for (String column : columns)
         {
             if (idx < values.length)
-            {
-                
+            {               
                 int leftIndex;
                 int rightIndex;
                 

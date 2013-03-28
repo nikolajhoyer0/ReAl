@@ -53,5 +53,10 @@ public class ReferencedDataset extends OperationBase
             }
         }
     }
-
+    
+    @Override
+    public String toString()
+    {
+        return name;
+    }
 }

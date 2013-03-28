@@ -61,4 +61,10 @@ public class Not extends BooleanOperator
             return a.equals(b);
         }     
     }
+    
+    @Override
+    public String toString()
+    {
+        return operandA.toString() + " != " + operandB.toString();
+    }
 }

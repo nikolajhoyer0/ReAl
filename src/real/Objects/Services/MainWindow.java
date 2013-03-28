@@ -838,11 +838,11 @@ public class MainWindow extends javax.swing.JFrame implements IService
             }
             catch (InvalidDataset ex)
             {
-                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
             }
             catch (DatasetDuplicate ex)
             {
-                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
             }
         }
 

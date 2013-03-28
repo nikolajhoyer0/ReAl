@@ -33,7 +33,7 @@ public class Min extends AggregateCondition
     @Override
     public Float aggregateNumber(ArrayList<Row> rows) throws InvalidEvaluation
     {
-        float value = 0;
+        float value = Float.MAX_VALUE;
         
         for(Row row : rows)
         {
@@ -61,4 +61,9 @@ public class Min extends AggregateCondition
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
+    @Override
+    public String toString()
+    {
+        return "Min(" + operand.toString() + ")";
+    }
 }

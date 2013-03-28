@@ -108,4 +108,10 @@ public class Product extends BinaryOperationBase
             }
         }
     }
+    
+    @Override
+    public String toString()
+    {
+        return "×";
+    }
 }

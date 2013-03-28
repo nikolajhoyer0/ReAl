@@ -30,4 +30,9 @@ public class Average extends AggregateCondition
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
+    @Override
+    public String toString()
+    {
+        return "Average(" + operand.toString() + ")";
+    }
 }

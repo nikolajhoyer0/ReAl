@@ -29,4 +29,10 @@ public class FullOuterJoin extends BinaryOperationBase
         
         return union.execute();
     }
+    
+    @Override
+    public String toString()
+    {
+        return "⟗";
+    }
 }

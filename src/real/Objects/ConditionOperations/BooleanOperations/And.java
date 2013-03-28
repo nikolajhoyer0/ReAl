@@ -34,4 +34,10 @@ public class And extends BooleanOperator
         
         return a && b;
     }  
+    
+    @Override
+    public String toString()
+    {
+        return operandA.toString() + " AND " + operandB.toString();
+    }
 }

@@ -250,4 +250,25 @@ public class Projection extends UnaryOperationBase
 
         return null;
     }
+    
+    @Override
+    public String toString()
+    {
+        String str = "";
+        
+        for(ConditionBase condition : conditions)
+        {
+            if(str.isEmpty())
+            {
+                str = condition.toString();
+            }
+            
+            else
+            {
+                str = str + ", " + condition.toString();
+            }
+        }
+        
+        return "π " + str;
+    }
 }

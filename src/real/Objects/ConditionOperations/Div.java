@@ -44,4 +44,10 @@ public class Div extends BinaryConditionBase
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+    @Override
+    public String toString()
+    {
+        return operandA.toString() + " / " + operandB.toString();
+    }
 }

@@ -58,4 +58,9 @@ public class Sum extends AggregateCondition
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
+    @Override
+    public String toString()
+    {
+        return "Sum(" + operand.toString() + ")";
+    }
 }

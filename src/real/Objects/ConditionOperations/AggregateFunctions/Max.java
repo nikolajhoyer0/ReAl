@@ -64,4 +64,10 @@ public class Max extends AggregateCondition
     { 
         throw new UnsupportedOperationException("Not supported yet.");
     }    
+    
+    @Override
+    public String toString()
+    {
+        return "Max(" + operand.toString() + ")";
+    }
 }

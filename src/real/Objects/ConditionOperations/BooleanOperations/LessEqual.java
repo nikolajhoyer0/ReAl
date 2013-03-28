@@ -38,4 +38,10 @@ public class LessEqual extends BooleanOperator
             throw new UnsupportedOperationException("can only compare number");
         }
     }
+    
+    @Override
+    public String toString()
+    {
+        return operandA.toString() + " <= " + operandB.toString();
+    }
 }

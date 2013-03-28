@@ -65,4 +65,25 @@ public class Renaming extends UnaryOperationBase
               
         return dataset;
     }
+    
+    @Override
+    public String toString()
+    {
+        String str = "";
+        
+        for(ConditionBase condition : conditions)
+        {
+            if(str.isEmpty())
+            {
+                str = condition.toString();
+            }
+            
+            else
+            {
+                str = str + ", " + condition.toString();
+            }
+        }
+        
+        return "ρ " + str;
+    }
 }

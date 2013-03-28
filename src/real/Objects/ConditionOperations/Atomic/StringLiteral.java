@@ -33,4 +33,9 @@ public class StringLiteral extends UnaryConditionBase
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
+    @Override
+    public String toString()
+    {
+        return "'" + value + "'";
+    }
 }

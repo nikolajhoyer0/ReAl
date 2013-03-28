@@ -51,4 +51,10 @@ public class Selection extends UnaryOperationBase
         
         return new Dataset("", resultA.getColumns(), rows);
     }
+    
+    @Override
+    public String toString()
+    {
+        return "σ " + condition.toString();
+    }
 }

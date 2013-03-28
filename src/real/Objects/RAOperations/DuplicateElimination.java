@@ -38,4 +38,9 @@ public class DuplicateElimination extends UnaryOperationBase
         return new Dataset("", result.getColumns(), includeRows);
     }
 
+    @Override
+    public String toString()
+    {
+        return "δ " + operand.toString();
+    }
 }

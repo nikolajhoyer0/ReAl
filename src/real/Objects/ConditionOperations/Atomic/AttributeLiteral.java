@@ -60,5 +60,10 @@ public class AttributeLiteral extends UnaryConditionBase
         
         return Boolean.parseBoolean(value);   
     }
-    
+ 
+    @Override
+    public String toString()
+    {
+        return attributeName;
+    }
 }
