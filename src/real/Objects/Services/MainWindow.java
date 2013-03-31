@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -50,6 +48,12 @@ public class MainWindow extends javax.swing.JFrame implements IService
     public JTextArea getCurrentWorksheet()
     {
         TextQueryView view = (TextQueryView)worksheetPane.getSelectedComponent();
+        
+        if(view == null)
+        {
+            return null;
+        }
+        
         return view.getTextArea();
     }
 
@@ -665,15 +669,18 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_runButtonActionPerformed
     {//GEN-HEADEREND:event_runButtonActionPerformed
         try
-        {    
-            //clear the tabs except run error
-            queryView.removeAll();
-            queryView.addTab("Run Errors", errorView);
-            errorView.setText("");
-            Dataset data = query.interpret(getCurrentWorksheet().getText());
-            //if no throws we can assume that i went without errors 
-            errorView.setText("Successful run");           
-            setLocalTables();
+        {
+            if (getCurrentWorksheet() != null)
+            {
+                //clear the tabs except run error
+                queryView.removeAll();
+                queryView.addTab("Run Errors", errorView);
+                errorView.setText("");
+                Dataset data = query.interpret(getCurrentWorksheet().getText());
+                //if no throws we can assume that i went without errors 
+                errorView.setText("Successful run");
+                setLocalTables();
+            }
         }
         catch (InvalidSchema | NoSuchAttribute | InvalidParameters | InvalidEvaluation | WrongType ex)
         {

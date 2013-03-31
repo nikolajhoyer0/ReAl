@@ -14,6 +14,7 @@ public class ExpressionParser
     public ExpressionParser(TokenStream tokenStream)
     {
         this.tokenStream = tokenStream;
+        this.errorMessage = "";
     }
     
     public LinkedList<TokenTree> parse(final String str) throws InvalidParsing
@@ -31,8 +32,6 @@ public class ExpressionParser
     
     private TokenTree primary() throws InvalidParsing
     {
-        //ignore space
-        tokenStream.ignoreNextToken(" ");
         Token token = tokenStream.next();
         
         
@@ -54,6 +53,7 @@ public class ExpressionParser
                 throw new InvalidParsing(tokenStream.next().getLinePosition(), errorMessage);
             }
         }
+        
         
         else if(token.getSymbol().equals("("))
         {
@@ -119,6 +119,8 @@ public class ExpressionParser
             Token tk = new Token(concatStr, 0, EnumSet.of(OpTypes.NONE), linePosition, wordPosition);
             TokenTree[] tree = {new TokenTree(null, tk)};
             
+            //start ignoring space.
+            tokenStream.ignoreNextToken(" ");
             return new TokenTree(tree, new Token("String", 0, EnumSet.of(OpTypes.NONE)));
         }
         
@@ -128,27 +130,19 @@ public class ExpressionParser
         {
             LinkedList<TokenTree> children = new LinkedList<>();
             tokenStream.consume();
+            children.add(readTuple());
             //first parse all the tubles       
-            while (!tokenStream.next().getSymbol().equals(","))
+            while (true)
             {
-                children.add(readTuble());
-
-                if (!tokenStream.next().getSymbol().equals(","))
+                if (tokenStream.next().getSymbol().equals(","))
                 {
-                    if (errorMessage.isEmpty())
-                    {
-                        throw new InvalidParsing(tokenStream.next().getLinePosition(), "Expecting ',' for tuple");
-                    }
-                    
-                    else
-                    {
-                        throw new InvalidParsing(tokenStream.next().getLinePosition(), errorMessage);
-                    }
+                    tokenStream.consume();
+                    children.add(readTuple());
                 }
                 
                 else
                 {
-                    tokenStream.consume();
+                    break;
                 }
             }
             
@@ -260,8 +254,6 @@ public class ExpressionParser
     private TokenTree expression(final int precedence) throws InvalidParsing
     {
         TokenTree tree = primary();
-        //ignore space
-        tokenStream.ignoreNextToken(" ");
         
         while((tokenStream.next().isBinary() && tokenStream.next().getPrecedence() >= precedence)
                 && !tokenStream.next().getAssociativity().contains(OpTypes.NONE))
@@ -288,7 +280,7 @@ public class ExpressionParser
         return tree;
     }
     
-    private TokenTree readTuble() throws InvalidParsing
+    private TokenTree readTuple() throws InvalidParsing
     {
         if (!tokenStream.next().getSymbol().equals("("))
         {
@@ -307,27 +299,19 @@ public class ExpressionParser
         
         LinkedList<TokenTree> children = new LinkedList<>();
 
-        while (!tokenStream.next().getSymbol().equals(","))
-        {
-            children.add(new TokenTree(null, tokenStream.next()));
-            tokenStream.consume();
-
-            if (!tokenStream.next().getSymbol().equals(","))
-            {
-                if (errorMessage.isEmpty())
-                {
-                    throw new InvalidParsing(tokenStream.next().getLinePosition(), "Expecting ',' for tuple");
-                }
+        children.add(primary());
                 
-                else
-                {
-                    throw new InvalidParsing(tokenStream.next().getLinePosition(), errorMessage);
-                }
+        while (true)
+        {     
+            if(tokenStream.next().getSymbol().equals(","))
+            {
+                tokenStream.consume();
+                children.add(primary());
             }
             
             else
             {
-                tokenStream.consume();
+                break;
             }
         }
 

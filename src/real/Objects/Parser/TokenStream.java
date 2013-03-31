@@ -18,6 +18,8 @@ public class TokenStream
         opManager.addOp(new Token(")", 0, EnumSet.of(OpTypes.NONE)));
         opManager.addOp(new Token(",", 0, EnumSet.of(OpTypes.NONE)));
         opManager.addOp(new Token("'", 0, EnumSet.of(OpTypes.NONE)));
+        opManager.addOp(new Token("{", 0, EnumSet.of(OpTypes.NONE)));
+        opManager.addOp(new Token("}", 0, EnumSet.of(OpTypes.NONE)));
         ignoreList = new LinkedList<>();
     }
     

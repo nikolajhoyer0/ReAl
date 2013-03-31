@@ -6,5 +6,6 @@ public enum DataType
     NUMBER,
     BOOLEAN,
     STRING,
-    ATTRIBUTE
+    ATTRIBUTE,
+    NONE
 }

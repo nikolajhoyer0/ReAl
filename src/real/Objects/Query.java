@@ -3,8 +3,6 @@ package real.Objects;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import real.BaseClasses.ConditionBase;
 import real.BaseClasses.OperationBase;
 import real.Enumerations.DataType;
@@ -35,7 +33,6 @@ import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidParsing;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchAttribute;
-import real.Objects.Exceptions.NoSuchDataset;
 import real.Objects.Exceptions.WrongType;
 import real.Objects.GUI.TreeViewTest;
 import real.Objects.Parser.ExpressionParser;
@@ -57,6 +54,8 @@ import real.Objects.RAOperations.Renaming;
 import real.Objects.RAOperations.RightOuterJoin;
 import real.Objects.RAOperations.Selection;
 import real.Objects.RAOperations.Sorting;
+import real.Objects.RAOperations.Tuple;
+import real.Objects.RAOperations.TupleList;
 import real.Objects.RAOperations.Union;
 import real.Objects.Services.ErrorSystem;
 import real.Objects.Services.LocalDataManager;
@@ -73,9 +72,9 @@ public class Query
     {
         
         //will be removed
-        //view = new TreeViewTest();
-        //view.setSize(800, 820);
-        //view.setVisible(true);
+        view = new TreeViewTest();
+        view.setSize(800, 820);
+        view.setVisible(true);
         
         
         TokenOpManager opManager = new TokenOpManager();
@@ -142,7 +141,7 @@ public class Query
         if (trees != null)
         {
             //will be removed
-            //view.load(trees.get(0));
+            view.load(trees.get(0));
  
             for (int i = 0; i < trees.size(); ++i)
             {
@@ -246,6 +245,9 @@ public class Query
                 return new Grouping(relation, groupBy, conditions, linePosition);
             case "δ":
                 return new DuplicateElimination(interpretOperation(children[0]), linePosition);
+            case "Table":
+                OperationBase[] operations = getTuples(children);
+                return new TupleList(operations, linePosition);
             default:
                 throw new InvalidEvaluation(tree.getToken().getLinePosition(), "invalid syntax");
         }
@@ -364,5 +366,55 @@ public class Query
         }
       
         return bases.toArray(new ConditionBase[1]);
+    }
+    
+    public OperationBase[] getTuples(TokenTree[] children) throws InvalidEvaluation, InvalidParameters
+    {
+        LinkedList<Tuple> tuples = new LinkedList<>();
+        
+        for(int i = 0; i < children.length; ++i)
+        {
+            if(children[i].getToken().getSymbol().equals("Tuple"))
+            {
+                LinkedList<String> values = new LinkedList<>();
+                LinkedList<DataType> types = new LinkedList<>();
+                
+                for(int j = 0; j < children[i].getChildren().length; ++j)
+                {
+                    Token token = children[i].getChildren()[j].getToken();
+                    
+                    switch(token.getSymbol())
+                    {
+                        case "Number":
+                            types.add(DataType.NUMBER);
+                            break;
+                        case "Boolean":
+                            types.add(DataType.BOOLEAN);
+                            break;
+                        case "String":
+                            types.add(DataType.STRING);
+                            break;
+                        case "":
+                            types.add(DataType.UNKNOWN);
+                            break;
+                        case "Attribute":
+                            throw new InvalidParameters(children[i].getChildren()[j].getToken().getLinePosition(), "Must not be attributes. Please use quotations.");
+                        default:
+                            throw new InvalidEvaluation(children[i].getChildren()[j].getToken().getLinePosition(), "Developer Error: tuple creation didn't have any type.");
+                    }
+                    
+                    values.add(children[i].getChildren()[j].getChildren()[0].getToken().getSymbol());
+                }
+                
+                 tuples.add(new Tuple(values.toArray(new String[0]), types.toArray(new DataType[0]), children[i].getToken().getLinePosition()));
+            }
+            
+            else
+            {
+                throw new InvalidEvaluation(children[i].getToken().getLinePosition(), "Invalid tuple creation");
+            }                
+        }
+        
+        return tuples.toArray(new Tuple[0]);
     }
 }

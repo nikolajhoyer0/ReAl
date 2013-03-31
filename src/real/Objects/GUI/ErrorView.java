@@ -9,7 +9,7 @@ public class ErrorView extends JTextArea implements Observer
     public ErrorView()
     {
         this.setEditable(false);
-        this.setText("No errors detected.");
+        this.setText("");
     }
 
     @Override
