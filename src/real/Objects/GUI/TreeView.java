@@ -1,24 +1,40 @@
 package real.Objects.GUI;
 
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
+import com.mxgraph.model.mxICell;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 import real.BaseClasses.BinaryOperationBase;
 import real.BaseClasses.OperationBase;
 import real.BaseClasses.UnaryOperationBase;
+import real.Objects.Exceptions.InvalidEvaluation;
+import real.Objects.Exceptions.InvalidParameters;
+import real.Objects.Exceptions.InvalidSchema;
+import real.Objects.Exceptions.NoSuchAttribute;
 import real.Objects.RAOperations.ReferencedDataset;
 
 public class TreeView extends JPanel {
     private mxGraph graph;
     private mxGraphComponent graphComponent;
+    private ArrayList<OperationBase> operands;
+    private TreeWindow treeWindow;
     
-    public TreeView()
+    public TreeView(TreeWindow parent)
     {
         super();
+        
+        this.treeWindow = parent;      
+        operands = new ArrayList<>();
+        
         this.setLayout(new BorderLayout());
         
         
@@ -50,12 +66,49 @@ public class TreeView extends JPanel {
 
             }
         });
+        
+        graphComponent.getGraphControl().addMouseListener(new MouseAdapter()
+        {
+            @Override
+            public void mouseReleased(MouseEvent e)
+            {
+                mxICell cell = (mxICell)graphComponent.getCellAt(e.getX(), e.getY());
+                           
+                if (cell != null)
+                {
+                    try
+                    {                      
+                        System.out.println(cell.getId());
+                        OperationBase base = operands.get(Integer.parseInt(cell.getId()));
+                        treeWindow.getTableView().setModel(base.execute());
+                    }
+                    catch (InvalidSchema ex)
+                    {
+                        Logger.getLogger(TreeView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    catch (NoSuchAttribute ex)
+                    {
+                        Logger.getLogger(TreeView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    catch (InvalidParameters ex)
+                    {
+                        Logger.getLogger(TreeView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    catch (InvalidEvaluation ex)
+                    {
+                        Logger.getLogger(TreeView.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }); 
                
         add(graphComponent);
     }
 
     public void loadTree(OperationBase base)
     {
+        operands.clear();
+        
         Object parent = graph.getDefaultParent();
 
         graph.removeCells(graph.getChildVertices(graph.getDefaultParent()));
@@ -74,7 +127,7 @@ public class TreeView extends JPanel {
         
         
     }
-    
+ 
     private void traverseTree(OperationBase tree, Object parent, Object lastNode, int y)
     {
   
@@ -84,7 +137,10 @@ public class TreeView extends JPanel {
             {
                 UnaryOperationBase unary = (UnaryOperationBase) tree;
                 
-                Object v2 = graph.insertVertex(parent, null, unary.toString(), 3, 2, 90, 40);
+                int id = operands.size();
+                operands.add(unary);
+                
+                Object v2 = graph.insertVertex(parent, String.valueOf(id), unary.toString(), 3, 2, 100, 40);
                 
                 if(lastNode != null)
                 {
@@ -96,24 +152,29 @@ public class TreeView extends JPanel {
             
             //end leafs
             else if(tree instanceof ReferencedDataset)
-            {
+            {                      
                 ReferencedDataset ref = (ReferencedDataset)tree;
-                Object v2 = graph.insertVertex(parent, null, tree.toString(), 3, 2, 90, 40);
                 
+                int id = operands.size();
+                operands.add(ref);
+
+                Object v2 = graph.insertVertex(parent, String.valueOf(id), tree.toString(), 3, 2, 100, 40, "fillColor=yellow");
+
                 if(lastNode != null)
                 {
                     graph.insertEdge(parent, null, null, lastNode,v2);
-                } 
-                
-                traverseTree(ref.getOperand(), parent, v2, 0);
+                }                
             }
            
             else
             {
                 BinaryOperationBase binary = (BinaryOperationBase) tree;
                 
-                Object v2 = graph.insertVertex(parent, null, binary.toString(), 5, 6, 90, 40);
-  
+                int id = operands.size();
+                operands.add(binary);
+
+                Object v2 = graph.insertVertex(parent, String.valueOf(id), binary.toString(), 5, 6, 100, 40);
+                 
                 if(lastNode != null)
                 {
                     graph.insertEdge(parent, null, null, lastNode,v2);

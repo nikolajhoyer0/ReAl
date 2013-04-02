@@ -1,5 +1,6 @@
 package real.Objects.GUI;
 
+import javax.swing.JTable;
 import real.BaseClasses.OperationBase;
 
 public class TreeWindow extends javax.swing.JDialog
@@ -15,6 +16,11 @@ public class TreeWindow extends javax.swing.JDialog
         treeView.loadTree(tree);
     }
 
+    public JTable getTableView()
+    {
+        return this.tableView;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,7 +33,7 @@ public class TreeWindow extends javax.swing.JDialog
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tableView = new javax.swing.JTable();
-        treeView = new real.Objects.GUI.TreeView();
+        treeView = new real.Objects.GUI.TreeView(this);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 

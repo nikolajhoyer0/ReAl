@@ -1,5 +1,6 @@
 package real.Objects.Services;
 
+import real.Objects.GUI.TreeWindow;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileReader;
@@ -17,7 +18,6 @@ import real.Objects.Dataset;
 import real.Objects.Exceptions.*;
 import real.Objects.GUI.ErrorView;
 import real.Objects.GUI.TextQueryView;
-import real.Objects.GUI.TreeWindow;
 import real.Objects.Kernel;
 import real.Objects.Query;
 import real.Objects.Utility;

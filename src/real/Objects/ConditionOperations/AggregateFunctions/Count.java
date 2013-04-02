@@ -35,23 +35,15 @@ public class Count extends AggregateCondition
     public Float aggregateNumber(ArrayList<Row> rows) throws InvalidEvaluation
     {
         Float counter = new Float(0);
-        
-        if(columnName.equals("*"))
+
+        for (Row row : rows)
         {
-            counter = (float)rows.size();
-        }
-        
-        else
-        {
-            for (Row row : rows) 
+            if (row.getValue(columnName) != null)
             {
-                if(row.getValue(columnName) != null)
-                {
-                    counter++;
-                }
+                counter++;
             }
         }
-        
+
         return counter;
     }
 
