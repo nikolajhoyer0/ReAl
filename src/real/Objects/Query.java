@@ -117,20 +117,12 @@ public class Query
         parser = new ExpressionParser(tokenStream);
     }
       
-    private LinkedList<TokenTree> parse(String str)
+    private LinkedList<TokenTree> parse(String str) throws InvalidParsing
     {
-        try
-        {
-            return parser.parse(str);
-        }
-        catch (InvalidParsing ex)
-        {
-            Kernel.GetService(ErrorSystem.class).print(ex);
-            return null;
-        }   
+        return parser.parse(str);
     }
     
-    public Dataset interpret(String str) throws InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation, WrongType
+    public Dataset interpret(String str) throws InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation, WrongType, InvalidParsing
     {
         LinkedList<TokenTree> trees = parse(str);
         LocalDataManager local = Kernel.GetService(LocalDataManager.class);  
@@ -138,7 +130,7 @@ public class Query
         int defaultNumber = 0;
         local.clearLocal();
           
-        if (trees != null)
+        if (trees != null && !trees.isEmpty())
         {
             //will be removed
             //view.load(trees.get(0));
@@ -158,9 +150,9 @@ public class Query
                     
                     if(currentData == null || data == null)
                     {
-                        throw new InvalidEvaluation(current.getToken().getLinePosition(), "invalid statement.");
+                        throw new InvalidEvaluation(current.getToken().getLinePosition(), "invalid statement: ");
                     }
-                    System.out.print("passed");
+                    
                     localData = data.clone();
                     localData.setName(name);
                     local.LoadDataset(localData);    
@@ -179,7 +171,7 @@ public class Query
                     
                     if(currentData == null || data == null)
                     {
-                        throw new InvalidEvaluation(current.getToken().getLinePosition(), "invalid statement.");
+                        throw new InvalidEvaluation(current.getToken().getLinePosition(), "invalid statement");
                     }
                     
                     localData = data.clone();
@@ -249,7 +241,7 @@ public class Query
                 OperationBase[] operations = getTuples(children);
                 return new TupleList(operations, linePosition);
             default:
-                throw new InvalidEvaluation(tree.getToken().getLinePosition(), "invalid syntax");
+                throw new InvalidEvaluation(linePosition, "invalid syntax: " + word);
         }
     }
     

@@ -693,7 +693,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 setLocalTables();
             }
         }
-        catch (InvalidSchema | NoSuchAttribute | InvalidParameters | InvalidEvaluation | WrongType ex)
+        catch (InvalidSchema | NoSuchAttribute | InvalidParameters | InvalidEvaluation | WrongType | InvalidParsing ex)
         {
             Kernel.GetService(ErrorSystem.class).print(ex);
         }

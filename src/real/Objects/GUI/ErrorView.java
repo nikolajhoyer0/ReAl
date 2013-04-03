@@ -14,7 +14,7 @@ public class ErrorView extends JTextArea implements Observer
 
     @Override
     public void update(Observable o, Object arg)
-    {
+    { 
         if(this.getText().isEmpty())
         {
             this.setText((String)arg);

@@ -35,6 +35,18 @@ public class ExpressionParser
         Token token = tokenStream.next();
         
         
+        if(token.isBinary())
+        {
+            if (errorMessage.isEmpty())
+            {
+                throw new InvalidParsing(tokenStream.next().getLinePosition(), "Two binary operators in row.");
+            }
+            else
+            {
+                throw new InvalidParsing(tokenStream.next().getLinePosition(), errorMessage);
+            }
+        }
+        
         if(token.getAssociativity().contains(OpTypes.UNARY))
         {
             tokenStream.consume();
@@ -121,7 +133,7 @@ public class ExpressionParser
             
             //start ignoring space.
             tokenStream.ignoreNextToken(" ");
-            return new TokenTree(tree, new Token("String", 0, EnumSet.of(OpTypes.NONE)));
+            return new TokenTree(tree, new Token("String", 0, EnumSet.of(OpTypes.NONE), linePosition, wordPosition));
         }
         
         //must be tuple generation
@@ -229,7 +241,7 @@ public class ExpressionParser
             
             if(Utility.isNumber(token.getSymbol()))
             {
-                Token tk = new Token("Number", 0, EnumSet.of(OpTypes.NONE));
+                Token tk = new Token("Number", 0, EnumSet.of(OpTypes.NONE), token.getLinePosition(), token.getWordPosition());
                 TokenTree[] tree = {new TokenTree(null, token)};
                 return new TokenTree(tree, tk);
             }
@@ -237,14 +249,14 @@ public class ExpressionParser
             //boolean
             else if(token.getSymbol().equals("true") || token.getSymbol().equals("false"))
             {
-                Token tk = new Token("Boolean", 0, EnumSet.of(OpTypes.NONE));
+                Token tk = new Token("Boolean", 0, EnumSet.of(OpTypes.NONE), token.getLinePosition(), token.getWordPosition());
                 TokenTree[] tree = {new TokenTree(null, token)};
                 return new TokenTree(tree, tk);
             }
             
             else
             {
-                Token tk = new Token("Attribute", 0, EnumSet.of(OpTypes.NONE));
+                Token tk = new Token("Attribute", 0, EnumSet.of(OpTypes.NONE), token.getLinePosition(), token.getWordPosition());
                 TokenTree[] tree = {new TokenTree(null, token)};
                 return new TokenTree(tree, tk);
             }                     

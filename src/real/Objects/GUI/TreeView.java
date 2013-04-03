@@ -48,10 +48,11 @@ public class TreeView extends JPanel {
      
         graph = new mxGraph()
         {
+            //no editing.
             @Override
             public boolean isCellEditable(Object cell)
             {
-                return !getModel().isEdge(cell);
+                return false;
             }
 
             @Override
@@ -71,13 +72,12 @@ public class TreeView extends JPanel {
             }
         };
         
-        graph.setCellsLocked(false);
         graph.setAllowDanglingEdges(false);
         graph.setConnectableEdges(false);   
         graph.setAutoSizeCells(true);
         graph.setCellsResizable(true);
         graph.setLabelsClipped(false);
-
+        graph.setDropEnabled(false);
         
         HashMap<String, Object> style = new HashMap<>();
         style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_RECTANGLE);
@@ -89,8 +89,11 @@ public class TreeView extends JPanel {
         graph.getStylesheet().putCellStyle("DEFAULT", style);
        
         graphComponent = new mxGraphComponent(graph);  
-        
-        
+        graphComponent.setAntiAlias(true);
+        graphComponent.setDragEnabled(false);
+        graphComponent.setTextAntiAlias(true);
+        graphComponent.setConnectable(false);      
+        graph.setCellsEditable(false);
     }
 
     public void initialize(final TreeWindow treeWindow)
@@ -145,13 +148,13 @@ public class TreeView extends JPanel {
             mxCompactTreeLayout layout = new mxCompactTreeLayout(graph);
             layout.setHorizontal(false);
             layout.execute(parent);
+            graph.setCellsLocked(true);
         }
         finally
         { 
             mxICell cell = (mxICell)(graph.getModel()).getChildAt(parent, 0);
             
-            graph.getView().setTranslate(new mxPoint(this.getWidth() / 2 - cell.getGeometry().getWidth(), 10));
-            graph.updateCellSize(parent, false);           
+            graph.getView().setTranslate(new mxPoint(this.getWidth() / 2 - cell.getGeometry().getWidth(), 10));                    
             graph.getModel().endUpdate();
         }    
         
