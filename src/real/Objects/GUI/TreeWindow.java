@@ -2,14 +2,12 @@ package real.Objects.GUI;
 
 import java.awt.AWTException;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import real.BaseClasses.OperationBase;
+import real.Objects.Utility;
 
 public class TreeWindow extends javax.swing.JDialog
 {
@@ -26,8 +24,6 @@ public class TreeWindow extends javax.swing.JDialog
         return this.tableView;
     }
     
-    
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,36 +36,20 @@ public class TreeWindow extends javax.swing.JDialog
 
         saveFileChooser = new javax.swing.JFileChooser();
         treeView = new real.Objects.GUI.TreeView();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tableView = new javax.swing.JTable();
         jToolBar1 = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableView = new javax.swing.JTable();
 
+        saveFileChooser.setAcceptAllFileFilterUsed(false);
         saveFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
         saveFileChooser.setDialogTitle("Save");
+        saveFileChooser.setFileFilter(new ExtensionFileFilter("png", new String[]{"png"}));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         treeView.setPreferredSize(new java.awt.Dimension(400, 255));
         getContentPane().add(treeView, java.awt.BorderLayout.CENTER);
-
-        tableView.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][]
-            {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String []
-            {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        tableView.setPreferredSize(new java.awt.Dimension(180, 64));
-        jScrollPane2.setViewportView(tableView);
-
-        getContentPane().add(jScrollPane2, java.awt.BorderLayout.LINE_END);
 
         jToolBar1.setRollover(true);
 
@@ -88,6 +68,23 @@ public class TreeWindow extends javax.swing.JDialog
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_END);
 
+        tableView.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][]
+            {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String []
+            {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tableView);
+
+        getContentPane().add(jScrollPane1, java.awt.BorderLayout.LINE_END);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -97,12 +94,11 @@ public class TreeWindow extends javax.swing.JDialog
 
         if (returnVal == JFileChooser.APPROVE_OPTION)
         {
-            File file = saveFileChooser.getSelectedFile();
+            File file = new File(Utility.addExtension(saveFileChooser.getSelectedFile().getAbsolutePath(), ".png"));
+            
             try
             {
-
                 this.treeView.drawImage(file);
-
             }
             catch (IOException | AWTException ex)
             {
@@ -117,7 +113,7 @@ public class TreeWindow extends javax.swing.JDialog
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JFileChooser saveFileChooser;
     private javax.swing.JTable tableView;

@@ -1,11 +1,11 @@
 package real.Objects.GUI;
 
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
-import javax.swing.JFrame;
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JFrame;
 import real.Objects.Parser.TokenTree;
 
 public class TreeViewTest extends JFrame
@@ -35,6 +35,7 @@ public class TreeViewTest extends JFrame
 
         graphComponent.getGraphControl().addMouseListener(new MouseAdapter()
         {
+            @Override
             public void mouseReleased(MouseEvent e)
             {
                 Object cell = graphComponent.getCellAt(e.getX(), e.getY());
@@ -107,15 +108,13 @@ public class TreeViewTest extends JFrame
                 v1 = thing;
             }
             
-            else 
+            else
             {
                 v1 = graph.insertVertex(parent, null, tree.getToken().getSymbol(), 0, y, 80,
                         30);
-                
-                
             }
-            
-            
+
+
         }
     }
 }

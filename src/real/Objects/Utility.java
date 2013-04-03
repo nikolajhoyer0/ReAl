@@ -144,4 +144,14 @@ public class Utility
         int sep = filename.lastIndexOf("/");
         return filename.substring(sep + 1, dot);
     }
+    
+    public static String addExtension(String filepath, String extension)
+    { 
+        if (filepath.lastIndexOf('.') == -1)
+        {
+            filepath += extension;
+        }
+
+        return filepath;
+    }
 }

@@ -1,21 +1,24 @@
 package real.Objects.GUI;
 
-import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
 import com.mxgraph.layout.mxCompactTreeLayout;
 import com.mxgraph.model.mxICell;
 import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.util.mxCellRenderer;
 import com.mxgraph.util.mxConstants;
 import com.mxgraph.util.mxPoint;
 import com.mxgraph.view.mxGraph;
 import java.awt.AWTException;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -157,8 +160,14 @@ public class TreeView extends JPanel {
  
     public void drawImage(File file) throws AWTException, IOException
     {
-        BufferedImage image = new Robot().createScreenCapture(new Rectangle(this.getLocationOnScreen().x, this.getLocationOnScreen().y, this.getWidth(), this.getHeight()));
-        ImageIO.write(image, "png", file);
+        BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+        
+        BufferedImage image = mxCellRenderer.createBufferedImage(graph, null,               
+                1, Color.WHITE, true, null);
+        
+        ImageIO.write(image, "png", out);
+        
+        out.close();
     }
     
     private void traverseTree(OperationBase tree, Object parent, Object lastNode, int y)

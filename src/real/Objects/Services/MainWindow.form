@@ -4,13 +4,30 @@
   <NonVisualComponents>
     <Component class="javax.swing.JFileChooser" name="loadFileChooser">
       <Properties>
-        <Property name="dialogTitle" type="java.lang.String" value="Load"/>
+        <Property name="dialogTitle" type="java.lang.String" value="Load Script"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JFileChooser" name="saveFileChooser">
       <Properties>
         <Property name="dialogType" type="int" value="1"/>
-        <Property name="dialogTitle" type="java.lang.String" value="Save"/>
+        <Property name="dialogTitle" type="java.lang.String" value="Save Script"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JFileChooser" name="importFileChooser">
+      <Properties>
+        <Property name="dialogTitle" type="java.lang.String" value="Import"/>
+        <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new ExtensionFileFilter(&quot;csv&quot;, new String[]{&quot;csv&quot;})" type="code"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JFileChooser" name="exportFileChooser">
+      <Properties>
+        <Property name="dialogType" type="int" value="1"/>
+        <Property name="dialogTitle" type="java.lang.String" value="Export"/>
+        <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new ExtensionFileFilter(&quot;csv&quot;, new String[]{&quot;csv&quot;})" type="code"/>
+        </Property>
       </Properties>
     </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
@@ -22,7 +39,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="loadMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Load Project"/>
+                <Property name="text" type="java.lang.String" value="Load Script"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadMenuItemActionPerformed"/>
@@ -30,7 +47,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="saveMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Save Project"/>
+                <Property name="text" type="java.lang.String" value="Save Script"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveMenuItemActionPerformed"/>

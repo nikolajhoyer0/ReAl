@@ -21,6 +21,8 @@ import real.Objects.GUI.TreeWindow;
 import real.Objects.Kernel;
 import real.Objects.Query;
 import real.Objects.Utility;
+import real.Objects.GUI.ExtensionFileFilter;
+
 
 public class MainWindow extends javax.swing.JFrame implements IService
 {
@@ -53,7 +55,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         {
             return null;
         }
-        
+ 
         return view.getTextArea();
     }
 
@@ -114,6 +116,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         loadFileChooser = new javax.swing.JFileChooser();
         saveFileChooser = new javax.swing.JFileChooser();
+        importFileChooser = new javax.swing.JFileChooser();
+        exportFileChooser = new javax.swing.JFileChooser();
         combinedView = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jToolBar2 = new javax.swing.JToolBar();
@@ -162,10 +166,17 @@ public class MainWindow extends javax.swing.JFrame implements IService
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
 
-        loadFileChooser.setDialogTitle("Load");
+        loadFileChooser.setDialogTitle("Load Script");
 
         saveFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
-        saveFileChooser.setDialogTitle("Save");
+        saveFileChooser.setDialogTitle("Save Script");
+
+        importFileChooser.setDialogTitle("Import");
+        importFileChooser.setFileFilter(new ExtensionFileFilter("csv", new String[]{"csv"}));
+
+        exportFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
+        exportFileChooser.setDialogTitle("Export");
+        exportFileChooser.setFileFilter(new ExtensionFileFilter("csv", new String[]{"csv"}));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ReAl");
@@ -542,7 +553,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         fileMenu.setText("File");
 
-        loadMenuItem.setText("Load Project");
+        loadMenuItem.setText("Load Script");
         loadMenuItem.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -552,7 +563,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         });
         fileMenu.add(loadMenuItem);
 
-        saveMenuItem.setText("Save Project");
+        saveMenuItem.setText("Save Script");
         saveMenuItem.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -676,7 +687,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 queryView.removeAll();
                 queryView.addTab("Run Errors", errorView);
                 errorView.setText("");
-                Dataset data = query.interpret(getCurrentWorksheet().getText());
+                query.interpret(getCurrentWorksheet().getText());
                 //if no throws we can assume that i went without errors 
                 errorView.setText("Successful run");
                 setLocalTables();
@@ -772,17 +783,23 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
         int returnVal = saveFileChooser.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        
+        if (returnVal == JFileChooser.APPROVE_OPTION)
+        {
             File file = saveFileChooser.getSelectedFile();
-            try {
-                FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+            try
+            {
+                FileWriter fw = new FileWriter(Utility.addExtension(file.getAbsoluteFile().getAbsolutePath(), ".txt"), true);
                 this.getCurrentWorksheet().write(fw);
+                fw.close();
             }
-            catch (IOException ex) {
-                JOptionPane.showMessageDialog(rootPane,"Problem saving file at " + file.getAbsolutePath());
+            catch (IOException ex)
+            {
+                JOptionPane.showMessageDialog(rootPane, "Problem saving file at " + file.getAbsolutePath());
             }
         }
-        else {
+        else
+        {
             System.out.println("File save cancelled by user.");
         }
     }//GEN-LAST:event_saveMenuItemActionPerformed
@@ -809,17 +826,18 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private void importMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importMenuItemActionPerformed
         //todo: need to write my own filechooser - not use the save and load from script
-        int returnVal = loadFileChooser.showOpenDialog(this);
+        int returnVal = importFileChooser.showOpenDialog(this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION)
         {
-            File file = loadFileChooser.getSelectedFile();
+            File file = importFileChooser.getSelectedFile();
+
             try
             {
                 //ask for the table name
                 String str = (String) JOptionPane.showInputDialog(rootPane,
                             "Please enter the name for the table.", "Table", JOptionPane.PLAIN_MESSAGE, null, null, Utility.filename(file.getName()));
-
+                          
                 if(str == null)
                 {
                     //user pressed cancel
@@ -861,25 +879,26 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private void exportMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportMenuItemActionPerformed
         //todo: need to write my own filechooser - not use the save and load from script
-        int returnVal = saveFileChooser.showOpenDialog(this);
+        int returnVal = exportFileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION)
         {
-            File file = saveFileChooser.getSelectedFile();
+            File file = exportFileChooser.getSelectedFile();
             try
             {
-                FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
+                FileWriter fw = new FileWriter(Utility.addExtension(file.getAbsoluteFile().getAbsolutePath(), ".csv"), true);
                 Dataset dataset = Kernel.GetService(DataManager.class).getDataset((String) relationModel.getElementAt(relationView.getSelectedIndex()));
                 
                 if(dataset != null)
                 {
-                    fw.write(dataset.getCSV());
-                    fw.flush();
+                    fw.write(dataset.getCSV());                   
                 }
                 
                 else
                 {
                     JOptionPane.showMessageDialog(rootPane,"problem saving file at " + file.getAbsolutePath());
                 }
+                
+                fw.close();
             }
             catch (IOException ex)
             {
@@ -1043,11 +1062,13 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private javax.swing.JButton deltaButton;
     private javax.swing.JButton differenceButton;
     private javax.swing.JMenuItem exitMenuItem;
+    private javax.swing.JFileChooser exportFileChooser;
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JButton fullouterjoinButton;
     private javax.swing.JButton gammaButton;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JFileChooser importFileChooser;
     private javax.swing.JMenuItem importMenuItem;
     private javax.swing.JButton intersectionButton;
     private javax.swing.JMenuBar jMenuBar1;
