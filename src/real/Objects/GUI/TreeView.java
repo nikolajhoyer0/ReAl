@@ -11,8 +11,7 @@ import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Rectangle;
-import java.awt.Robot;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -25,7 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.ToolTipManager;
 import real.BaseClasses.BinaryOperationBase;
 import real.BaseClasses.OperationBase;
 import real.BaseClasses.UnaryOperationBase;
