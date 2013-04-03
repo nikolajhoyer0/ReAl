@@ -1,6 +1,5 @@
 package real.Objects.Services;
 
-import real.Objects.GUI.TreeWindow;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileReader;
@@ -18,6 +17,7 @@ import real.Objects.Dataset;
 import real.Objects.Exceptions.*;
 import real.Objects.GUI.ErrorView;
 import real.Objects.GUI.TextQueryView;
+import real.Objects.GUI.TreeWindow;
 import real.Objects.Kernel;
 import real.Objects.Query;
 import real.Objects.Utility;
@@ -162,10 +162,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
 
-        loadFileChooser.setDialogTitle("Load script");
+        loadFileChooser.setDialogTitle("Load");
 
         saveFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
-        saveFileChooser.setDialogTitle("Save script");
+        saveFileChooser.setDialogTitle("Save");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ReAl");

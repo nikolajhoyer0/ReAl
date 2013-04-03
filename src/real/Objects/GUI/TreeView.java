@@ -1,17 +1,26 @@
 package real.Objects.GUI;
 
 import com.mxgraph.layout.hierarchical.mxHierarchicalLayout;
+import com.mxgraph.layout.mxCompactTreeLayout;
 import com.mxgraph.model.mxICell;
 import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.util.mxConstants;
+import com.mxgraph.util.mxPoint;
 import com.mxgraph.view.mxGraph;
+import java.awt.AWTException;
 import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-import java.util.ArrayList;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import real.BaseClasses.BinaryOperationBase;
 import real.BaseClasses.OperationBase;
@@ -23,63 +32,78 @@ import real.Objects.Exceptions.NoSuchAttribute;
 import real.Objects.RAOperations.ReferencedDataset;
 
 public class TreeView extends JPanel {
+    
     private mxGraph graph;
     private mxGraphComponent graphComponent;
-    private ArrayList<OperationBase> operands;
-    private TreeWindow treeWindow;
     
-    public TreeView(TreeWindow parent)
+    public TreeView()
     {
         super();
-        
-        this.treeWindow = parent;      
-        operands = new ArrayList<>();
-        
-        this.setLayout(new BorderLayout());
-        
-        
-        graph = new mxGraph();
-        graph.setCellsLocked(false);
-        graph.setAllowDanglingEdges(false);
-        graph.setConnectableEdges(false);   
-
-        mxHierarchicalLayout layout = new mxHierarchicalLayout(graph);  
-        layout.execute(graph.getDefaultParent());
-        graphComponent = new mxGraphComponent(graph);
-  
-        graphComponent.addMouseWheelListener(new MouseWheelListener()
+            
+        this.setLayout(new BorderLayout());       
+        this.setFont(new Font("cambria", Font.PLAIN, 15));
+     
+        graph = new mxGraph()
         {
             @Override
-            public void mouseWheelMoved(MouseWheelEvent e)
+            public boolean isCellEditable(Object cell)
             {
-                int steps = e.getWheelRotation();
+                return !getModel().isEdge(cell);
+            }
 
-                if(steps < 0)
+            @Override
+            public String convertValueToString(Object cell)
+            {
+                Object value = ((mxICell) cell).getValue();
+                
+                if(value != null)
                 {
-                    graphComponent.zoomOut();
+                    return value.toString();
                 }
                 
                 else
                 {
-                    graphComponent.zoomIn();                    
+                    return null;
                 }
-
             }
-        });
+        };
         
+        graph.setCellsLocked(false);
+        graph.setAllowDanglingEdges(false);
+        graph.setConnectableEdges(false);   
+        graph.setAutoSizeCells(true);
+        graph.setCellsResizable(true);
+        graph.setLabelsClipped(false);
+
+        
+        HashMap<String, Object> style = new HashMap<>();
+        style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_RECTANGLE);
+        style.put(mxConstants.STYLE_ROUNDED, true);
+        style.put(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_MIDDLE);
+        style.put(mxConstants.STYLE_FONTFAMILY, "cambria");
+        style.put(mxConstants.STYLE_FONTSIZE, 15);
+
+        graph.getStylesheet().putCellStyle("DEFAULT", style);
+       
+        graphComponent = new mxGraphComponent(graph);  
+        
+        
+    }
+
+    public void initialize(final TreeWindow treeWindow)
+    {
         graphComponent.getGraphControl().addMouseListener(new MouseAdapter()
         {
             @Override
             public void mouseReleased(MouseEvent e)
             {
                 mxICell cell = (mxICell)graphComponent.getCellAt(e.getX(), e.getY());
-                           
+                
                 if (cell != null)
                 {
                     try
-                    {                      
-                        System.out.println(cell.getId());
-                        OperationBase base = operands.get(Integer.parseInt(cell.getId()));
+                    {
+                        OperationBase base = (OperationBase)cell.getValue();
                         treeWindow.getTableView().setModel(base.execute());
                     }
                     catch (InvalidSchema ex)
@@ -101,33 +125,42 @@ public class TreeView extends JPanel {
                 }
             }
         }); 
-               
+        
         add(graphComponent);
     }
-
+    
     public void loadTree(OperationBase base)
-    {
-        operands.clear();
-        
+    {   
         Object parent = graph.getDefaultParent();
 
         graph.removeCells(graph.getChildVertices(graph.getDefaultParent()));
         
         graph.getModel().beginUpdate();
         try
-        {     
+        {                
             traverseTree(base, parent, null, 0);
-            mxHierarchicalLayout layout = new mxHierarchicalLayout(graph);  
-            layout.execute(graph.getDefaultParent());
+            mxCompactTreeLayout layout = new mxCompactTreeLayout(graph);
+            layout.setHorizontal(false);
+            layout.execute(parent);
         }
         finally
-        {
+        { 
+            mxICell cell = (mxICell)(graph.getModel()).getChildAt(parent, 0);
+            
+            graph.getView().setTranslate(new mxPoint(this.getWidth() / 2 - cell.getGeometry().getWidth(), 10));
+            graph.updateCellSize(parent, false);           
             graph.getModel().endUpdate();
         }    
         
         
     }
  
+    public void drawImage(File file) throws AWTException, IOException
+    {
+        BufferedImage image = new Robot().createScreenCapture(new Rectangle(this.getLocationOnScreen().x, this.getLocationOnScreen().y, this.getWidth(), this.getHeight()));
+        ImageIO.write(image, "png", file);
+    }
+    
     private void traverseTree(OperationBase tree, Object parent, Object lastNode, int y)
     {
   
@@ -135,12 +168,9 @@ public class TreeView extends JPanel {
         {
             if(tree instanceof UnaryOperationBase)
             {
-                UnaryOperationBase unary = (UnaryOperationBase) tree;
+                UnaryOperationBase unary = (UnaryOperationBase) tree;          
                 
-                int id = operands.size();
-                operands.add(unary);
-                
-                Object v2 = graph.insertVertex(parent, String.valueOf(id), unary.toString(), 3, 2, 100, 40);
+                Object v2 = graph.insertVertex(parent, null, unary, 30, 2, 115, 40, "DEFAULT");
                 
                 if(lastNode != null)
                 {
@@ -153,12 +183,7 @@ public class TreeView extends JPanel {
             //end leafs
             else if(tree instanceof ReferencedDataset)
             {                      
-                ReferencedDataset ref = (ReferencedDataset)tree;
-                
-                int id = operands.size();
-                operands.add(ref);
-
-                Object v2 = graph.insertVertex(parent, String.valueOf(id), tree.toString(), 3, 2, 100, 40, "fillColor=yellow");
+                Object v2 = graph.insertVertex(parent, null, tree, 3, 2, 115, 40, "DEFAULT;fillColor=yellow");
 
                 if(lastNode != null)
                 {
@@ -170,10 +195,7 @@ public class TreeView extends JPanel {
             {
                 BinaryOperationBase binary = (BinaryOperationBase) tree;
                 
-                int id = operands.size();
-                operands.add(binary);
-
-                Object v2 = graph.insertVertex(parent, String.valueOf(id), binary.toString(), 5, 6, 100, 40);
+                Object v2 = graph.insertVertex(parent, null, binary, 5, 6, 115, 40, "DEFAULT");
                  
                 if(lastNode != null)
                 {

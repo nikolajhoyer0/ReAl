@@ -4,13 +4,13 @@
   <NonVisualComponents>
     <Component class="javax.swing.JFileChooser" name="loadFileChooser">
       <Properties>
-        <Property name="dialogTitle" type="java.lang.String" value="Load script"/>
+        <Property name="dialogTitle" type="java.lang.String" value="Load"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JFileChooser" name="saveFileChooser">
       <Properties>
         <Property name="dialogType" type="int" value="1"/>
-        <Property name="dialogTitle" type="java.lang.String" value="Save script"/>
+        <Property name="dialogTitle" type="java.lang.String" value="Save"/>
       </Properties>
     </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">

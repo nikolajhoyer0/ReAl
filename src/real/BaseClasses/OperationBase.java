@@ -12,7 +12,7 @@ import real.Objects.Exceptions.NoSuchDataset;
  */
 public abstract class OperationBase
 {
-    int linePosition;
+    private int linePosition;
     
     public OperationBase(int linePosition)
     {
