@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.ToolTipManager;
 import real.BaseClasses.BinaryOperationBase;
 import real.BaseClasses.OperationBase;
 import real.BaseClasses.UnaryOperationBase;
@@ -45,7 +46,7 @@ public class TreeView extends JPanel {
             
         this.setLayout(new BorderLayout());       
         this.setFont(new Font("cambria", Font.PLAIN, 15));
-     
+        
         graph = new mxGraph()
         {
             //no editing.
@@ -67,9 +68,9 @@ public class TreeView extends JPanel {
                 
                 else
                 {
-                    return null;
+                    return "";
                 }
-            }
+            }         
         };
         
         graph.setAllowDanglingEdges(false);
@@ -92,7 +93,7 @@ public class TreeView extends JPanel {
         graphComponent.setAntiAlias(true);
         graphComponent.setDragEnabled(false);
         graphComponent.setTextAntiAlias(true);
-        graphComponent.setConnectable(false);      
+        graphComponent.setConnectable(false);
         graph.setCellsEditable(false);
     }
 
@@ -173,16 +174,29 @@ public class TreeView extends JPanel {
         out.close();
     }
     
+    //sets width related to amount of chars.
+    private int setWidth(String str)
+    {
+        int value = str.length() * 10;
+        
+        if(value < 125)
+        {
+            return 125;
+        }
+        
+        return value;
+    }
+    
     private void traverseTree(OperationBase tree, Object parent, Object lastNode, int y)
     {
-  
+
         if(tree != null)
         {
             if(tree instanceof UnaryOperationBase)
             {
                 UnaryOperationBase unary = (UnaryOperationBase) tree;          
                 
-                Object v2 = graph.insertVertex(parent, null, unary, 30, 2, 115, 40, "DEFAULT");
+                Object v2 = graph.insertVertex(parent, null, unary, 30, 2, setWidth(tree.toString()), 40, "DEFAULT");
                 
                 if(lastNode != null)
                 {
@@ -195,7 +209,7 @@ public class TreeView extends JPanel {
             //end leafs
             else if(tree instanceof ReferencedDataset)
             {                      
-                Object v2 = graph.insertVertex(parent, null, tree, 3, 2, 115, 40, "DEFAULT;fillColor=yellow");
+                Object v2 = graph.insertVertex(parent, null, tree, 3, 2, setWidth(tree.toString()), 40, "DEFAULT;fillColor=yellow");
 
                 if(lastNode != null)
                 {
@@ -207,7 +221,7 @@ public class TreeView extends JPanel {
             {
                 BinaryOperationBase binary = (BinaryOperationBase) tree;
                 
-                Object v2 = graph.insertVertex(parent, null, binary, 5, 6, 115, 40, "DEFAULT");
+                Object v2 = graph.insertVertex(parent, null, binary, 5, 6, setWidth(tree.toString()), 40, "DEFAULT");
                  
                 if(lastNode != null)
                 {

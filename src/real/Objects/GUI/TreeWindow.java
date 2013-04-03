@@ -51,6 +51,7 @@ public class TreeWindow extends javax.swing.JDialog
         treeView.setPreferredSize(new java.awt.Dimension(400, 255));
         getContentPane().add(treeView, java.awt.BorderLayout.CENTER);
 
+        jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
 
         jButton1.setText("Save To Image");
