@@ -1,6 +1,8 @@
 
 package real.Objects.RAOperations;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import real.BaseClasses.BinaryOperationBase;
 import real.BaseClasses.OperationBase;
 import real.Objects.Dataset;
@@ -28,15 +30,20 @@ public class Difference extends BinaryOperationBase
         Dataset resultB = this.operandB.execute().clone();
         
         if (resultA.equalsSchema(resultB))
-        {
-            for (Row row : resultA.getRows())
+        {                           
+            Iterator it = resultA.getRows().iterator();
+            
+            while(it.hasNext())
             {
+                Row row = (Row)it.next();
+                
                 if (resultB.getRows().contains(row))
                 {
-                    resultA.getRows().remove(row);
+                    it.remove();
                     resultB.getRows().remove(row);
-                }
+                }   
             }
+       
             return new Dataset("", resultA.getColumns(), resultA.getRows());
         }
         

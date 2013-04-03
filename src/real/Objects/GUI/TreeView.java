@@ -206,13 +206,23 @@ public class TreeView extends JPanel {
             
             //end leafs
             else if(tree instanceof ReferencedDataset)
-            {                      
-                Object v2 = graph.insertVertex(parent, null, tree, 3, 2, setWidth(tree.toString()), 40, "DEFAULT;fillColor=yellow");
-
-                if(lastNode != null)
+            {                                
+                ReferencedDataset ref = (ReferencedDataset)tree;
+        
+                if(ref.getOperand() != null)
                 {
-                    graph.insertEdge(parent, null, null, lastNode,v2);
-                }                
+                    traverseTree(ref.getOperand(), parent, lastNode, 0);
+                }
+                
+                else
+                {
+                    Object v2 = graph.insertVertex(parent, null, tree, 3, 2, setWidth(tree.toString()), 40, "DEFAULT;fillColor=yellow");
+                 
+                    if (lastNode != null)
+                    {
+                        graph.insertEdge(parent, null, null, lastNode, v2);
+                    }
+                }                                            
             }
            
             else

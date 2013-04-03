@@ -741,9 +741,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_intersectionButtonActionPerformed
 
     private void differenceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_differenceButtonActionPerformed
-        JOptionPane.showMessageDialog(rootPane, "Feature not implemented yet");
-//        JTextArea area = getCurrentWorksheet();
-//        area.insert("‒", area.getCaretPosition());
+        JTextArea area = getCurrentWorksheet();
+        area.insert("‒", area.getCaretPosition());
     }//GEN-LAST:event_differenceButtonActionPerformed
 
     private void productButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productButtonActionPerformed
