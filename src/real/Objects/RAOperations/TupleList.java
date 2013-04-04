@@ -69,6 +69,27 @@ public class TupleList extends OperationBase
         return tuples;
     }
     
+    @Override
+    public String toString()
+    {
+        String str = "";
+        
+        for(Tuple tuple : tuples)
+        {
+            if(str.isEmpty())
+            {
+                str = "{" + tuple.toString();
+            }
+            
+            else
+            {
+                str = str + ", " + tuple.toString();
+            }
+        }
+        
+        return str;
+    }
+    
     //should not be thrown but use getTupleValues and getTupleTypes, unsures that only operation that use them support it.
     @Override
     public Dataset execute() throws InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation

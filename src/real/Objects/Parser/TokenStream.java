@@ -204,14 +204,14 @@ public class TokenStream
                             wordBuffer = Utility.getStringRepresentation(wordList);
                             wordList.clear();
                         }
+                        
+                        isSpace = true;
                     }
                     
                     else
                     {
                         wordList.add(chr);
                     }
-                    
-                    isSpace = true;
                 }
                 
                 else if(chr == '\n')
