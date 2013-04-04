@@ -16,6 +16,7 @@ public class TupleList extends OperationBase
 {
 
     private Tuple[] tuples;
+    private OperationBase dependency;
     
     public TupleList(OperationBase[] tuples, int linePosition) throws InvalidParameters
     {
@@ -70,6 +71,17 @@ public class TupleList extends OperationBase
     public Tuple[] getTuples()
     {
         return tuples;
+    }
+    
+    //sets the operationbase that tuplelist infers its column names.
+    public void setDependency(OperationBase base)
+    {
+        this.dependency = base;
+    }
+    
+    public OperationBase getDependency()
+    {
+        return this.dependency;
     }
     
     //create the rows using the other dataset's columns.

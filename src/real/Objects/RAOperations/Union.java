@@ -37,14 +37,16 @@ public class Union extends BinaryOperationBase
             TupleList tupleList = (TupleList) this.operandA;
             resultB = this.operandB.execute().clone();
                     
-            resultA = TupleList.createDataset(tupleList, resultA);
+            resultA = TupleList.createDataset(tupleList, resultB);
+            tupleList.setDependency(this.operandB);
             
-            if(resultA != null)
+            if(resultA == null)
             {
                 throw new InvalidSchema(getLinePosition(), 
                         this.operandA.toString() + " and " + this.operandB.toString() + " does not have matching schemas.");
             }
         }
+        
         
         else if(this.operandB instanceof TupleList)
         {
@@ -53,8 +55,9 @@ public class Union extends BinaryOperationBase
                     
                          
             resultB = TupleList.createDataset(tupleList, resultA);
+            tupleList.setDependency(this.operandA);
             
-            if(resultB != null)
+            if(resultB == null)
             {
                 throw new InvalidSchema(getLinePosition(), 
                         this.operandA.toString() + " and " + this.operandB.toString() + " does not have matching schemas.");

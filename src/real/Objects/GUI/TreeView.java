@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import real.BaseClasses.BinaryOperationBase;
 import real.BaseClasses.OperationBase;
 import real.BaseClasses.UnaryOperationBase;
+import real.Objects.Dataset;
 import real.Objects.Exceptions.InvalidEvaluation;
 import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
@@ -113,24 +114,10 @@ public class TreeView extends JPanel {
                         
                         if(base instanceof TupleList)
                         {
-                            mxICell parent = cell.getParent();
                             TupleList tupleList = (TupleList)base;
+                            Dataset dependency = tupleList.getDependency().execute();
                             
-                            if(parent.getChildCount() != 2)
-                            {
-                                assert(false);
-                            }
-                            
-                            for(int i = 0; i < parent.getChildCount(); ++i)
-                            {
-                                mxICell child = parent.getChildAt(i);
-                                
-                                if(!child.equals(cell))
-                                {
-                                    OperationBase resultB = (OperationBase)child.getValue();
-                                    treeWindow.getTableView().setModel(TupleList.createDataset(tupleList, resultB.execute()));
-                                }
-                            }
+                            treeWindow.getTableView().setModel(TupleList.createDataset(tupleList, dependency));
                         }
                         
                         else
@@ -178,9 +165,8 @@ public class TreeView extends JPanel {
         }
         finally
         { 
-            mxICell cell = (mxICell)(graph.getModel()).getChildAt(parent, 0);
-            
-            graph.getView().setTranslate(new mxPoint(this.getWidth() / 2 - cell.getGeometry().getWidth(), 10));                    
+            //mxICell cell = (mxICell)(graph.getModel()).getChildAt(parent, 0);
+            //graph.getView().setTranslate(new mxPoint(this.getWidth() / 2 - cell.getGeometry().getWidth(), 10));                    
             graph.getModel().endUpdate();
         }    
         
