@@ -37,14 +37,12 @@ public class Union extends BinaryOperationBase
             TupleList tupleList = (TupleList) this.operandA;
             resultB = this.operandB.execute().clone();
                     
-            if(checkValidTable(tupleList, resultB))
-            {               
-                resultA = createDataset(tupleList, resultB);
-            }
+            resultA = TupleList.createDataset(tupleList, resultA);
             
-            else
+            if(resultA != null)
             {
-                throw new InvalidSchema(getLinePosition(), this.operandA.toString() + " and " + this.operandB.toString() + " does not have matching schemas.");
+                throw new InvalidSchema(getLinePosition(), 
+                        this.operandA.toString() + " and " + this.operandB.toString() + " does not have matching schemas.");
             }
         }
         
@@ -53,14 +51,13 @@ public class Union extends BinaryOperationBase
             TupleList tupleList = (TupleList) this.operandB;
             resultA = this.operandA.execute().clone();
                     
-            if(checkValidTable(tupleList, resultA))
-            {               
-                resultB = createDataset(tupleList, resultA);
-            }
+                         
+            resultB = TupleList.createDataset(tupleList, resultA);
             
-            else
+            if(resultB != null)
             {
-                throw new InvalidSchema(getLinePosition(), this.operandA.toString() + " and " + this.operandB.toString() + " does not have matching schemas.");
+                throw new InvalidSchema(getLinePosition(), 
+                        this.operandA.toString() + " and " + this.operandB.toString() + " does not have matching schemas.");
             }
         }
         
@@ -110,50 +107,7 @@ public class Union extends BinaryOperationBase
         
         throw new InvalidSchema(getLinePosition(), resultA.getName() + " and " + resultB.getName() + " does not have matching schemas.");
     }
-    
-    //checks to see if the types are the same as the dataset.
-    public boolean checkValidTable(TupleList tupleList, Dataset dataset)
-    {
-        //only need to check once since the tuplelist has already made sure that all tuples have the same types.
-        Tuple[] tuples = tupleList.getTuples();
-        DataType[] types = tuples[0].getTupleTypes();
-        
-        if(types.length != dataset.getColumns().size())
-        {
-            return false;
-        }
-        
-        for(int i = 0; i < types.length; ++i)
-        {
-            if(!types[i].equals(dataset.getColumns().get(i).getDataType()))
-            {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-    
-    //create the rows using the other dataset's columns.
-    public Dataset createDataset(TupleList tupleList, Dataset dataset)
-    {
-        ArrayList<Row> rows = new ArrayList<>();
-        
-        for(Tuple tuple : tupleList.getTuples())
-        {
-            HashMap<String, String> hashRow = new HashMap<>();
-            
-            for(int i = 0; i < tuple.getTupleValues().length; ++i)
-            {
-                hashRow.put(dataset.getColumns().get(i).getName(), tuple.getTupleValues()[i]);
-            }
-            
-            rows.add(new Row(hashRow));
-        }
-        
-        return new Dataset("", dataset.getColumns(), rows);
-    }
-    
+   
     @Override
     public String toString()
     {

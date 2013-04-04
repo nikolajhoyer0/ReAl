@@ -32,6 +32,7 @@ import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchAttribute;
 import real.Objects.RAOperations.ReferencedDataset;
+import real.Objects.RAOperations.TupleList;
 
 public class TreeView extends JPanel {
     
@@ -109,7 +110,33 @@ public class TreeView extends JPanel {
                     try
                     {
                         OperationBase base = (OperationBase)cell.getValue();
-                        treeWindow.getTableView().setModel(base.execute());
+                        
+                        if(base instanceof TupleList)
+                        {
+                            mxICell parent = cell.getParent();
+                            TupleList tupleList = (TupleList)base;
+                            
+                            if(parent.getChildCount() != 2)
+                            {
+                                assert(false);
+                            }
+                            
+                            for(int i = 0; i < parent.getChildCount(); ++i)
+                            {
+                                mxICell child = parent.getChildAt(i);
+                                
+                                if(!child.equals(cell))
+                                {
+                                    OperationBase resultB = (OperationBase)child.getValue();
+                                    treeWindow.getTableView().setModel(TupleList.createDataset(tupleList, resultB.execute()));
+                                }
+                            }
+                        }
+                        
+                        else
+                        {
+                            treeWindow.getTableView().setModel(base.execute());
+                        }
                     }
                     catch (InvalidSchema ex)
                     {
@@ -225,6 +252,14 @@ public class TreeView extends JPanel {
                 }                                            
             }
            
+            else if (tree instanceof TupleList) {
+                Object v2 = graph.insertVertex(parent, null, tree, 3, 2, setWidth(tree.toString()), 40, "DEFAULT;fillColor=green");
+
+                if (lastNode != null) {
+                    graph.insertEdge(parent, null, null, lastNode, v2);
+                }
+            }
+            
             else
             {
                 BinaryOperationBase binary = (BinaryOperationBase) tree;
