@@ -12,6 +12,7 @@ import real.Objects.ConditionOperations.Atomic.*;
 import real.Objects.ConditionOperations.BooleanOperations.*;
 import real.Objects.ConditionOperations.*;
 import real.Objects.Exceptions.*;
+import real.Objects.GUI.TreeViewTest;
 import real.Objects.Parser.*;
 import real.Objects.RAOperations.*;
 import real.Objects.Services.LocalDataManager;
@@ -22,15 +23,15 @@ public class Query
     private TokenTree current;
     private OperationBase currentData;
     //will be removed.
-    //private TreeViewTest view;
+    private TreeViewTest view;
             
     public Query()
     {
         
         //will be removed
-        //view = new TreeViewTest();
-        //view.setSize(800, 820);
-        //view.setVisible(true);
+        view = new TreeViewTest();
+        view.setSize(800, 820);
+        view.setVisible(true);
         
         
         TokenOpManager opManager = new TokenOpManager();
@@ -42,6 +43,7 @@ public class Query
         opManager.addOp(new Token("=", 2, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token("<=", 2, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token(">=", 2, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("!=", 2, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token("<", 2, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token(">", 2, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token("AND", 1, EnumSet.of(OpTypes.LEFT)));
@@ -50,24 +52,24 @@ public class Query
         opManager.addOp(new Token("or", 0, EnumSet.of(OpTypes.LEFT)));
         
         //function operators
-        opManager.addOp(new Token("π", 0, EnumSet.of(OpTypes.NONE)));  
-        opManager.addOp(new Token("σ", 0, EnumSet.of(OpTypes.NONE)));   
-        opManager.addOp(new Token("ρ", 0, EnumSet.of(OpTypes.NONE)));   
-        opManager.addOp(new Token("γ", 0, EnumSet.of(OpTypes.NONE))); 
-        opManager.addOp(new Token("τ", 0, EnumSet.of(OpTypes.NONE)));
-        opManager.addOp(new Token("δ", 0, EnumSet.of(OpTypes.NONE)));
+        opManager.addOp(new Token("π", 0, EnumSet.of(OpTypes.FUNCTION, OpTypes.RELATIONAL)));  
+        opManager.addOp(new Token("σ", 0, EnumSet.of(OpTypes.FUNCTION, OpTypes.RELATIONAL)));   
+        opManager.addOp(new Token("ρ", 0, EnumSet.of(OpTypes.FUNCTION, OpTypes.RELATIONAL)));   
+        opManager.addOp(new Token("γ", 0, EnumSet.of(OpTypes.FUNCTION, OpTypes.RELATIONAL))); 
+        opManager.addOp(new Token("τ", 0, EnumSet.of(OpTypes.FUNCTION, OpTypes.RELATIONAL)));
+        opManager.addOp(new Token("δ", 0, EnumSet.of(OpTypes.FUNCTION, OpTypes.RELATIONAL)));
         
         //relational binary operators      
         //todo: figure out the proper precendence for each operator.
-        opManager.addOp(new Token("∪", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("∩", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("‒", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("×", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("⋈", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("→", 3, EnumSet.of(OpTypes.LEFT))); 
-        opManager.addOp(new Token("⟕", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("⟖", 6, EnumSet.of(OpTypes.LEFT)));   
-        opManager.addOp(new Token("⟗", 6, EnumSet.of(OpTypes.LEFT))); 
+        opManager.addOp(new Token("∪", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
+        opManager.addOp(new Token("∩", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
+        opManager.addOp(new Token("‒", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
+        opManager.addOp(new Token("×", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
+        opManager.addOp(new Token("⋈", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
+        opManager.addOp(new Token("→", 3, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL))); 
+        opManager.addOp(new Token("⟕", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
+        opManager.addOp(new Token("⟖", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
+        opManager.addOp(new Token("⟗", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL))); 
 
         TokenStream tokenStream = new TokenStream(opManager);
 
@@ -90,7 +92,7 @@ public class Query
         if (trees != null && !trees.isEmpty())
         {
             //will be removed
-            //view.load(trees.get(0));
+            view.load(trees.get(0));
  
             for (int i = 0; i < trees.size(); ++i)
             {
@@ -150,7 +152,9 @@ public class Query
         String word = tree.getToken().getSymbol();
         TokenTree[] children = tree.getChildren();
         int linePosition = tree.getToken().getLinePosition();
-
+        OperationBase relation;
+        ConditionBase condition;
+        
         switch (word)
         {
             case "∪":
@@ -160,7 +164,18 @@ public class Query
             case "Attribute":
                 return new ReferencedDataset(children[0].getToken().getSymbol(), children[0].getToken().getLinePosition());
             case "⋈":
-                return new NaturalJoin(interpretOperation(children[0]), interpretOperation(children[1]), linePosition);
+                if(children.length == 2)
+                {
+                    return new NaturalJoin(interpretOperation(children[0]), interpretOperation(children[1]), linePosition);
+                }
+                
+                else
+                {
+                    Product product = new Product(interpretOperation(children[0]), interpretOperation(children[2]), linePosition);
+                    condition = interpretCondition(children[1], product, false);
+                    
+                    return new ThetaJoin(product, condition, linePosition);
+                }                
             case "⟕":
                 return new LeftOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]), linePosition);
             case "⟖":
@@ -168,8 +183,8 @@ public class Query
             case "⟗":
                 return new FullOuterJoin(interpretOperation(children[0]), interpretOperation(children[1]), linePosition);
             case "σ":
-                OperationBase relation = interpretOperation(children[1]);
-                ConditionBase condition = interpretCondition(children[0], relation, false);
+                relation = interpretOperation(children[1]);
+                condition = interpretCondition(children[0], relation, false);
                 return new Selection(relation, condition, linePosition);
             case "π":
                 relation = interpretOperation(children[children.length - 1]);

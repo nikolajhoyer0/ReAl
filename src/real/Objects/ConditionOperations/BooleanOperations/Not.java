@@ -22,7 +22,7 @@ public class Not extends BooleanOperator
     @Override
     public Boolean evaluateBoolean(Row row) throws InvalidEvaluation
     {
-        if(operandA.getType() != DataType.BOOLEAN)
+        if(operandA.getType() == DataType.BOOLEAN)
         {
             Boolean a = (Boolean)operandA.evaluate(row);
             Boolean b = (Boolean)operandB.evaluate(row);          
@@ -35,7 +35,7 @@ public class Not extends BooleanOperator
             return Boolean.compare(a, b) != 0;
         }
         
-        else if(operandA.getType() != DataType.NUMBER)
+        else if(operandA.getType() == DataType.NUMBER)
         {
             Float a = (Float)operandA.evaluate(row);
             Float b = (Float)operandB.evaluate(row); 
