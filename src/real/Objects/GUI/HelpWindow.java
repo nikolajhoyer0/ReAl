@@ -18,6 +18,15 @@ public class HelpWindow extends javax.swing.JFrame {
      */
     public HelpWindow() {
         initComponents();
+        try 
+        {
+            FileReader reader = new FileReader("assets/helpfiles/english/features.txt");
+            featuresTextArea.read(reader, null);
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Help window: file not found");
+        }
     }
 
     /**
@@ -31,6 +40,8 @@ public class HelpWindow extends javax.swing.JFrame {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        featuresTextArea = new javax.swing.JTextArea();
         jPanel1 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         piHelp = new javax.swing.JButton();
@@ -53,16 +64,15 @@ public class HelpWindow extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 473, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 423, Short.MAX_VALUE)
-        );
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        featuresTextArea.setEditable(false);
+        featuresTextArea.setColumns(20);
+        featuresTextArea.setLineWrap(true);
+        featuresTextArea.setRows(5);
+        jScrollPane2.setViewportView(featuresTextArea);
+
+        jPanel2.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         jTabbedPane1.addTab("Program features", jPanel2);
 
@@ -283,6 +293,7 @@ public class HelpWindow extends javax.swing.JFrame {
         jToolBar1.add(fullOuterJoinHelp);
 
         operationsTextArea.setColumns(20);
+        operationsTextArea.setLineWrap(true);
         operationsTextArea.setRows(5);
         jScrollPane1.setViewportView(operationsTextArea);
 
@@ -293,7 +304,7 @@ public class HelpWindow extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -380,17 +391,20 @@ public class HelpWindow extends javax.swing.JFrame {
             System.out.println("Help window: file not found");
         }
     }
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton arrowHelp;
     private javax.swing.JButton deltaHelp;
     private javax.swing.JButton differenceHelp;
+    private javax.swing.JTextArea featuresTextArea;
     private javax.swing.JButton fullOuterJoinHelp;
     private javax.swing.JButton gammaHelp;
     private javax.swing.JButton intersectionHelp;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JButton leftOuterJoinHelp;
