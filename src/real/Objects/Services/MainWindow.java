@@ -260,7 +260,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         jToolBar3.setFloatable(false);
         jToolBar3.setRollover(true);
 
-        piButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
+        piButton.setFont(new java.awt.Font("DejaVu Sans", 0, 20)); // NOI18N
         piButton.setText("π");
         piButton.setFocusable(false);
         piButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -715,7 +715,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-        JOptionPane.showMessageDialog(rootPane, "This is ReAl ver. 1E-10 \n\n"
+        JOptionPane.showMessageDialog(rootPane, "This is ReAl ver. 0.9 beta \n\n"
                 + "Authors: \nDaniel Gavin \nTobias Kristoffer Scavenius \nNikolaj Høyer", "About", WIDTH);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
