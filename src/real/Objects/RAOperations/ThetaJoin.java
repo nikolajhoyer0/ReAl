@@ -9,7 +9,7 @@ import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchAttribute;
 /**
- * First iteration of theta join. TODO needs testing, decision wether or not to implement button, parsing etc.
+ * First iteration of theta join. TODO needs testing, decision whether or not to implement button, parsing etc.
  */
 public class ThetaJoin extends BinaryOperationBase {
 
