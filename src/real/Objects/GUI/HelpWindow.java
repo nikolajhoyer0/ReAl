@@ -32,7 +32,9 @@ public class HelpWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         textArea.setColumns(20);
+        textArea.setLineWrap(true);
         textArea.setRows(5);
+        textArea.setWrapStyleWord(true);
         jScrollPane2.setViewportView(textArea);
 
         jScrollPane1.setViewportView(tree);
