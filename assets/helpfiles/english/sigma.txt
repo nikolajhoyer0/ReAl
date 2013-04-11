@@ -1,0 +1,13 @@
+Selection ?
+
+Usage:
+    Selection is used to produce a subset of the tupples from the original realation.
+
+Notation:
+    In general: ? Condition Relation
+    Using the relation R(name, phonenumber, adress) with the following tupples:
+        {Daniel, 123456, first avenue}
+        {Nikolaj, 654321,  Second street}
+        {Tobias, 165234,  Third boulevard}
+        ? name = 'Daniel' R
+    Will create a relation with only the tupple {Daniel, 123456, first avenue}.
