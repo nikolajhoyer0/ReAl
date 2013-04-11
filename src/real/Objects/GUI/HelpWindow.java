@@ -391,7 +391,6 @@ public class HelpWindow extends javax.swing.JFrame {
             System.out.println("Help window: file not found");
         }
     }
-
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton arrowHelp;
