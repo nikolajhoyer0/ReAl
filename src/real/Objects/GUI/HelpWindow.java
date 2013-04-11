@@ -1,32 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package real.Objects.GUI;
 
 import java.io.FileReader;
 import java.io.IOException;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
-/**
- *
- * @author nikolaj
- */
 public class HelpWindow extends javax.swing.JFrame {
 
-    /**
-     * Creates new form HelpWindow
-     */
     public HelpWindow() {
         initComponents();
-        try 
-        {
-            FileReader reader = new FileReader("assets/helpfiles/english/features.txt");
-            featuresTextArea.read(reader, null);
-        }
-        catch (IOException ex)
-        {
-            System.out.println("Help window: file not found");
-        }
+        initTree();
     }
 
     /**
@@ -38,353 +23,97 @@ public class HelpWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        featuresTextArea = new javax.swing.JTextArea();
-        jPanel1 = new javax.swing.JPanel();
-        jToolBar1 = new javax.swing.JToolBar();
-        piHelp = new javax.swing.JButton();
-        sigmaHelp = new javax.swing.JButton();
-        rhoHelp = new javax.swing.JButton();
-        gammaHelp = new javax.swing.JButton();
-        tauHelp = new javax.swing.JButton();
-        deltaHelp = new javax.swing.JButton();
-        arrowHelp = new javax.swing.JButton();
-        unionHelp = new javax.swing.JButton();
-        intersectionHelp = new javax.swing.JButton();
-        differenceHelp = new javax.swing.JButton();
-        productHelp = new javax.swing.JButton();
-        naturalJoinHelp = new javax.swing.JButton();
-        leftOuterJoinHelp = new javax.swing.JButton();
-        rightOuterJoinHelp = new javax.swing.JButton();
-        fullOuterJoinHelp = new javax.swing.JButton();
+        textArea = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        operationsTextArea = new javax.swing.JTextArea();
+        tree = new javax.swing.JTree();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        textArea.setColumns(20);
+        textArea.setRows(5);
+        jScrollPane2.setViewportView(textArea);
 
-        featuresTextArea.setEditable(false);
-        featuresTextArea.setColumns(20);
-        featuresTextArea.setLineWrap(true);
-        featuresTextArea.setRows(5);
-        jScrollPane2.setViewportView(featuresTextArea);
+        jScrollPane1.setViewportView(tree);
 
-        jPanel2.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+        jScrollPane3.setViewportView(jScrollPane1);
 
-        jTabbedPane1.addTab("Program features", jPanel2);
-
-        jToolBar1.setBorder(null);
-        jToolBar1.setFloatable(false);
-        jToolBar1.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jToolBar1.setRollover(true);
-        jToolBar1.setAutoscrolls(true);
-
-        piHelp.setText("π");
-        piHelp.setFocusable(false);
-        piHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        piHelp.setMaximumSize(new java.awt.Dimension(30, 27));
-        piHelp.setMinimumSize(new java.awt.Dimension(30, 27));
-        piHelp.setPreferredSize(new java.awt.Dimension(30, 27));
-        piHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        piHelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                piHelpActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(piHelp);
-
-        sigmaHelp.setText("σ");
-        sigmaHelp.setFocusable(false);
-        sigmaHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        sigmaHelp.setMaximumSize(new java.awt.Dimension(30, 27));
-        sigmaHelp.setMinimumSize(new java.awt.Dimension(30, 27));
-        sigmaHelp.setPreferredSize(new java.awt.Dimension(30, 27));
-        sigmaHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        sigmaHelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sigmaHelpActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(sigmaHelp);
-
-        rhoHelp.setText("ρ");
-        rhoHelp.setFocusable(false);
-        rhoHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        rhoHelp.setMaximumSize(new java.awt.Dimension(30, 27));
-        rhoHelp.setMinimumSize(new java.awt.Dimension(30, 27));
-        rhoHelp.setPreferredSize(new java.awt.Dimension(30, 27));
-        rhoHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        rhoHelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rhoHelpActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(rhoHelp);
-
-        gammaHelp.setText("γ");
-        gammaHelp.setFocusable(false);
-        gammaHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        gammaHelp.setMaximumSize(new java.awt.Dimension(30, 27));
-        gammaHelp.setMinimumSize(new java.awt.Dimension(30, 27));
-        gammaHelp.setPreferredSize(new java.awt.Dimension(30, 27));
-        gammaHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        gammaHelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                gammaHelpActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(gammaHelp);
-
-        tauHelp.setText("τ");
-        tauHelp.setFocusable(false);
-        tauHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        tauHelp.setMaximumSize(new java.awt.Dimension(30, 27));
-        tauHelp.setMinimumSize(new java.awt.Dimension(30, 27));
-        tauHelp.setPreferredSize(new java.awt.Dimension(30, 27));
-        tauHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        tauHelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tauHelpActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(tauHelp);
-
-        deltaHelp.setText("δ");
-        deltaHelp.setFocusable(false);
-        deltaHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        deltaHelp.setMaximumSize(new java.awt.Dimension(30, 27));
-        deltaHelp.setMinimumSize(new java.awt.Dimension(30, 27));
-        deltaHelp.setPreferredSize(new java.awt.Dimension(30, 27));
-        deltaHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        deltaHelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deltaHelpActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(deltaHelp);
-
-        arrowHelp.setText("→");
-        arrowHelp.setFocusable(false);
-        arrowHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        arrowHelp.setMaximumSize(new java.awt.Dimension(30, 27));
-        arrowHelp.setMinimumSize(new java.awt.Dimension(30, 27));
-        arrowHelp.setPreferredSize(new java.awt.Dimension(30, 27));
-        arrowHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        arrowHelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                arrowHelpActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(arrowHelp);
-
-        unionHelp.setText("∪");
-        unionHelp.setFocusable(false);
-        unionHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        unionHelp.setMaximumSize(new java.awt.Dimension(30, 27));
-        unionHelp.setMinimumSize(new java.awt.Dimension(30, 27));
-        unionHelp.setPreferredSize(new java.awt.Dimension(30, 27));
-        unionHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        unionHelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                unionHelpActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(unionHelp);
-
-        intersectionHelp.setText("∩");
-        intersectionHelp.setFocusable(false);
-        intersectionHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        intersectionHelp.setMaximumSize(new java.awt.Dimension(30, 27));
-        intersectionHelp.setMinimumSize(new java.awt.Dimension(30, 27));
-        intersectionHelp.setPreferredSize(new java.awt.Dimension(30, 27));
-        intersectionHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        intersectionHelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                intersectionHelpActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(intersectionHelp);
-
-        differenceHelp.setText("‒");
-        differenceHelp.setFocusable(false);
-        differenceHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        differenceHelp.setMaximumSize(new java.awt.Dimension(30, 27));
-        differenceHelp.setMinimumSize(new java.awt.Dimension(30, 27));
-        differenceHelp.setPreferredSize(new java.awt.Dimension(30, 27));
-        differenceHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        differenceHelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                differenceHelpActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(differenceHelp);
-
-        productHelp.setText("×");
-        productHelp.setFocusable(false);
-        productHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        productHelp.setMaximumSize(new java.awt.Dimension(30, 27));
-        productHelp.setMinimumSize(new java.awt.Dimension(30, 27));
-        productHelp.setPreferredSize(new java.awt.Dimension(30, 27));
-        productHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        productHelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                productHelpActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(productHelp);
-
-        naturalJoinHelp.setText("⋈");
-        naturalJoinHelp.setFocusable(false);
-        naturalJoinHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        naturalJoinHelp.setMaximumSize(new java.awt.Dimension(30, 27));
-        naturalJoinHelp.setMinimumSize(new java.awt.Dimension(30, 27));
-        naturalJoinHelp.setPreferredSize(new java.awt.Dimension(30, 27));
-        naturalJoinHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        naturalJoinHelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                naturalJoinHelpActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(naturalJoinHelp);
-
-        leftOuterJoinHelp.setText("⟕");
-        leftOuterJoinHelp.setFocusable(false);
-        leftOuterJoinHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        leftOuterJoinHelp.setMaximumSize(new java.awt.Dimension(30, 27));
-        leftOuterJoinHelp.setMinimumSize(new java.awt.Dimension(30, 27));
-        leftOuterJoinHelp.setPreferredSize(new java.awt.Dimension(30, 27));
-        leftOuterJoinHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        leftOuterJoinHelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                leftOuterJoinHelpActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(leftOuterJoinHelp);
-
-        rightOuterJoinHelp.setText("⟖");
-        rightOuterJoinHelp.setFocusable(false);
-        rightOuterJoinHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        rightOuterJoinHelp.setMaximumSize(new java.awt.Dimension(30, 27));
-        rightOuterJoinHelp.setMinimumSize(new java.awt.Dimension(30, 27));
-        rightOuterJoinHelp.setPreferredSize(new java.awt.Dimension(30, 27));
-        rightOuterJoinHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        rightOuterJoinHelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rightOuterJoinHelpActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(rightOuterJoinHelp);
-
-        fullOuterJoinHelp.setText("⟗");
-        fullOuterJoinHelp.setFocusable(false);
-        fullOuterJoinHelp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        fullOuterJoinHelp.setMaximumSize(new java.awt.Dimension(30, 27));
-        fullOuterJoinHelp.setMinimumSize(new java.awt.Dimension(30, 27));
-        fullOuterJoinHelp.setPreferredSize(new java.awt.Dimension(30, 27));
-        fullOuterJoinHelp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        fullOuterJoinHelp.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fullOuterJoinHelpActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(fullOuterJoinHelp);
-
-        operationsTextArea.setColumns(20);
-        operationsTextArea.setLineWrap(true);
-        operationsTextArea.setRows(5);
-        jScrollPane1.setViewportView(operationsTextArea);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
-            .addComponent(jScrollPane1)
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+            .addComponent(jScrollPane2)
         );
-
-        jTabbedPane1.addTab("Operations", jPanel1);
-
-        getContentPane().add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void piHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_piHelpActionPerformed
-        loadText("pi");
-    }//GEN-LAST:event_piHelpActionPerformed
-
-    private void sigmaHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sigmaHelpActionPerformed
-        loadText("sigma");
-    }//GEN-LAST:event_sigmaHelpActionPerformed
-
-    private void rhoHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rhoHelpActionPerformed
-        loadText("rho");
-    }//GEN-LAST:event_rhoHelpActionPerformed
-
-    private void gammaHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gammaHelpActionPerformed
-        loadText("gamma");
-    }//GEN-LAST:event_gammaHelpActionPerformed
-
-    private void tauHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tauHelpActionPerformed
-        loadText("tau");
-    }//GEN-LAST:event_tauHelpActionPerformed
-
-    private void deltaHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deltaHelpActionPerformed
-        loadText("delta");
-    }//GEN-LAST:event_deltaHelpActionPerformed
-
-    private void arrowHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arrowHelpActionPerformed
-        loadText("arrow");
-    }//GEN-LAST:event_arrowHelpActionPerformed
-
-    private void unionHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unionHelpActionPerformed
-        loadText("union");
-    }//GEN-LAST:event_unionHelpActionPerformed
-
-    private void intersectionHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intersectionHelpActionPerformed
-        loadText("intersection");
-    }//GEN-LAST:event_intersectionHelpActionPerformed
-
-    private void differenceHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_differenceHelpActionPerformed
-        loadText("difference");
-    }//GEN-LAST:event_differenceHelpActionPerformed
-
-    private void productHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productHelpActionPerformed
-        loadText("product");
-    }//GEN-LAST:event_productHelpActionPerformed
-
-    private void naturalJoinHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_naturalJoinHelpActionPerformed
-        loadText("naturalJoin");
-    }//GEN-LAST:event_naturalJoinHelpActionPerformed
-
-    private void leftOuterJoinHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftOuterJoinHelpActionPerformed
-        loadText("leftOuterJoin");
-    }//GEN-LAST:event_leftOuterJoinHelpActionPerformed
-
-    private void rightOuterJoinHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightOuterJoinHelpActionPerformed
-        loadText("rightOuterJoin");
-    }//GEN-LAST:event_rightOuterJoinHelpActionPerformed
-
-    private void fullOuterJoinHelpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullOuterJoinHelpActionPerformed
-        loadText("fullOuterJoin");
-    }//GEN-LAST:event_fullOuterJoinHelpActionPerformed
-
-    private void loadText(String symbol) {
+    private void initTree() {
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Help");
+        
+        DefaultMutableTreeNode features = new DefaultMutableTreeNode("Main features");
+        DefaultMutableTreeNode datasets = new DefaultMutableTreeNode("Handling datasets");
+        
+        root.add(features);
+        features.add(datasets);
+        
+        DefaultMutableTreeNode operations = new DefaultMutableTreeNode("Operations");
+        DefaultMutableTreeNode projection = new DefaultMutableTreeNode("Projection");
+        DefaultMutableTreeNode selection = new DefaultMutableTreeNode("Selection");
+        DefaultMutableTreeNode rename = new DefaultMutableTreeNode("Rename");
+        DefaultMutableTreeNode group = new DefaultMutableTreeNode("Group");
+        DefaultMutableTreeNode sort = new DefaultMutableTreeNode("Sort");
+        DefaultMutableTreeNode removeDuplicates = new DefaultMutableTreeNode("Remove duplicates");
+        DefaultMutableTreeNode arrow = new DefaultMutableTreeNode("Arrow");
+        DefaultMutableTreeNode union = new DefaultMutableTreeNode("Union");
+        DefaultMutableTreeNode intersection = new DefaultMutableTreeNode("Intersection");
+        DefaultMutableTreeNode difference = new DefaultMutableTreeNode("Difference");
+        DefaultMutableTreeNode product = new DefaultMutableTreeNode("Product");
+        DefaultMutableTreeNode naturalJoin = new DefaultMutableTreeNode("Natural join");
+        
+        root.add(operations);
+        operations.add(projection);
+        operations.add(selection);
+        operations.add(rename);
+        operations.add(group);
+        operations.add(sort);
+        operations.add(removeDuplicates);
+        operations.add(arrow);
+        operations.add(union);
+        operations.add(intersection);
+        operations.add(difference);
+        operations.add(product);
+        operations.add(naturalJoin);
+        
+        tree.setModel(new DefaultTreeModel(root));
+        
+        tree.addTreeSelectionListener(new TreeSelectionListener()
+        {
+            @Override
+            public void valueChanged(TreeSelectionEvent e)
+            {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+                        tree.getLastSelectedPathComponent();
+                loadText(node.toString());
+            }
+        });
+    }
+    
+    private void loadText(String item) {
         try 
         {
-            FileReader reader = new FileReader("assets/helpfiles/english/" + symbol + ".txt");
-            operationsTextArea.setText("");
-            operationsTextArea.read(reader, null);
+            FileReader reader = new FileReader("assets/helpfiles/english/" + item + ".txt");
+            textArea.setText("");
+            textArea.read(reader, null);
         }
         catch (IOException ex)
         {
@@ -393,28 +122,10 @@ public class HelpWindow extends javax.swing.JFrame {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton arrowHelp;
-    private javax.swing.JButton deltaHelp;
-    private javax.swing.JButton differenceHelp;
-    private javax.swing.JTextArea featuresTextArea;
-    private javax.swing.JButton fullOuterJoinHelp;
-    private javax.swing.JButton gammaHelp;
-    private javax.swing.JButton intersectionHelp;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JButton leftOuterJoinHelp;
-    private javax.swing.JButton naturalJoinHelp;
-    private javax.swing.JTextArea operationsTextArea;
-    private javax.swing.JButton piHelp;
-    private javax.swing.JButton productHelp;
-    private javax.swing.JButton rhoHelp;
-    private javax.swing.JButton rightOuterJoinHelp;
-    private javax.swing.JButton sigmaHelp;
-    private javax.swing.JButton tauHelp;
-    private javax.swing.JButton unionHelp;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextArea textArea;
+    private javax.swing.JTree tree;
     // End of variables declaration//GEN-END:variables
 }
