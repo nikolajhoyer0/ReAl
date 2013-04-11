@@ -61,41 +61,25 @@ public class HelpWindow extends javax.swing.JFrame {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Help");
         
         DefaultMutableTreeNode features = new DefaultMutableTreeNode("Main features");
-        DefaultMutableTreeNode datasets = new DefaultMutableTreeNode("Handling datasets");
-        
+        features.add(new DefaultMutableTreeNode("Handling datasets"));
         root.add(features);
-        features.add(datasets);
         
         DefaultMutableTreeNode operations = new DefaultMutableTreeNode("Operations");
-        DefaultMutableTreeNode projection = new DefaultMutableTreeNode("Projection");
-        DefaultMutableTreeNode selection = new DefaultMutableTreeNode("Selection");
-        DefaultMutableTreeNode rename = new DefaultMutableTreeNode("Rename");
-        DefaultMutableTreeNode group = new DefaultMutableTreeNode("Group");
-        DefaultMutableTreeNode sort = new DefaultMutableTreeNode("Sort");
-        DefaultMutableTreeNode removeDuplicates = new DefaultMutableTreeNode("Remove duplicates");
-        DefaultMutableTreeNode arrow = new DefaultMutableTreeNode("Arrow");
-        DefaultMutableTreeNode union = new DefaultMutableTreeNode("Union");
-        DefaultMutableTreeNode intersection = new DefaultMutableTreeNode("Intersection");
-        DefaultMutableTreeNode difference = new DefaultMutableTreeNode("Difference");
-        DefaultMutableTreeNode product = new DefaultMutableTreeNode("Product");
-        DefaultMutableTreeNode naturalJoin = new DefaultMutableTreeNode("Natural join");
-        
+        operations.add(new DefaultMutableTreeNode("Projection"));
+        operations.add(new DefaultMutableTreeNode("Selection"));
+        operations.add(new DefaultMutableTreeNode("Rename"));
+        operations.add(new DefaultMutableTreeNode("Group"));
+        operations.add(new DefaultMutableTreeNode("Sort"));
+        operations.add(new DefaultMutableTreeNode("Remove duplicates"));
+        operations.add(new DefaultMutableTreeNode("Arrow"));
+        operations.add(new DefaultMutableTreeNode("Union"));
+        operations.add(new DefaultMutableTreeNode("Intersection"));
+        operations.add(new DefaultMutableTreeNode("Difference"));
+        operations.add(new DefaultMutableTreeNode("Product"));
+        operations.add(new DefaultMutableTreeNode("Natural join"));
         root.add(operations);
-        operations.add(projection);
-        operations.add(selection);
-        operations.add(rename);
-        operations.add(group);
-        operations.add(sort);
-        operations.add(removeDuplicates);
-        operations.add(arrow);
-        operations.add(union);
-        operations.add(intersection);
-        operations.add(difference);
-        operations.add(product);
-        operations.add(naturalJoin);
         
         tree.setModel(new DefaultTreeModel(root));
-        
         tree.addTreeSelectionListener(new TreeSelectionListener()
         {
             @Override
