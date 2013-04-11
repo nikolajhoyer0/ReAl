@@ -1,7 +1,6 @@
-Natural Join: ?
+Natural Join: ⋈
 Usage:
     PLACEHOLDER.
 Notation:
     In General:
-        Relation1 ? Relation2
-
+        Relation1 ⋈ Relation2
