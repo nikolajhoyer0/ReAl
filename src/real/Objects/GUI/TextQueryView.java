@@ -248,7 +248,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
         private void convertToSymbol(final int start, final int end, String str)
         {  
-            switch (str.substring(start, end))
+            switch (str.substring(start, end).toLowerCase())
             {
                 case "projection":
                     textArea.replaceRange("π", start, end);
@@ -256,7 +256,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                 case "selection":
                     textArea.replaceRange("σ", start, end);
                     break;
-                case "removeDub":
+                case "removedub":
                     textArea.replaceRange("δ", start, end);
                     break;
                 case "rename":
@@ -267,6 +267,33 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                     break;
                 case "->":
                     textArea.replaceRange("→", start, end);
+                    break;
+                case "sort":
+                    textArea.replaceRange("τ", start, end);
+                    break;
+                case "union":
+                    textArea.replaceRange("∪", start, end);
+                    break;
+                case "intersection":
+                    textArea.replaceRange("∩", start, end);
+                    break;
+                case "difference":
+                    textArea.replaceRange("‒", start, end);
+                    break;
+                case "product":
+                    textArea.replaceRange("×", start, end);
+                    break;
+                case "naturaljoin":
+                    textArea.replaceRange("⋈", start, end);
+                    break;
+                case "leftouterjoin":
+                    textArea.replaceRange("⟖", start, end);
+                    break;
+                case "rightouterjoin":
+                    textArea.replaceRange("⟕", start, end);
+                    break;
+                case "fullouterjoin":
+                    textArea.replaceRange("⟗", start, end);
                     break;
             }
         }

@@ -90,7 +90,8 @@ public class Query
         opManager.addOp(new Token(">", 2, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token("AND", 1, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token("OR", 0, EnumSet.of(OpTypes.LEFT)));
-        opManager.addOp(new Token("^", 9, EnumSet.of(OpTypes.RIGHT)));
+        opManager.addOp(new Token("and", 1, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("or", 0, EnumSet.of(OpTypes.LEFT)));
         
         //function operators
         opManager.addOp(new Token("π", 0, EnumSet.of(OpTypes.NONE)));  
@@ -274,19 +275,19 @@ public class Query
                 return new Less(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case "!=":
                 return new Not(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
-            case "AND":
+            case "AND": case "and":
                 return new And(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
-            case "OR":
+            case "OR": case "or":
                 return new Or(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case "→":
                 return new Rename(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, true), linePosition);    
-            case "Max":
+            case "max":
                 return new Max(interpretCondition(children[0], relation, ignoreNoAttribute), linePosition);
-            case "Sum":
+            case "sum":
                 return new Sum(interpretCondition(children[0], relation, ignoreNoAttribute), linePosition);
-            case "Count":
+            case "count":
                 return new Count(interpretCondition(children[0], relation, ignoreNoAttribute), linePosition);
-            case "Min":
+            case "min":
                 return new Min(interpretCondition(children[0], relation, ignoreNoAttribute), linePosition);
             case "Attribute":
                 String value = children[0].getToken().getSymbol();

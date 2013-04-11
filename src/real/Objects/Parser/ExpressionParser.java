@@ -33,6 +33,7 @@ public class ExpressionParser
     private TokenTree primary() throws InvalidParsing
     {
         Token token = tokenStream.next();
+        String lowercaseSymbol = token.getSymbol().toLowerCase();
         
         
         if(token.isBinary())
@@ -224,14 +225,16 @@ public class ExpressionParser
             return new TokenTree(trees, token);
         }
         
-        else if (token.getSymbol().equals("Max") || token.getSymbol().equals("Sum") || 
-                    token.getSymbol().equals("Average") || token.getSymbol().equals("Count") || token.getSymbol().equals("Min"))
+        else if (lowercaseSymbol.equals("max") || lowercaseSymbol.equals("sum") || 
+                 lowercaseSymbol.equals("average") || lowercaseSymbol.equals("count") ||
+                 lowercaseSymbol.equals("min"))
         {
             errorMessage = "Parsing error in " + token.getSymbol();
             tokenStream.consume();
             TokenTree[] tree = {primary()};
             errorMessage = "";
-            return new TokenTree(tree, token);
+            return new TokenTree(tree, new Token(lowercaseSymbol, token.getPrecedence(), 
+                        token.getAssociativity(), token.getLinePosition(), token.getWordPosition()));
         }
         
         //numbers/attributes/booleans
