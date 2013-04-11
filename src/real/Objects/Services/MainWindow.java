@@ -22,13 +22,12 @@ import javax.swing.KeyStroke;
 import real.Interfaces.IService;
 import real.Objects.Dataset;
 import real.Objects.Exceptions.*;
-import real.Objects.GUI.ErrorView;
-import real.Objects.GUI.TextQueryView;
-import real.Objects.GUI.TreeWindow;
+import real.Objects.GUI.*;
 import real.Objects.Kernel;
 import real.Objects.Query;
 import real.Objects.Utility;
 import real.Objects.GUI.ExtensionFileFilter;
+import real.Objects.GUI.HelpWindow;
 
 
 public class MainWindow extends javax.swing.JFrame implements IService
@@ -186,6 +185,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         exitMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
+        helpMenuItem = new javax.swing.JMenuItem();
 
         loadFileChooser.setDialogTitle("Load Script");
 
@@ -589,6 +589,14 @@ public class MainWindow extends javax.swing.JFrame implements IService
         });
         helpMenu.add(aboutMenuItem);
 
+        helpMenuItem.setText("Help");
+        helpMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                helpMenuItemActionPerformed(evt);
+            }
+        });
+        helpMenu.add(helpMenuItem);
+
         jMenuBar1.add(helpMenu);
 
         setJMenuBar(jMenuBar1);
@@ -737,8 +745,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-        JOptionPane.showMessageDialog(rootPane, "This is ReAl ver. 0.9 beta \n\n"
-                + "Authors: \nDaniel Gavin \nTobias Kristoffer Scavenius \nNikolaj Høyer", "About", WIDTH);
+        AboutWindow window = new AboutWindow();
+        window.setVisible(true);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
@@ -1010,9 +1018,14 @@ public class MainWindow extends javax.swing.JFrame implements IService
     {//GEN-HEADEREND:event_showTreeButtonActionPerformed
         //wiil probably be changed.
         Dataset dataset = (Dataset)getCurrentQueryTable().getModel();
-        TreeWindow window = new TreeWindow(this, true, Kernel.GetService(LocalDataManager.class).findOperation(dataset.getName()));
+        TreeWindow window = new TreeWindow(Kernel.GetService(LocalDataManager.class).findOperation(dataset.getName()));
         window.setVisible(true);
     }//GEN-LAST:event_showTreeButtonActionPerformed
+
+    private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
+        HelpWindow window = new HelpWindow();
+        window.setVisible(true);
+    }//GEN-LAST:event_helpMenuItemActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
@@ -1028,6 +1041,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private javax.swing.JButton fullouterjoinButton;
     private javax.swing.JButton gammaButton;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem helpMenuItem;
     private javax.swing.JFileChooser importFileChooser;
     private javax.swing.JMenuItem importMenuItem;
     private javax.swing.JButton intersectionButton;

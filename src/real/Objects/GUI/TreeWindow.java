@@ -9,11 +9,9 @@ import javax.swing.JTable;
 import real.BaseClasses.OperationBase;
 import real.Objects.Utility;
 
-public class TreeWindow extends javax.swing.JDialog
-{
-    public TreeWindow(java.awt.Frame parent, boolean modal, OperationBase tree)
-    {
-        super(parent, modal);
+public class TreeWindow extends javax.swing.JFrame {
+
+    public TreeWindow(OperationBase tree) {
         initComponents();
         treeView.initialize(this);
         treeView.loadTree(tree);   
@@ -23,7 +21,7 @@ public class TreeWindow extends javax.swing.JDialog
     {
         return this.tableView;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -80,12 +78,12 @@ public class TreeWindow extends javax.swing.JDialog
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(treeView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(JScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE)
+            .addComponent(JScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 532, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(treeView, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                .addComponent(treeView, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
                 .addGap(2, 2, 2)
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -95,14 +93,13 @@ public class TreeWindow extends javax.swing.JDialog
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
-    {//GEN-HEADEREND:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int returnVal = saveFileChooser.showOpenDialog(this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION)
         {
             File file = new File(Utility.addExtension(saveFileChooser.getSelectedFile().getAbsolutePath(), ".png"));
-            
+
             try
             {
                 this.treeView.drawImage(file);
