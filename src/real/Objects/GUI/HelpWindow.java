@@ -1,17 +1,20 @@
 package real.Objects.GUI;
 
+import java.awt.Font;
 import java.io.FileReader;
 import java.io.IOException;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import real.Objects.Services.MainWindow;
 
 public class HelpWindow extends javax.swing.JFrame {
 
     public HelpWindow() {
         initComponents();
         initTree();
+        textArea.setFont(MainWindow.getStandardFont().deriveFont(Font.PLAIN, 12));
     }
 
     /**
