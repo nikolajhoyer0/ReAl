@@ -19,6 +19,7 @@ import javax.swing.text.BadLocationException;
 import real.Objects.Dataset;
 import real.Objects.Kernel;
 import real.Objects.Services.DataManager;
+import real.Objects.Services.MainWindow;
 
 /*
  Class is pretty much like JTextArea, except it also finishes table name words for you and converts specific strings to symbols.
@@ -40,7 +41,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
     {
         this.setLayout(new BorderLayout());
         textArea = new JTextArea();
-        textArea.setFont(new Font("cambria", Font.PLAIN, 15));
+        textArea.setFont(MainWindow.getStandardFont());
         textArea.setLineWrap(true);
         textArea.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), COMMIT_ACTION);
         textArea.getActionMap().put(COMMIT_ACTION, new CommitAction());
