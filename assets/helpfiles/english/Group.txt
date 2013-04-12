@@ -2,7 +2,26 @@
 Group: γ
 
 Usage:
+Used for grouping together rows/tuples of one column/attribute, while performing select functions on one or more of the remaining columns/attributes.
 
 Notation:
+γ column_to_group_by,
+  FUN(column_to_mod1) → newName1,
+  FUN(column_to_mod2) → newName2,
+  ...,
+  FUN(column_to_modn) → newNamen (Classes)
+
+where FUN must be replaced by either of the functions MIN, MAX, SUM, COUNT or AVERAGE.
 
 Example:
+Using the relation R(name, accountno, balance) with the following tuples:
+    {Daniel, 001, 100}
+    {Daniel, 002, 500}
+    {Daniel, 003, 0}
+    {Nikolaj, 004, 500}
+    {Nikolaj, 005, 1000}
+    {Tobias, 006,  2000}
+γ name, SUM(balance) → totalBalance, AVERAGE(balance) → averageBalance (R) will create a table/relation with the schema S(name, totalBalance, averageBalance) and rows/tuples:
+    {Daniel, 600, 200}
+    {Nikolaj, 1500, 750}
+    {Tobias, 2000, 2000}

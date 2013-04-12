@@ -2,10 +2,10 @@
 Rename: ρ
 
 Usage:
-Rename is used for creating a new table/relation with one of the columns/attributes in the old table/relation renamed.
+Rename is used for creating a new table/relation with one or more columns/attributes from the old table/relation renamed.
 
 Notation:
-ρ (Column_name → New_column_name) Relation
+ρ C1_name → New_c1_name, C2_name → New_c2_name,...,Cn_name → New_cn_name (Relation)
 
 Example:
 Using the relation R(a1,a2,...,an), ρ (a2 → b2) R will return R(a1,b2,...,an).

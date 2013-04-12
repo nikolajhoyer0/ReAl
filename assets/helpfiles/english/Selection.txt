@@ -8,8 +8,8 @@ Notation:
 σ Condition Relation
 
 Example:
-Using the relation R(name, phonenumber, adress) with the following tuples:
+Using the relation R(name, phonenumber, address) with the following tuples:
     {Daniel, 123456, first avenue}
     {Nikolaj, 654321,  Second street}
     {Tobias, 165234,  Third boulevard}
-σ (name = 'Daniel') R will create a relation with the single tuple {Daniel, 123456, first avenue}.
+σ name = 'Daniel' R will create a relation with the single tuple {Daniel, 123456, first avenue}.
