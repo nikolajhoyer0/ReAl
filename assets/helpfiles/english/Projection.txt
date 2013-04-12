@@ -1,13 +1,14 @@
-Projection π
+
+Projection: π
 
 Usage:
-    Projection is used to produce a subset of the Columns/Attributes from the original relation.
+Projection is used for producing a subset of the Columns/Attributes from the original relation.
 
 Notation:
-    In General:
-        Using the relation R(a_1,a_2,...,a_n)
-        π a_1, a_2, a_n R
-        Will return the three columns a_1, a_2, a_n R
+π Column Relation
 
-Example: A Relation R contains name address and phone numbers of students enrolled in a relational algebra course. R(name, address, phoneNumber). We wish to create a list of name and phone numbers to use when the course is cancelled.
+Example:
+Using the relation R(a1,a2,...,an), π (a1, a2, an) R will return the three columns a1, a2 and an from R.
+
+A Relation R contains name address and phone numbers of students enrolled in a relational algebra course. R(name, address, phoneNumber). We wish to create a list of name and phone numbers to use when the course is cancelled.
 "π name, phoneNumber R" will create said list with all names and phone numbers in R.

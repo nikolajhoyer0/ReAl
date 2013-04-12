@@ -1,1 +1,11 @@
-delta
+
+Remove duplicates: δ
+
+Usage:
+Remove duplicates is used for removing duplicate rows/tuples from a table/relation, thus converting a multiset (bags) into a regular set.
+
+Notation:
+δ Relation
+
+Example:
+Using the relation R(a1,a2,...,an), δ R will return R with its duplicate rows/tuples removed.

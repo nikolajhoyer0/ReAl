@@ -1,1 +1,5 @@
-arrow
+
+Arrow: →
+
+Usage:
+The arrow operator is used in "Group" and "Rename". Please refer to their respective help sections for assistance.

@@ -38,7 +38,7 @@ public class HelpWindow extends javax.swing.JFrame {
         textArea.setFont(new java.awt.Font("Cambria", 0, 13)); // NOI18N
         textArea.setLineWrap(true);
         textArea.setRows(5);
-        textArea.setText("Welcome to the help file for ReAl. Please select an item in the tree to the left to get started.");
+        textArea.setText("\nWelcome to the help file for ReAl.\n\nPlease select an item from the tree to the left to get started.");
         textArea.setWrapStyleWord(true);
         jScrollPane2.setViewportView(textArea);
 

@@ -1,2 +1,10 @@
-Right outer join ⟖
 
+Right outer join: ⟖
+
+Usage:
+Creates a right outer join of two relations.
+
+Notation:
+Relation1 ⟖ Relation2.
+
+Example:
