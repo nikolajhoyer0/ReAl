@@ -111,6 +111,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
             System.err.println("assets/font/Asana-Math.ttf" + " not loaded.  Using serif font.");
             standardFont = new Font("serif", Font.PLAIN, 14);
         }       
+        
+        leftouterjoinButton.setFont(standardFont);
     }   
 
     @Override
