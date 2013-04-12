@@ -1,1 +1,12 @@
-intersection
+Intersection ∩
+
+Usage:
+    Intersection is used to produce a bag intersection of two multisets. Both sets must have exactly the same columns/attributes. Remove duplicates δ can be used along with intersection to create a regular set.
+
+Notation:
+    In general:
+        Using the relations R(a1,a2,...,an) and	S(b1,b2,...,bn)
+        R ∩ S will return:
+            RS( ? )
+
+Example:
