@@ -1,4 +1,4 @@
-Projection π
+Projection
 
 Usage:
     Projection is used to produce a subset of the Columns/Attributes from the original relation.

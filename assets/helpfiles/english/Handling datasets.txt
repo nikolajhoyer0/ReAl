@@ -5,4 +5,3 @@ Tables are imported, exported and removed from the "File" Menu. Imported tables 
 attribute1, attribute2, attribute3
 value1, value2, value3
 value4, value5, value6
-
