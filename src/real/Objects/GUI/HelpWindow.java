@@ -29,7 +29,7 @@ public class HelpWindow extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tree = new javax.swing.JTree();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         textArea.setColumns(20);
         textArea.setLineWrap(true);
@@ -61,11 +61,11 @@ public class HelpWindow extends javax.swing.JFrame {
 
     private void initTree() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Help");
-        
+
         DefaultMutableTreeNode features = new DefaultMutableTreeNode("Main features");
         features.add(new DefaultMutableTreeNode("Handling datasets"));
         root.add(features);
-        
+
         DefaultMutableTreeNode operations = new DefaultMutableTreeNode("Operations");
         operations.add(new DefaultMutableTreeNode("Projection"));
         operations.add(new DefaultMutableTreeNode("Selection"));
@@ -80,7 +80,7 @@ public class HelpWindow extends javax.swing.JFrame {
         operations.add(new DefaultMutableTreeNode("Product"));
         operations.add(new DefaultMutableTreeNode("Natural join"));
         root.add(operations);
-        
+
         tree.setModel(new DefaultTreeModel(root));
         tree.addTreeSelectionListener(new TreeSelectionListener()
         {
@@ -93,9 +93,9 @@ public class HelpWindow extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private void loadText(String item) {
-        try 
+        try
         {
             FileReader reader = new FileReader("assets/helpfiles/english/" + item + ".txt");
             textArea.setText("");
@@ -106,7 +106,7 @@ public class HelpWindow extends javax.swing.JFrame {
             System.out.println("Help window: file not found");
         }
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
