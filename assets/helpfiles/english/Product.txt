@@ -1,7 +1,10 @@
-(Cartesian) Product: ×
-Also known as cross-product.
+
+Product: ×
+
 Usage:
-    PLACEHOLDER.
+Creates a Cartesian product, also called "cross-product", of two relations.
+
 Notation:
-    In General:
-        Relation1 × Relation2
+Relation1 × Relation2
+
+Example:

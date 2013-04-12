@@ -1,12 +1,11 @@
-Sort τ
+
+Sort: τ
 
 Usage:
-    Sort is used to sort a table/relation by a single column/attribute. Only one column/attribute can be sorted at a time. Numbers are sorted in descending order, while strings are sorted lexicografically, in ascending order.
+Sort is used for sorting a table/relation by a single column/attribute. Only one column/attribute can be sorted at a time. Numbers are sorted in descending order, while strings are sorted lexicographically, in ascending order.
 
 Notation:
-    In general:
-        Using the relation R(a1,a2,...,an)
-        τ a2 R
-        will return R sorted by a2.
+τ Column Relation
 
 Example:
+Using the relation R(a1,a2,...,an), τ a2 R will return R sorted by a2.

@@ -52,7 +52,7 @@
             </Property>
             <Property name="lineWrap" type="boolean" value="true"/>
             <Property name="rows" type="int" value="5"/>
-            <Property name="text" type="java.lang.String" value="Welcome to the help file for ReAl. Please select an item in the tree to the left to get started."/>
+            <Property name="text" type="java.lang.String" value="&#xa;Welcome to the help file for ReAl.&#xa;&#xa;Please select an item from the tree to the left to get started."/>
             <Property name="wrapStyleWord" type="boolean" value="true"/>
           </Properties>
         </Component>
