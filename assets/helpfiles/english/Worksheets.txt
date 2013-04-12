@@ -1,0 +1,4 @@
+
+Worksheets are created and deleted from the two buttons "New sheet" and "Remove sheet", respectively. The query work area start out empty. Sheet names are unique when created.
+
+-- Tekst der forklarer omkring save/load af projekter

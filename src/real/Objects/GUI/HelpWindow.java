@@ -29,7 +29,6 @@ public class HelpWindow extends javax.swing.JFrame {
 
         jScrollPane2 = new javax.swing.JScrollPane();
         textArea = new javax.swing.JTextArea();
-        jScrollPane3 = new javax.swing.JScrollPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         tree = new javax.swing.JTree();
 
@@ -45,20 +44,18 @@ public class HelpWindow extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(tree);
 
-        jScrollPane3.setViewportView(jScrollPane1);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
             .addComponent(jScrollPane2)
         );
 
@@ -68,9 +65,17 @@ public class HelpWindow extends javax.swing.JFrame {
     private void initTree() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Help");
 
-        DefaultMutableTreeNode features = new DefaultMutableTreeNode("Getting started");
-        features.add(new DefaultMutableTreeNode("Datasets"));
-        features.add(new DefaultMutableTreeNode("Worksheets"));
+        DefaultMutableTreeNode gettingStarted = new DefaultMutableTreeNode("Getting started");
+        gettingStarted.add(new DefaultMutableTreeNode("Datasets"));
+        gettingStarted.add(new DefaultMutableTreeNode("Worksheets"));
+        root.add(gettingStarted);
+
+        DefaultMutableTreeNode features = new DefaultMutableTreeNode("Features");
+        DefaultMutableTreeNode treeView = new DefaultMutableTreeNode("Tree view");
+        treeView.add(new DefaultMutableTreeNode("Something1"));
+        treeView.add(new DefaultMutableTreeNode("Something2"));
+        treeView.add(new DefaultMutableTreeNode("Something3"));
+        features.add(treeView);
         root.add(features);
 
         DefaultMutableTreeNode operations = new DefaultMutableTreeNode("Operations");
@@ -120,7 +125,6 @@ public class HelpWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea textArea;
     private javax.swing.JTree tree;
     // End of variables declaration//GEN-END:variables
