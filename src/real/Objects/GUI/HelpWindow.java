@@ -34,6 +34,7 @@ public class HelpWindow extends javax.swing.JFrame {
         textArea.setColumns(20);
         textArea.setLineWrap(true);
         textArea.setRows(5);
+        textArea.setText("Welcome to the help file for ReAl. Please select an item in the tree to the left to get started.");
         textArea.setWrapStyleWord(true);
         jScrollPane2.setViewportView(textArea);
 
@@ -62,7 +63,7 @@ public class HelpWindow extends javax.swing.JFrame {
     private void initTree() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Help");
 
-        DefaultMutableTreeNode features = new DefaultMutableTreeNode("Main features");
+        DefaultMutableTreeNode features = new DefaultMutableTreeNode("Getting started");
         features.add(new DefaultMutableTreeNode("Handling datasets"));
         root.add(features);
 
