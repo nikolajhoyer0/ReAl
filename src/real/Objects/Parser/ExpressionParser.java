@@ -288,8 +288,20 @@ public class ExpressionParser
                 newPrecedence = token.getPrecedence();
             }
             
-            TokenTree[] fulltree = {tree, expression(newPrecedence)};
-            tree = new TokenTree(fulltree, token);
+            TokenTree checkTree = expression(newPrecedence);
+            
+            //we must check to see if it's natural join or theta
+            if (token.getSymbol().equals("⋈") && isThetaJoin(checkTree)) 
+            {
+                TokenTree condition = primary();
+                TokenTree[] fullTree = {tree, checkTree, condition};
+                tree = new TokenTree(fullTree, token);
+            } 
+            else
+            {
+                TokenTree[] fulltree = {tree, checkTree};
+                tree = new TokenTree(fulltree, token);
+            }
         }
         
         return tree;
@@ -350,6 +362,27 @@ public class ExpressionParser
         return new TokenTree(children.toArray(new TokenTree[0]), new Token("Tuple", 0, EnumSet.of(OpTypes.NONE), token.getLinePosition(), token.getWordPosition()));
     }
 
+    boolean isThetaJoin(TokenTree tree) 
+    {    
+        if(tree != null)
+        {
+            if (!tree.getToken().getAssociativity().contains(OpTypes.RELATIONAL) && tree.getToken().isBinary()) 
+            {
+                return true;
+            }
+            
+            if(tree.getChildren() != null)
+            { 
+                for (TokenTree token : tree.getChildren()) 
+                {           
+                    isThetaJoin(token);
+                }
+            }
+        }
+        
+        return false;
+    }
+    
     private TokenStream tokenStream;
     private String errorMessage;
 }

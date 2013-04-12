@@ -5,5 +5,8 @@ public enum OpTypes
     NONE,
     LEFT,
     RIGHT,
-    UNARY
+    UNARY,
+    BASE,
+    FUNCTION,
+    RELATIONAL
 }

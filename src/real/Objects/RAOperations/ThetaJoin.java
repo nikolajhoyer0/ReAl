@@ -14,19 +14,21 @@ import real.Objects.Exceptions.NoSuchAttribute;
 public class ThetaJoin extends BinaryOperationBase {
 
     private ConditionBase condition;
-
-    public ThetaJoin(OperationBase operandA, OperationBase operandB, ConditionBase condition, int linePosition)
+    private Product product;
+  
+    public ThetaJoin(Product product, ConditionBase condition, int linePosition)
     {
-        super(operandA, operandB, linePosition);
+        super(product.getOperandA(), product.getOperandB(), linePosition);
+        this.product = product;
         this.condition = condition;
     }
 
     @Override
     public Dataset execute() throws InvalidSchema, NoSuchAttribute, InvalidParameters, InvalidEvaluation
     {
-        Product product = new Product(operandA, operandB, getLinePosition());
+        //Product product = new Product(operandA, operandB, getLinePosition());
         Selection selection = new Selection(product, condition, getLinePosition());
-        
+    
         return selection.execute();
     }
     /*
@@ -36,7 +38,7 @@ public class ThetaJoin extends BinaryOperationBase {
     @Override
     public String toString()
     {
-        return "⋈ θ " + this.condition.toString();
+        return "⋈ (" + this.condition.toString() + ")";
     }
 
     

@@ -14,12 +14,12 @@ public class TokenStream
     public TokenStream(TokenOpManager manager)
     {
         opManager = manager;
-        opManager.addOp(new Token("(", 0, EnumSet.of(OpTypes.NONE)));
-        opManager.addOp(new Token(")", 0, EnumSet.of(OpTypes.NONE)));
-        opManager.addOp(new Token(",", 0, EnumSet.of(OpTypes.NONE)));
-        opManager.addOp(new Token("'", 0, EnumSet.of(OpTypes.NONE)));
-        opManager.addOp(new Token("{", 0, EnumSet.of(OpTypes.NONE)));
-        opManager.addOp(new Token("}", 0, EnumSet.of(OpTypes.NONE)));
+        opManager.addOp(new Token("(", 0, EnumSet.of(OpTypes.BASE)));
+        opManager.addOp(new Token(")", 0, EnumSet.of(OpTypes.BASE)));
+        opManager.addOp(new Token(",", 0, EnumSet.of(OpTypes.BASE)));
+        opManager.addOp(new Token("'", 0, EnumSet.of(OpTypes.BASE)));
+        opManager.addOp(new Token("{", 0, EnumSet.of(OpTypes.BASE)));
+        opManager.addOp(new Token("}", 0, EnumSet.of(OpTypes.BASE)));
         ignoreList = new LinkedList<>();
     }
     

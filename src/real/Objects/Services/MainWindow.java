@@ -660,17 +660,14 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 //if no throws we can assume that i went without errors 
                 errorView.setText("Successful run");
                 setLocalTables();
+                queryView.setSelectedIndex(0);
             }
         }
         catch (InvalidSchema | NoSuchAttribute | InvalidParameters | InvalidEvaluation | WrongType | InvalidParsing ex)
         {
+            setLocalTables();
+            queryView.setSelectedIndex(queryView.getTabCount() - 1);
             Kernel.GetService(ErrorSystem.class).print(ex);
-        }
-        
-        finally
-        {
-            //add focus to the error tab
-            queryView.setSelectedIndex(queryView.getTabCount()-1);
         }
     }//GEN-LAST:event_runButtonActionPerformed
 
