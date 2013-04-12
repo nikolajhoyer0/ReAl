@@ -1,4 +1,4 @@
-Difference
+Difference ‒
 
 Usage:
     Difference is used to produce a bag difference of two multisets. Both sets must have exactly the same columns/attributes. Remove duplicates δ can be used along with difference to create a regular set.

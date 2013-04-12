@@ -41,7 +41,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         this.initComponents();
         errorView = new ErrorView();
         Kernel.GetService(ErrorSystem.class).addObserver(errorView);
-        queryView.add(errorView, "Run Errors");       
+        queryView.add(errorView, "Run Errors");
         // Setup listener so closing the window will close the kernel.
         this.addWindowListener(new java.awt.event.WindowAdapter()
         {
@@ -56,21 +56,21 @@ public class MainWindow extends javax.swing.JFrame implements IService
     public JTextArea getCurrentWorksheet()
     {
         TextQueryView view = (TextQueryView)worksheetPane.getSelectedComponent();
-        
+
         if(view == null)
         {
             return null;
         }
- 
+
         return view.getTextArea();
     }
 
     public JTable getCurrentQueryTable()
     {
-        JScrollPane scroll = (JScrollPane)queryView.getSelectedComponent();    
+        JScrollPane scroll = (JScrollPane)queryView.getSelectedComponent();
         return (JTable)scroll.getViewport().getView();
     }
-    
+
     @Override
     public void Initialize()
     {
@@ -78,7 +78,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         query = new Query();
         this.setIconImage(image.getImage());
         relationView.setModel(relationModel);
-        
+
         // Implements the run button shortcut - TODO
         Action runAction = new AbstractAction()
         {
@@ -88,12 +88,12 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 System.out.println("run pressed");
                 runButton.doClick();
             }
-            
+
         };
-        
+
         jToolBar2.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("enter"), "pressed");
         jToolBar2.getActionMap().put("pressed", runAction);
-    }   
+    }
 
     @Override
     public void Start()
@@ -108,10 +108,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }
 
     public void setLocalTables()
-    {      
+    {
         LocalDataManager local = Kernel.GetService(LocalDataManager.class);
         String[] tables = local.getAllKeys();
-  
+
         //ignore the last one which is the error pane
         for(int i = tables.length-1; i >= 0;i--)
         {
@@ -121,10 +121,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
             table.setName(tables[i]);
             table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
             scroll.setViewportView(table);
-            queryView.insertTab(tables[i], null, scroll, null, queryView.getTabCount()-1); 
-        }    
+            queryView.insertTab(tables[i], null, scroll, null, queryView.getTabCount()-1);
+        }
     }
-     
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -282,7 +282,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         jToolBar3.setFloatable(false);
         jToolBar3.setRollover(true);
 
-        piButton.setFont(new java.awt.Font("DejaVu Sans", 0, 20)); // NOI18N
+        piButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
         piButton.setText("π");
         piButton.setFocusable(false);
         piButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -414,7 +414,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         });
         jToolBar3.add(productButton);
 
-        joinButton.setFont(new java.awt.Font("DejaVu Sans", 0, 24)); // NOI18N
+        joinButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
         joinButton.setText("⋈");
         joinButton.setFocusable(false);
         joinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -426,7 +426,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         });
         jToolBar3.add(joinButton);
 
-        leftouterjoinButton.setFont(new java.awt.Font("DejaVu Sans Light", 0, 20)); // NOI18N
+        leftouterjoinButton.setFont(new java.awt.Font("Cambria", 0, 20)); // NOI18N
         leftouterjoinButton.setText("⟕");
         leftouterjoinButton.setFocusable(false);
         leftouterjoinButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -629,7 +629,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     {//GEN-HEADEREND:event_saveButtonActionPerformed
         String name = queryView.getTitleAt(queryView.getSelectedIndex());
         Dataset dataset = Kernel.GetService(LocalDataManager.class).findDataset(name);
-        
+
         if(dataset != null)
         {
             //There must not be another table with the same name.
@@ -642,7 +642,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
             else
             {
                 JOptionPane.showMessageDialog(rootPane,"Table name already exists.");
-            }      
+            }
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
@@ -657,7 +657,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 queryView.addTab("Run Errors", errorView);
                 errorView.setText("");
                 query.interpret(getCurrentWorksheet().getText());
-                //if no throws we can assume that i went without errors 
+                //if no throws we can assume that i went without errors
                 errorView.setText("Successful run");
                 setLocalTables();
                 queryView.setSelectedIndex(0);
@@ -748,7 +748,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
         int returnVal = saveFileChooser.showOpenDialog(this);
-        
+
         if (returnVal == JFileChooser.APPROVE_OPTION)
         {
             File file = saveFileChooser.getSelectedFile();
@@ -802,7 +802,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 //ask for the table name
                 String str = (String) JOptionPane.showInputDialog(rootPane,
                             "Please enter the name for the table.", "Table", JOptionPane.PLAIN_MESSAGE, null, null, Utility.filename(file.getName()));
-                          
+
                 if(str == null)
                 {
                     //user pressed cancel
@@ -817,7 +817,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 {
                     JOptionPane.showMessageDialog(rootPane, "Table name can't contain space");
                 }
-                
+
                 else
                 {
                     Kernel.GetService(DataManager.class).LoadDataset(file.getAbsolutePath(), str);
@@ -852,17 +852,17 @@ public class MainWindow extends javax.swing.JFrame implements IService
             {
                 FileWriter fw = new FileWriter(Utility.addExtension(file.getAbsoluteFile().getAbsolutePath(), ".csv"), true);
                 Dataset dataset = Kernel.GetService(DataManager.class).getDataset((String) relationModel.getElementAt(relationView.getSelectedIndex()));
-                
+
                 if(dataset != null)
                 {
-                    fw.write(dataset.getCSV());                   
+                    fw.write(dataset.getCSV());
                 }
-                
+
                 else
                 {
                     JOptionPane.showMessageDialog(rootPane,"problem saving file at " + file.getAbsolutePath());
                 }
-                
+
                 fw.close();
             }
             catch (IOException ex)
@@ -955,15 +955,15 @@ public class MainWindow extends javax.swing.JFrame implements IService
         {
 
             Dataset dataset = Kernel.GetService(DataManager.class).getDataset(str);
-            
+
             if(dataset != null)
-            {          
+            {
                 tableView.setModel(dataset);
                 //focus it for cool effect
                 //1 is table view.
                 combinedView.setSelectedIndex(1);
             }
-            
+
             else
             {
                 System.out.println("couldn't find " + str);
@@ -975,26 +975,26 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private void deleteMenuItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_deleteMenuItemActionPerformed
     {//GEN-HEADEREND:event_deleteMenuItemActionPerformed
-        
+
         int index = relationView.getSelectedIndex();
         String str = "";
-        
+
         if(index == -1)
         {
-            JOptionPane.showMessageDialog(rootPane, "You must select at table to delete.");      
+            JOptionPane.showMessageDialog(rootPane, "You must select at table to delete.");
         }
- 
+
         else
         {
             str = (String)relationModel.getElementAt(index);
         }
-            
-            
+
+
         if(!str.isEmpty())
         {
             relationModel.remove(relationView.getSelectedIndex());
             TextQueryView.removeTableAutoWords(str);
-            
+
             try
             {
                 Kernel.GetService(DataManager.class).removeDataset(str);
