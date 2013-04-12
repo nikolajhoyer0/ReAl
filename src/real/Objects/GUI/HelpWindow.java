@@ -32,6 +32,7 @@ public class HelpWindow extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         textArea.setColumns(20);
+        textArea.setFont(new java.awt.Font("Cambria", 0, 13)); // NOI18N
         textArea.setLineWrap(true);
         textArea.setRows(5);
         textArea.setText("Welcome to the help file for ReAl. Please select an item in the tree to the left to get started.");
@@ -80,6 +81,9 @@ public class HelpWindow extends javax.swing.JFrame {
         operations.add(new DefaultMutableTreeNode("Difference"));
         operations.add(new DefaultMutableTreeNode("Product"));
         operations.add(new DefaultMutableTreeNode("Natural join"));
+        operations.add(new DefaultMutableTreeNode("Left outer join"));
+        operations.add(new DefaultMutableTreeNode("Right outer join"));
+        operations.add(new DefaultMutableTreeNode("Full outer join"));
         root.add(operations);
 
         tree.setModel(new DefaultTreeModel(root));
