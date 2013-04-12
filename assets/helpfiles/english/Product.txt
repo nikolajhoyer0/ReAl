@@ -1,0 +1,8 @@
+(Cartesian) Product: ×
+Also known as cross-product.
+Usage:
+    PLACEHOLDER.
+Notation:
+    In General:
+        Relation1 × Relation2
+

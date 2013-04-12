@@ -1,0 +1,6 @@
+Natural Join: ⋈
+Usage:
+    PLACEHOLDER.
+Notation:
+    In General:
+        Relation1 ⋈ Relation2
