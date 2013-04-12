@@ -23,5 +23,18 @@ public class TokenOpManager
         return opTable.get(symbol);
     }
     
+    public Token getNonLetterOp(String symbol)
+    {
+        for(int i = 0; i < symbol.length(); ++i)
+        {
+            if(Character.isLetter(symbol.charAt(i)))
+            {
+                return null;
+            }
+        }
+        
+        return opTable.get(symbol);
+    }
+    
     private HashMap<String, Token> opTable;
 }
