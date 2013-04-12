@@ -1,1 +1,2 @@
-foj
+Full outer join ⟗
+

@@ -1,1 +1,2 @@
-roj
+Right outer join ⟖
+

@@ -1,1 +1,2 @@
-loj
+Left outer join ⟕
+
