@@ -9,5 +9,5 @@ Notation:
         {Daniel, 123456, first avenue}
         {Nikolaj, 654321,  Second street}
         {Tobias, 165234,  Third boulevard}
-        ? name = 'Daniel' R
+        σ name = 'Daniel' R
     Will create a relation with only the tupple {Daniel, 123456, first avenue}.
