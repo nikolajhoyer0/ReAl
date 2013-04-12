@@ -15,6 +15,7 @@ public class HelpWindow extends javax.swing.JFrame {
         initComponents();
         initTree();
         textArea.setFont(MainWindow.getStandardFont().deriveFont(Font.PLAIN, 13));
+        tree.setFont(MainWindow.getStandardFont().deriveFont(Font.PLAIN, 13));
     }
 
     /**
@@ -68,7 +69,8 @@ public class HelpWindow extends javax.swing.JFrame {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Help");
 
         DefaultMutableTreeNode features = new DefaultMutableTreeNode("Getting started");
-        features.add(new DefaultMutableTreeNode("Handling datasets"));
+        features.add(new DefaultMutableTreeNode("Datasets"));
+        features.add(new DefaultMutableTreeNode("Worksheets"));
         root.add(features);
 
         DefaultMutableTreeNode operations = new DefaultMutableTreeNode("Operations");
