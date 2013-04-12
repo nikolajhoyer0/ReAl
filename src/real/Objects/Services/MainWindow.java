@@ -270,7 +270,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         jToolBar2.add(newSheetButton);
         jToolBar2.add(jSeparator3);
 
-        removeSheetButton.setFont(removeSheetButton.getFont().deriveFont(removeSheetButton.getFont().getStyle() | java.awt.Font.BOLD));
+        removeSheetButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         removeSheetButton.setText("Remove sheet");
         removeSheetButton.setFocusable(false);
         removeSheetButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
