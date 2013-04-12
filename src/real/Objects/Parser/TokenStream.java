@@ -130,33 +130,9 @@ public class TokenStream
             while (index < length)
             {
                 chr = str.charAt(index);
-                
-                if(str.length() > index+2 && opManager.getOp(new String(new char[] {chr, str.charAt(index+1), str.charAt(index+2)})) != null)
-                {
-                    if(!wordList.isEmpty())
-                    {
-                        wordBuffer = Utility.getStringRepresentation(wordList);
-                        wordList.clear();
-                    }
-                    
-                    operatorBuffer = new String(new char[] {chr, str.charAt(index+1), str.charAt(index+2)});
-                    index+=2;
-                }
-                
-                else if(str.length() > index+1 && opManager.getOp(new String(new char[] {chr, str.charAt(index+1)})) != null)
-                {
-                    if(!wordList.isEmpty())
-                    {
-                        wordBuffer = Utility.getStringRepresentation(wordList);
-                        wordList.clear();
-                    }
-                    
-                    operatorBuffer = new String(new char[] {chr, str.charAt(index+1)});
-                    index++;
-                }
-                
+                 
                 //must be start of string or end.
-                else if(chr == '\'')
+                if(chr == '\'')
                 {
                     //to be sure that we consider the whole string literal as one word
                     if(isStringLiteral)
@@ -182,7 +158,31 @@ public class TokenStream
                     operatorBuffer = Character.toString(chr);
                 }
                 
-                else if (opManager.getOp(Character.toString(chr)) != null)
+                else if(str.length() > index+2 && opManager.getNonLetterOp(new String(new char[] {chr, str.charAt(index+1), str.charAt(index+2)})) != null)
+                {
+                    if(!wordList.isEmpty())
+                    {
+                        wordBuffer = Utility.getStringRepresentation(wordList);
+                        wordList.clear();
+                    }
+                    
+                    operatorBuffer = new String(new char[] {chr, str.charAt(index+1), str.charAt(index+2)});
+                    index+=2;
+                }
+                
+                else if(str.length() > index+1 && opManager.getNonLetterOp(new String(new char[] {chr, str.charAt(index+1)})) != null)
+                {
+                    if(!wordList.isEmpty())
+                    {
+                        wordBuffer = Utility.getStringRepresentation(wordList);
+                        wordList.clear();
+                    }
+                    
+                    operatorBuffer = new String(new char[] {chr, str.charAt(index+1)});
+                    index++;
+                }
+                
+                else if (opManager.getNonLetterOp(Character.toString(chr)) != null)
                 {
                      
                     if(!wordList.isEmpty())
@@ -233,16 +233,37 @@ public class TokenStream
                 }
                        
                 //word is guarenteed to be before operator
-                if(!wordBuffer.isEmpty())
+                if (!wordBuffer.isEmpty())
                 {
-                    tokenList.add(new Token(wordBuffer, 0, EnumSet.of(OpTypes.NONE), linePosition, wordPosition));
+
+                    Token token = opManager.getOp(wordBuffer);
                     
-                    if(!isStringLiteral)
+                    if (token != null)
                     {
+                        token.setLinePosition(linePosition);
+                        token.setWordPosition(wordPosition);
+                        tokenList.add(token);
+                        
+                        if (!isStringLiteral)
+                        {
                             wordPosition++;
+                        }
+                        
+                        wordBuffer = "";
                     }
                     
-                    wordBuffer = "";
+                    else
+                    {
+
+                        tokenList.add(new Token(wordBuffer, 0, EnumSet.of(OpTypes.NONE), linePosition, wordPosition));
+
+                        if (!isStringLiteral)
+                        {
+                            wordPosition++;
+                        }
+
+                        wordBuffer = "";
+                    }
                 }
                 
                 if(!operatorBuffer.isEmpty())
