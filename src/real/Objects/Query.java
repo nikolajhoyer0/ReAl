@@ -63,7 +63,7 @@ public class Query
         //todo: figure out the proper precendence for each operator.
         opManager.addOp(new Token("∪", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
         opManager.addOp(new Token("∩", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
-        opManager.addOp(new Token("‒", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
+        opManager.addOp(new Token("–", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
         opManager.addOp(new Token("×", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
         opManager.addOp(new Token("⋈", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
         opManager.addOp(new Token("→", 3, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL))); 
@@ -196,7 +196,7 @@ public class Query
                 return new Renaming(relation, conditions, linePosition);
             case "×":
                 return new Product(interpretOperation(children[0]), interpretOperation(children[1]), linePosition);
-            case "‒":
+            case "–":
                 return new Difference(interpretOperation(children[0]), interpretOperation(children[1]), linePosition);
             case "τ":
                 relation = interpretOperation(children[children.length - 1]);

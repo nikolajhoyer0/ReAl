@@ -792,7 +792,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private void differenceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_differenceButtonActionPerformed
         JTextArea area = getCurrentWorksheet();
-        area.insert("‒", area.getCaretPosition());
+        area.insert("–", area.getCaretPosition());
     }//GEN-LAST:event_differenceButtonActionPerformed
 
     private void productButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productButtonActionPerformed
