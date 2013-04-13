@@ -4,6 +4,8 @@
  */
 package real.Objects.GUI;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author Sinni
@@ -17,6 +19,8 @@ public class AboutWindow extends java.awt.Dialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
+        ImageIcon image = new ImageIcon("assets/icon/Large_icon.png");
+        jLabel1.setIcon(image);
     }
 
     /**
@@ -49,7 +53,6 @@ public class AboutWindow extends java.awt.Dialog {
         });
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Sinni\\Documents\\NetBeansProjects\\ReAl\\assets\\icon\\Large_icon.png")); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -71,7 +74,6 @@ public class AboutWindow extends java.awt.Dialog {
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel4.setText("ReAl is a relational algebra query tool");
 
-        jLabel5.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         jLabel5.setText("Authors:");
 
         jLabel6.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
@@ -96,7 +98,7 @@ public class AboutWindow extends java.awt.Dialog {
                     .addComponent(jLabel6)
                     .addComponent(jLabel7)
                     .addComponent(jLabel8))
-                .addGap(0, 33, Short.MAX_VALUE))
+                .addGap(0, 2, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,7 +117,7 @@ public class AboutWindow extends java.awt.Dialog {
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 46, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);

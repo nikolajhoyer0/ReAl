@@ -80,7 +80,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     @Override
     public void Initialize()
     {
-        ImageIcon image = new ImageIcon("assets/icon/icon.png");
+        ImageIcon image = new ImageIcon("assets/icon/Icon.png");
         query = new Query();
         this.setIconImage(image.getImage());
         relationView.setModel(relationModel);
