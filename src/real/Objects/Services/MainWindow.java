@@ -47,6 +47,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         errorView = new ErrorView();
         Kernel.GetService(ErrorSystem.class).addObserver(errorView);
         queryView.add(errorView, "Run Errors");
+        this.setLocationRelativeTo(null);
         // Setup listener so closing the window will close the kernel.
         this.addWindowListener(new java.awt.event.WindowAdapter()
         {
@@ -843,7 +844,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
-        AboutWindow window = new AboutWindow();
+        AboutWindow window = new AboutWindow(this, true);
         window.setVisible(true);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 

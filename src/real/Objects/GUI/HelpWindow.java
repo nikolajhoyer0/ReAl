@@ -16,6 +16,7 @@ public class HelpWindow extends javax.swing.JFrame {
         initTree();
         textArea.setFont(MainWindow.getStandardFont().deriveFont(Font.PLAIN, 13));
         tree.setFont(MainWindow.getStandardFont().deriveFont(Font.PLAIN, 13));
+        this.setLocationRelativeTo(null);
     }
 
     /**
