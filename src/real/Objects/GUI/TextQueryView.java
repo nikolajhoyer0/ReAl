@@ -50,12 +50,12 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
         textArea.setBorder(null);
         scrollPane = new JScrollPane(textArea);
         this.add(scrollPane);
-        
+
         addAutoWord("projection");
         addAutoWord("selection");
         addAutoWord("rename");
         addAutoWord("group");
-        
+
     }
 
     public static void addAutoWord(String word)
@@ -97,7 +97,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
             for (int k = 0; k < datasets.get(i).getColumnCount(); k++)
             {
                 String keyword = datasets.get(i).getColumnName(k);
-                words.remove(keyword);        
+                words.remove(keyword);
             }
         }
 
@@ -248,7 +248,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
         }
 
         private void convertToSymbol(final int start, final int end, String str)
-        {  
+        {
             switch (str.substring(start, end).toLowerCase())
             {
                 case "projection":
@@ -288,10 +288,10 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                     textArea.replaceRange("⋈", start, end);
                     break;
                 case "leftouterjoin":
-                    textArea.replaceRange("⟖", start, end);
+                    textArea.replaceRange("⟕", start, end);
                     break;
                 case "rightouterjoin":
-                    textArea.replaceRange("⟕", start, end);
+                    textArea.replaceRange("⟖", start, end);
                     break;
                 case "fullouterjoin":
                     textArea.replaceRange("⟗", start, end);
@@ -310,7 +310,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
                 //if we are in the string we only look for one string
                 if (!Character.isWhitespace(str.charAt(pos)))
-                {                  
+                {
                     int leftIndex;
                     int rightIndex;
 
