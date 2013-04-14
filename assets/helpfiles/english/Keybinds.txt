@@ -1,0 +1,19 @@
+
+ReAl has keybinds for most of its menu items and buttons. Below is an overview:
+
+Buttons:
+Ctrl + Enter: Run
+Ctrl + N: New sheet
+Ctrl + R: Remove sheet
+Ctrl + U: Save current table
+Ctrl + T: Show tree
+
+Menus:
+Ctrl + L: Load project
+Ctrl + S: Save project
+Ctrl + I: Import table
+Ctrl + E: Export table
+Ctrl + D: Delete table
+Ctrl + Q: Quit
+Ctrl + A: About
+Ctrl + H: Help

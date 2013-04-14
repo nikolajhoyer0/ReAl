@@ -70,6 +70,7 @@ public class HelpWindow extends javax.swing.JFrame {
         DefaultMutableTreeNode gettingStarted = new DefaultMutableTreeNode("Getting started");
         gettingStarted.add(new DefaultMutableTreeNode("Datasets"));
         gettingStarted.add(new DefaultMutableTreeNode("Worksheets"));
+        gettingStarted.add(new DefaultMutableTreeNode("Keybinds"));
         root.add(gettingStarted);
 
         DefaultMutableTreeNode features = new DefaultMutableTreeNode("Features");

@@ -1,6 +1,5 @@
 package real.Objects.Services;
 
-import java.awt.Event;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -86,8 +85,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         this.setIconImage(image.getImage());
         relationView.setModel(relationModel);
 
-        // Implements the run button shortcut
-        Action runAction = new AbstractAction()
+        // Implement keybinds for various buttons        
+        Action runKeybindAction = new AbstractAction()
         {
 
             @Override
@@ -95,10 +94,64 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 runButtonActionPerformed(a);
             }
 
+        };        
+        Action newSheetKeybindAction = new AbstractAction()
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent a) {
+                newSheetButtonActionPerformed(a);
+            }
+
+        };        
+        Action removeSheetKeybindAction = new AbstractAction()
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent a) {
+                removeSheetButtonActionPerformed(a);
+            }
+
         };
-        KeyStroke keystroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_DOWN_MASK);
-        worksheetPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(keystroke, "pressed");
-        worksheetPane.getActionMap().put("pressed", runAction);
+        Action saveButtonKeybindAction = new AbstractAction()
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent a) {
+                saveButtonActionPerformed(a);
+            }
+
+        };
+        Action treeButtonKeybindAction = new AbstractAction()
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent a) {
+                showTreeButtonActionPerformed(a);
+            }
+
+        };
+        KeyStroke keystrokeEnter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_DOWN_MASK);
+        KeyStroke keystrokeN = KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK);
+        KeyStroke keystrokeR = KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK);
+        KeyStroke keystrokeU = KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK);
+        KeyStroke keystrokeT = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_DOWN_MASK);
+        
+        worksheetPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(keystrokeEnter, "enterPressed");
+        worksheetPane.getActionMap().put("enterPressed", runKeybindAction);
+        
+        jToolBar2.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keystrokeN, "nPressed");
+        jToolBar2.getActionMap().put("nPressed", newSheetKeybindAction);
+        
+        jToolBar2.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keystrokeR, "rPressed");
+        jToolBar2.getActionMap().put("rPressed", removeSheetKeybindAction);
+        
+        jToolBar1.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keystrokeU, "uPressed");
+        jToolBar1.getActionMap().put("uPressed", saveButtonKeybindAction);
+        
+        jToolBar1.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keystrokeT, "tPressed");
+        jToolBar1.getActionMap().put("tPressed", treeButtonKeybindAction);
+        // Done setting keybinds
         
         //setting the default font
         try
@@ -568,7 +621,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         fileMenu.setText("File");
 
         loadMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
-        loadMenuItem.setText("Load Script");
+        loadMenuItem.setText("Load project");
         loadMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loadMenuItemActionPerformed(evt);
@@ -577,7 +630,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         fileMenu.add(loadMenuItem);
 
         saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        saveMenuItem.setText("Save Script");
+        saveMenuItem.setText("Save project");
         saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveMenuItemActionPerformed(evt);
