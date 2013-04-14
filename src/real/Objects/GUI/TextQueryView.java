@@ -257,7 +257,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                 case "selection":
                     textArea.replaceRange("σ", start, end);
                     break;
-                case "removedub":
+                case "removeduplicates":
                     textArea.replaceRange("δ", start, end);
                     break;
                 case "rename":
@@ -279,7 +279,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                     textArea.replaceRange("∩", start, end);
                     break;
                 case "difference":
-                    textArea.replaceRange("‒", start, end);
+                    textArea.replaceRange("–", start, end);
                     break;
                 case "product":
                     textArea.replaceRange("×", start, end);
