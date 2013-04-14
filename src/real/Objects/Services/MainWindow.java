@@ -746,6 +746,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 JOptionPane.showMessageDialog(rootPane,"Table name already exists.");
             }
         }
+        else
+        {
+            JOptionPane.showMessageDialog(rootPane,"No table to save.");
+        }
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_runButtonActionPerformed
@@ -764,6 +768,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 setLocalTables();
                 queryView.setSelectedIndex(0);
             }
+            else {
+                JOptionPane.showMessageDialog(rootPane,"Nothing to run.");
+            }
         }
         catch (InvalidSchema | NoSuchAttribute | InvalidParameters | InvalidEvaluation | WrongType | InvalidParsing ex)
         {
@@ -773,69 +780,70 @@ public class MainWindow extends javax.swing.JFrame implements IService
         }
     }//GEN-LAST:event_runButtonActionPerformed
 
-    private void piButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_piButtonActionPerformed
+    private void insertSymbol(String symbol)
+    {
         JTextArea area = getCurrentWorksheet();
-        area.insert("π", area.getCaretPosition());
+        if(area != null)
+        {
+           area.insert(symbol, area.getCaretPosition()); 
+        }
+        else
+        {
+            JOptionPane.showMessageDialog(rootPane,"Please create a new worksheet first.");
+        }
+    }
+    
+    private void piButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_piButtonActionPerformed
+        insertSymbol("π");
     }//GEN-LAST:event_piButtonActionPerformed
 
     private void sigmaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sigmaButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("σ", area.getCaretPosition());
+        insertSymbol("σ");
     }//GEN-LAST:event_sigmaButtonActionPerformed
 
     private void rhoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rhoButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("ρ", area.getCaretPosition());
+        insertSymbol("ρ");
     }//GEN-LAST:event_rhoButtonActionPerformed
 
     private void gammaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gammaButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("γ", area.getCaretPosition());
+        
+        insertSymbol("γ");
     }//GEN-LAST:event_gammaButtonActionPerformed
 
     private void tauButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tauButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("τ", area.getCaretPosition());
+        insertSymbol("τ");
     }//GEN-LAST:event_tauButtonActionPerformed
 
     private void unionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unionButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("∪", area.getCaretPosition());
+        insertSymbol("∪");
     }//GEN-LAST:event_unionButtonActionPerformed
 
     private void intersectionButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intersectionButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("∩", area.getCaretPosition());
+        insertSymbol("∩");
     }//GEN-LAST:event_intersectionButtonActionPerformed
 
     private void differenceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_differenceButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("–", area.getCaretPosition());
+        insertSymbol("–");
     }//GEN-LAST:event_differenceButtonActionPerformed
 
     private void productButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("×", area.getCaretPosition());
+        insertSymbol("×");
     }//GEN-LAST:event_productButtonActionPerformed
 
     private void joinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_joinButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("⋈", area.getCaretPosition());
+        insertSymbol("⋈");
     }//GEN-LAST:event_joinButtonActionPerformed
 
     private void leftouterjoinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leftouterjoinButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("⟕", area.getCaretPosition());
+        insertSymbol("⟕");
     }//GEN-LAST:event_leftouterjoinButtonActionPerformed
 
     private void rightouterjoinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rightouterjoinButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("⟖", area.getCaretPosition());
+        insertSymbol("⟖");
     }//GEN-LAST:event_rightouterjoinButtonActionPerformed
 
     private void fullouterjoinButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fullouterjoinButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("⟗", area.getCaretPosition());
+        insertSymbol("⟗");
     }//GEN-LAST:event_fullouterjoinButtonActionPerformed
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
@@ -979,8 +987,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_exportMenuItemActionPerformed
 
     private void arrowButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_arrowButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("→", area.getCaretPosition());
+        insertSymbol("→");
     }//GEN-LAST:event_arrowButtonActionPerformed
 
     private void newSheetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newSheetButtonActionPerformed
@@ -1046,6 +1053,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
             {
             }
         }
+        else
+        {
+            JOptionPane.showMessageDialog(rootPane, "No worksheets to remove.");
+        }
     }//GEN-LAST:event_removeSheetButtonActionPerformed
 
     private void relationViewMouseClicked(java.awt.event.MouseEvent evt)//GEN-FIRST:event_relationViewMouseClicked
@@ -1109,16 +1120,22 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_deleteMenuItemActionPerformed
 
     private void deltaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deltaButtonActionPerformed
-        JTextArea area = getCurrentWorksheet();
-        area.insert("δ", area.getCaretPosition());
+        insertSymbol("δ");
     }//GEN-LAST:event_deltaButtonActionPerformed
 
     private void showTreeButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showTreeButtonActionPerformed
     {//GEN-HEADEREND:event_showTreeButtonActionPerformed
         //wiil probably be changed.
+        try
+        {
         Dataset dataset = (Dataset)getCurrentQueryTable().getModel();
-        TreeWindow window = new TreeWindow(Kernel.GetService(LocalDataManager.class).findOperation(dataset.getName()));
-        window.setVisible(true);
+            TreeWindow window = new TreeWindow(Kernel.GetService(LocalDataManager.class).findOperation(dataset.getName()));
+            window.setVisible(true);
+        }
+        catch(ClassCastException e)
+        {
+            JOptionPane.showMessageDialog(rootPane, "No dataset available. Please run a query first.");
+        }
     }//GEN-LAST:event_showTreeButtonActionPerformed
 
     private void helpMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpMenuItemActionPerformed
