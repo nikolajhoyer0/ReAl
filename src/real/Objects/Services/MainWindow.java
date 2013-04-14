@@ -1125,10 +1125,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
     private void showTreeButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_showTreeButtonActionPerformed
     {//GEN-HEADEREND:event_showTreeButtonActionPerformed
-        //wiil probably be changed.
         try
         {
-        Dataset dataset = (Dataset)getCurrentQueryTable().getModel();
+            Dataset dataset = (Dataset)getCurrentQueryTable().getModel();
             TreeWindow window = new TreeWindow(Kernel.GetService(LocalDataManager.class).findOperation(dataset.getName()));
             window.setVisible(true);
         }
