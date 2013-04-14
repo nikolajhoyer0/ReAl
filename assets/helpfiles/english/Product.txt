@@ -6,5 +6,3 @@ Creates a Cartesian product, also called "cross-product", of two relations.
 
 Notation:
 Relation1 × Relation2
-
-Example:

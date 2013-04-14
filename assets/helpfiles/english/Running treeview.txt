@@ -1,0 +1,2 @@
+
+Tree view mode is started by pressing the "Show tree" button after running a successful query. The tree is based on the currently selected query tab.

@@ -74,9 +74,8 @@ public class HelpWindow extends javax.swing.JFrame {
 
         DefaultMutableTreeNode features = new DefaultMutableTreeNode("Features");
         DefaultMutableTreeNode treeView = new DefaultMutableTreeNode("Tree view");
-        treeView.add(new DefaultMutableTreeNode("Something1"));
-        treeView.add(new DefaultMutableTreeNode("Something2"));
-        treeView.add(new DefaultMutableTreeNode("Something3"));
+        treeView.add(new DefaultMutableTreeNode("Running treeview"));
+        treeView.add(new DefaultMutableTreeNode("Tree features"));
         features.add(treeView);
         root.add(features);
 

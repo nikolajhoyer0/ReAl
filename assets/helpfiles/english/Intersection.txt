@@ -8,3 +8,4 @@ Notation:
 R1 ∩ R2, where a1=b1,a2=b2,...,an=bn in the relations R1(a1,a2,...,an) and R2(b1,b2,...,bn).
 
 Example:
+Using the relations R1 and R2, R1 ∩ R2 will return those rows/tuples of R1 that are also in R2.

@@ -6,5 +6,3 @@ Union is used to produce a bag union of two multisets. Both sets must have exact
 
 Notation:
 R1 ∪ R2, where a1=b1,a2=b2,...,an=bn in the relations R1(a1,a2,...,an) and R2(b1,b2,...,bn).
-
-Example:

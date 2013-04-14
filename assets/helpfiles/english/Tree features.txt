@@ -1,0 +1,6 @@
+
+The leaves of the tree, the original input tables, are all coloured yellow, while operations are coloured blue.
+
+Clicking on each leaf/node reveals the result that would have been by only following the tree up to this point, and no further.
+
+The "Save to image" button saves the current tree to a .png file at a user specified path.

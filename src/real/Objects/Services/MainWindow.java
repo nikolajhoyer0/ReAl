@@ -3,6 +3,7 @@ package real.Objects.Services;
 import java.awt.Event;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.BufferedInputStream;
@@ -85,22 +86,21 @@ public class MainWindow extends javax.swing.JFrame implements IService
         this.setIconImage(image.getImage());
         relationView.setModel(relationModel);
 
-        // Implements the run button shortcut - TODO
+        // Implements the run button shortcut
         Action runAction = new AbstractAction()
         {
 
             @Override
             public void actionPerformed(ActionEvent a) {
-                System.out.println("run pressed");
-                runButton.doClick();
+                runButtonActionPerformed(a);
             }
 
         };
-
-        jToolBar2.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("enter"), "pressed");
-        jToolBar2.getActionMap().put("pressed", runAction);
-
-        //settings the default font
+        KeyStroke keystroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_DOWN_MASK);
+        worksheetPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(keystroke, "pressed");
+        worksheetPane.getActionMap().put("pressed", runAction);
+        
+        //setting the default font
         try
         {
             InputStream is = new BufferedInputStream(new FileInputStream("assets/font/Asana-Math.ttf"));
