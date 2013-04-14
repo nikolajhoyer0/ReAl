@@ -1,5 +1,5 @@
 
-Tables are imported, exported and removed from the "File" Menu. Tables are saved from queries by pressing the "Save current table" button.
+Tables are imported, exported and removed from the "File" menu. Tables are saved from queries by pressing the "Save current table" button.
 
 Imported tables should be in a .csv format and conform to the following style:
 
@@ -9,7 +9,7 @@ value4, value5, value6
 ...
 value(n-2), value(n-1), value(n)
 
-where values 1,2,3 are part of the first row, where values 4,5,6 are part of the second row, etc. Exported tables are automatically formatted this way. It is not possible to create new tables from within the apllication. It is, however, possible to modify existing tables in the following ways:
+where values 1,2,3 are part of the first row, where values 4,5,6 are part of the second row, etc. Exported tables are automatically formatted this way. It is not possible to create new tables from within the application. It is, however, possible to modify existing tables in the following ways:
 
 Insert: R = R ∪ ({'someText', someNumber}), where R(text, number)
 
