@@ -1,5 +1,6 @@
 package real.Objects.Services;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -8,10 +9,15 @@ import java.awt.event.WindowEvent;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
@@ -88,48 +94,38 @@ public class MainWindow extends javax.swing.JFrame implements IService
         // Implement keybinds for various buttons        
         Action runKeybindAction = new AbstractAction()
         {
-
             @Override
             public void actionPerformed(ActionEvent a) {
                 runButtonActionPerformed(a);
             }
-
         };        
         Action newSheetKeybindAction = new AbstractAction()
         {
-
             @Override
             public void actionPerformed(ActionEvent a) {
                 newSheetButtonActionPerformed(a);
             }
-
         };        
         Action removeSheetKeybindAction = new AbstractAction()
         {
-
             @Override
             public void actionPerformed(ActionEvent a) {
                 removeSheetButtonActionPerformed(a);
             }
-
         };
         Action saveButtonKeybindAction = new AbstractAction()
         {
-
             @Override
             public void actionPerformed(ActionEvent a) {
                 saveButtonActionPerformed(a);
             }
-
         };
         Action treeButtonKeybindAction = new AbstractAction()
         {
-
             @Override
             public void actionPerformed(ActionEvent a) {
                 showTreeButtonActionPerformed(a);
             }
-
         };
         KeyStroke keystrokeEnter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_DOWN_MASK);
         KeyStroke keystrokeN = KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK);
@@ -855,40 +851,98 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
-        int returnVal = saveFileChooser.showOpenDialog(this);
-
-        if (returnVal == JFileChooser.APPROVE_OPTION)
+        // Get the components to save
+        ArrayList<Dataset> datasets = Kernel.GetService(DataManager.class).GetAllDatasets();
+        ArrayList<TextQueryView> worksheets = new ArrayList<>();
+        for(int i=0; i < worksheetPane.getTabCount(); i++)
         {
-            File file = saveFileChooser.getSelectedFile();
-            try
+            Component component = worksheetPane.getComponentAt(i);
+            if(component instanceof TextQueryView)
             {
-                FileWriter fw = new FileWriter(Utility.addExtension(file.getAbsoluteFile().getAbsolutePath(), ".txt"), true);
-                this.getCurrentWorksheet().write(fw);
-                fw.close();
+                TextQueryView tab = (TextQueryView) component;
+                worksheets.add(tab);
             }
-            catch (IOException ex)
-            {
-                JOptionPane.showMessageDialog(rootPane, "Problem saving file at " + file.getAbsolutePath());
-            }
+        }
+        // Abort if nothing to save
+        if(datasets.isEmpty() && worksheets.isEmpty())
+        {
+            JOptionPane.showMessageDialog(rootPane, "Nothing to save.");
         }
         else
         {
-            System.out.println("File save cancelled by user.");
+            int returnVal = saveFileChooser.showOpenDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION)
+            {
+                File file = saveFileChooser.getSelectedFile();
+                try
+                {
+                    ProjectState state = new ProjectState(worksheets, datasets);
+                    ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file));
+                    output.writeObject(state);
+                    output.flush();
+                    output.close();
+                }
+                catch (IOException ex)
+                {
+                    ex.printStackTrace();
+                    ex.getMessage();
+                    JOptionPane.showMessageDialog(rootPane, "Problem saving file at " + file.getAbsolutePath());
+                }
+            }
+            else
+            {
+                System.out.println("File save cancelled by user.");
+            }
         }
     }//GEN-LAST:event_saveMenuItemActionPerformed
 
     private void loadMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMenuItemActionPerformed
+
+        if(worksheetPane.getTabCount() != 0 || ! Kernel.GetService(DataManager.class).GetAllDatasets().isEmpty())
+        {
+            JOptionPane.showMessageDialog(loadFileChooser,
+                    "An active project is open.\nLoading a new project will "
+                  + "override any unsaved datasets and/or worksheets.",
+                    "Warning",
+                     JOptionPane.WARNING_MESSAGE);
+        }
         int returnVal = loadFileChooser.showOpenDialog(this);
+
         if (returnVal == JFileChooser.APPROVE_OPTION)
         {
             File file = loadFileChooser.getSelectedFile();
             try
             {
-                this.getCurrentWorksheet().read(new FileReader(file.getAbsolutePath()), null);
+                ObjectInputStream input = new ObjectInputStream(new FileInputStream(file));
+
+                ProjectState state = (ProjectState) input.readObject();
+                ArrayList<Dataset> datasets = state.getDatasets();
+                ArrayList<TextQueryView> worksheets = state.getWorksheets();
+                
+                worksheetPane.removeAll();
+                Kernel.GetService(DataManager.class).removeAllDatasets();
+                relationModel.removeAllElements();
+                
+                for(Dataset dataset : datasets)
+                {
+                    String name = dataset.getName();
+                    Kernel.GetService(DataManager.class).setDataset(dataset);
+                    relationModel.addElement(name);
+                    TextQueryView.addTableAutoWords(name);
+                }
+                
+                for(TextQueryView worksheet : worksheets)
+                {
+                    worksheetPane.addTab(worksheet.getName(), worksheet);
+                }
             }
             catch (IOException ex)
             {
                 JOptionPane.showMessageDialog(rootPane, "Problem accessing file " + file.getAbsolutePath());
+            }
+            catch (ClassNotFoundException ex)
+            {
+                System.out.println("Class not found");
             }
         }
         else
@@ -1027,7 +1081,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
             else
             {
-                TextQueryView t = new TextQueryView();
+                TextQueryView t = new TextQueryView(str);
                 worksheetPane.addTab(str, t);
             }
         }

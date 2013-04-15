@@ -1,6 +1,7 @@
 
 package real.Objects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import real.Enumerations.DataType;
@@ -8,7 +9,7 @@ import real.Enumerations.DataType;
 /**
  * Class that is used for storing data relation.
  */
-public class Dataset extends AbstractTableModel
+public class Dataset extends AbstractTableModel implements Serializable
 {
 
     private String name;

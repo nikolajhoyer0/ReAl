@@ -102,9 +102,16 @@ public class DataManager extends ServiceBase
             this.datasetNames.remove(remove);
         }
     }
+    
     public ArrayList<Dataset> GetAllDatasets()
     {
         return this.datasets;
+    }
+    
+    public void removeAllDatasets()
+    {
+        this.datasets.clear();
+        this.datasetNames.clear();    
     }
 
     private Dataset find(String name)

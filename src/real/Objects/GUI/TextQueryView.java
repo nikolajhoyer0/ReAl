@@ -1,10 +1,10 @@
 package real.Objects.GUI;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.AbstractAction;
@@ -26,19 +26,21 @@ import real.Objects.Services.MainWindow;
  pretty much ripped from the oracle example.
 */
 
-public class TextQueryView extends JPanel implements DocumentListener, KeyListener
+public class TextQueryView extends JPanel implements DocumentListener, KeyListener, Serializable
 {
     private static final String COMMIT_ACTION = "commit";
     private static enum Mode { INSERT, COMPLETION };
     private Mode mode = Mode.INSERT;
     private JTextArea textArea;
     private JScrollPane scrollPane;
+    private String name;
 
     //autocompletion words for textarea
     static private ArrayList<String> words = new ArrayList<>();
 
-    public TextQueryView()
+    public TextQueryView(String name)
     {
+        this.name = name;
         this.setLayout(new BorderLayout());
         textArea = new JTextArea();
         textArea.setFont(MainWindow.getStandardFont());
@@ -58,6 +60,12 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
     }
 
+    @Override
+    public String getName()
+    {
+        return name;
+    }
+    
     public static void addAutoWord(String word)
     {
         words.add(word);
@@ -108,7 +116,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
     {
         return textArea;
     }
-
+    
     @Override
     public void keyTyped(KeyEvent e)
     {

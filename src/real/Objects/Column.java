@@ -1,6 +1,7 @@
 
 package real.Objects;
 
+import java.io.Serializable;
 import java.util.Objects;
 import real.Enumerations.DataType;
 
@@ -8,7 +9,7 @@ import real.Enumerations.DataType;
  * Class that allows you to store column names and their datatype.
  */
 
-public class Column
+public class Column implements Serializable
 {
 
     private String name;

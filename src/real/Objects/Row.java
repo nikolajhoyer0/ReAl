@@ -1,6 +1,7 @@
 
 package real.Objects;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -11,7 +12,7 @@ import real.Objects.Exceptions.InvalidDataset;
  * This class is for storing tuples. Each value is saved based upon the column
  * name. 
  */
-public class Row
+public class Row implements Serializable
 {
     private Map<String, String> values;
 
