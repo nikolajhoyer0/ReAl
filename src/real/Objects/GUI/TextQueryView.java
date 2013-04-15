@@ -26,7 +26,7 @@ import real.Objects.Services.MainWindow;
  pretty much ripped from the oracle example.
 */
 
-public class TextQueryView extends JPanel implements DocumentListener, KeyListener, Serializable
+public class TextQueryView extends JPanel implements DocumentListener, KeyListener
 {
     private static final String COMMIT_ACTION = "commit";
     private static enum Mode { INSERT, COMPLETION };
