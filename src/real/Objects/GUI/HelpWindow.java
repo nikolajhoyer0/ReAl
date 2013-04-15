@@ -1,8 +1,10 @@
 package real.Objects.GUI;
 
 import java.awt.Font;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -115,7 +117,7 @@ public class HelpWindow extends javax.swing.JFrame {
     private void loadText(String item) {
         try
         {
-            FileReader reader = new FileReader("assets/helpfiles/english/" + item + ".txt");
+            InputStreamReader reader = new InputStreamReader(new FileInputStream("assets/helpfiles/english/" + item + ".txt"), "UTF-8");
             textArea.setText("");
             textArea.read(reader, null);
         }
