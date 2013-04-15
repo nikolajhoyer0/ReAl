@@ -41,7 +41,7 @@
       <Properties>
         <Property name="acceptAllFileFilterUsed" type="boolean" value="false"/>
         <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new ExtensionFileFilter(&quot;rs&quot;, new String[]{&quot;rs&quot;})" type="code"/>
+          <Connection code="new ExtensionFileFilter(&quot;txt&quot;, new String[]{&quot;txt&quot;})" type="code"/>
         </Property>
       </Properties>
     </Component>
@@ -49,7 +49,7 @@
       <Properties>
         <Property name="acceptAllFileFilterUsed" type="boolean" value="false"/>
         <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new ExtensionFileFilter(&quot;rs&quot;, new String[]{&quot;rs&quot;})" type="code"/>
+          <Connection code="new ExtensionFileFilter(&quot;txt&quot;, new String[]{&quot;txt&quot;})" type="code"/>
         </Property>
       </Properties>
     </Component>

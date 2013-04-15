@@ -302,10 +302,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         exportTableChooser.setFileFilter(new ExtensionFileFilter("csv", new String[]{"csv"}));
 
         loadScriptChooser.setAcceptAllFileFilterUsed(false);
-        loadScriptChooser.setFileFilter(new ExtensionFileFilter("rs", new String[]{"rs"}));
+        loadScriptChooser.setFileFilter(new ExtensionFileFilter("txt", new String[]{"txt"}));
 
         saveScriptChooser.setAcceptAllFileFilterUsed(false);
-        saveScriptChooser.setFileFilter(new ExtensionFileFilter("rs", new String[]{"rs"}));
+        saveScriptChooser.setFileFilter(new ExtensionFileFilter("txt", new String[]{"txt"}));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ReAl");
@@ -1247,7 +1247,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
             File file = saveScriptChooser.getSelectedFile();
             try
             {
-                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file.getAbsolutePath() + ".rs"), "UTF-8"));
+                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file.getAbsolutePath() + ".txt"), "UTF-8"));
                 TextQueryView view = (TextQueryView)worksheetPane.getSelectedComponent();
                 out.write(view.getTextArea().getText());
                 out.close();
@@ -1269,23 +1269,48 @@ public class MainWindow extends javax.swing.JFrame implements IService
         if (returnVal == JFileChooser.APPROVE_OPTION)
         {
             File file = loadScriptChooser.getSelectedFile();
-            try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
-            String sCurrentLine;
-            String allLines = "";
-            while ((sCurrentLine = br.readLine()) != null)
-            {
-                allLines = allLines + sCurrentLine + "\n";
-            }
-            TextQueryView t = new TextQueryView(file.getName());
-            worksheetPane.addTab(file.getName(), t);
+            String fileName = file.getName().substring(0, file.getName().length() - 4);
 
-            JTextArea area = getCurrentWorksheet();
-            area.setText(allLines);
-            }
-            catch (IOException ex)
+            String s = (String)JOptionPane.showInputDialog(
+                    loadScriptChooser, "Please choose a name for the new worksheet:", "Worksheet name", JOptionPane.PLAIN_MESSAGE, null, null, fileName);
+
+            boolean foundDup = false;
+            for(int i=0; i < worksheetPane.getTabCount(); i++)
             {
-                JOptionPane.showMessageDialog(rootPane, "Problem accessing file " + file.getAbsolutePath());
+                if(worksheetPane.getTitleAt(i).equals(s))
+                {
+                    foundDup = true;
+                }
             }
+
+            if ((s != null) && (s.length() > 0) && foundDup == false)
+            {
+                try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath())))
+                {
+                    String sCurrentLine;
+                    String allLines = "";
+                    while ((sCurrentLine = br.readLine()) != null)
+                    {
+                        allLines = allLines + sCurrentLine + "\n";
+                    }
+                    TextQueryView t = new TextQueryView(fileName);
+                    worksheetPane.addTab(fileName, t);
+                    worksheetPane.setSelectedComponent(t);
+                    JTextArea area = getCurrentWorksheet();
+                    area.setText(allLines);
+                }
+                catch (IOException ex)
+                {
+                    JOptionPane.showMessageDialog(rootPane, "Problem accessing file " + file.getAbsolutePath());
+                }
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(loadScriptChooser, "Worksheet name already exists!");
+                loadScriptMenuItemActionPerformed(evt);
+            }
+
+
         }
         else
         {
