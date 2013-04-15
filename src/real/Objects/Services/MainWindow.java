@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -40,6 +41,7 @@ import real.Objects.Query;
 import real.Objects.Utility;
 import real.Objects.GUI.ExtensionFileFilter;
 import real.Objects.GUI.HelpWindow;
+import sun.misc.IOUtils;
 
 
 public class MainWindow extends javax.swing.JFrame implements IService
@@ -1270,7 +1272,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         if (returnVal == JFileChooser.APPROVE_OPTION)
         {
             File file = loadScriptChooser.getSelectedFile();
-            String fileName = file.getName().substring(0, file.getName().length() - 4);
+            String fileName = Utility.filename(file.getName());
 
             String s = (String)JOptionPane.showInputDialog(
                     loadScriptChooser, "Please choose a name for the new worksheet:", "Worksheet name", JOptionPane.PLAIN_MESSAGE, null, null, fileName);
@@ -1284,26 +1286,44 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 }
             }
 
-            if ((s != null) && (s.length() > 0) && foundDup == false)
+            if(s == null)
             {
-                try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath())))
+                //user pressed x
+            }
+            
+            else if ((s.length() > 0) && foundDup == false)
+            {
+
+                /*
+                 String sCurrentLine;
+                 String allLines = "";
+                 while ((sCurrentLine = br.readLine()) != null)
+                 {
+                 allLines = allLines + sCurrentLine + "\n";
+                 }
+                 */
+                
+                
+                String content = null;
+    
+                try
                 {
-                    String sCurrentLine;
-                    String allLines = "";
-                    while ((sCurrentLine = br.readLine()) != null)
-                    {
-                        allLines = allLines + sCurrentLine + "\n";
-                    }
-                    TextQueryView t = new TextQueryView(fileName);
-                    worksheetPane.addTab(fileName, t);
-                    worksheetPane.setSelectedComponent(t);
-                    JTextArea area = getCurrentWorksheet();
-                    area.setText(allLines);
-                }
+                    FileReader reader = new FileReader(file);
+                    char[] chars = new char[(int) file.length()];
+                    reader.read(chars);
+                    content = new String(chars);
+                    reader.close();
+                }        
                 catch (IOException ex)
                 {
                     JOptionPane.showMessageDialog(rootPane, "Problem accessing file " + file.getAbsolutePath());
                 }
+                
+                TextQueryView t = new TextQueryView(fileName);
+                worksheetPane.addTab(fileName, t);
+                worksheetPane.setSelectedComponent(t);
+                JTextArea area = getCurrentWorksheet();
+                area.setText(content);
             }
             else
             {
