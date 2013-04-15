@@ -93,6 +93,7 @@ public class HelpWindow extends javax.swing.JFrame {
         operations.add(new DefaultMutableTreeNode("Difference"));
         operations.add(new DefaultMutableTreeNode("Product"));
         operations.add(new DefaultMutableTreeNode("Natural join"));
+        operations.add(new DefaultMutableTreeNode("Theta join"));
         operations.add(new DefaultMutableTreeNode("Left outer join"));
         operations.add(new DefaultMutableTreeNode("Right outer join"));
         operations.add(new DefaultMutableTreeNode("Full outer join"));
