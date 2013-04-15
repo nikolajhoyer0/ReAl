@@ -7,8 +7,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -18,8 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -41,7 +37,6 @@ import real.Objects.Query;
 import real.Objects.Utility;
 import real.Objects.GUI.ExtensionFileFilter;
 import real.Objects.GUI.HelpWindow;
-import sun.misc.IOUtils;
 
 
 public class MainWindow extends javax.swing.JFrame implements IService
@@ -1290,7 +1285,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
             {
                 //user pressed x
             }
-            
+
             else if ((s.length() > 0) && foundDup == false)
             {
 
@@ -1302,10 +1297,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
                  allLines = allLines + sCurrentLine + "\n";
                  }
                  */
-                
-                
+
+
                 String content = null;
-    
+
                 try
                 {
                     FileReader reader = new FileReader(file);
@@ -1313,12 +1308,12 @@ public class MainWindow extends javax.swing.JFrame implements IService
                     reader.read(chars);
                     content = new String(chars);
                     reader.close();
-                }        
+                }
                 catch (IOException ex)
                 {
                     JOptionPane.showMessageDialog(rootPane, "Problem accessing file " + file.getAbsolutePath());
                 }
-                
+
                 TextQueryView t = new TextQueryView(fileName);
                 worksheetPane.addTab(fileName, t);
                 worksheetPane.setSelectedComponent(t);
