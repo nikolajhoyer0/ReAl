@@ -1235,26 +1235,32 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_helpMenuItemActionPerformed
 
     private void saveScriptMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveScriptMenuItemActionPerformed
-        int returnVal = saveScriptChooser.showOpenDialog(this);
-
-        if (returnVal == JFileChooser.APPROVE_OPTION)
+        TextQueryView view = (TextQueryView)worksheetPane.getSelectedComponent();
+        if(view == null || view.getTextArea().getText().equals(""))
         {
-            File file = saveScriptChooser.getSelectedFile();
-            try
-            {
-                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file.getAbsolutePath() + ".txt"), "UTF-8"));
-                TextQueryView view = (TextQueryView)worksheetPane.getSelectedComponent();
-                out.write(view.getTextArea().getText());
-                out.close();
-            }
-            catch (IOException ex)
-            {
-                JOptionPane.showMessageDialog(rootPane, "Problem accessing file " + file.getAbsolutePath());
-            }
+            JOptionPane.showMessageDialog(rootPane, "Nothing to save.");
         }
         else
         {
-            System.out.println("File access cancelled by user.");
+            int returnVal = saveScriptChooser.showOpenDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION)
+            {
+                File file = saveScriptChooser.getSelectedFile();
+               try
+                {
+                    FileWriter fw = new FileWriter(Utility.addExtension(file.getAbsoluteFile().getAbsolutePath(), ".txt"), true);
+                    fw.write(view.getTextArea().getText());
+                    fw.close();
+                }
+                catch (IOException ex)
+                {
+                    JOptionPane.showMessageDialog(rootPane, "Problem accessing file " + file.getAbsolutePath());
+                }
+            }
+            else
+            {
+                System.out.println("File access cancelled by user.");
+            }
         }
     }//GEN-LAST:event_saveScriptMenuItemActionPerformed
 

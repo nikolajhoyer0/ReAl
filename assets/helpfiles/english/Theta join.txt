@@ -1,0 +1,11 @@
+
+Theta join: ⋈
+
+Usage:
+Theta join is used for creating a conditional cartesian product of two relations.
+
+Notation:
+Relation1 ⋈ Condition Relation2.
+
+Example:
+Using the relation R1(a1,a2,...,an) and R2(b1,b2,...,bn), R1 ⋈ a1 > 100 (R2) will return R1 × R2, but only for columns where a1 > 100.
