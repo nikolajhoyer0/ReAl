@@ -7,14 +7,20 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -91,21 +97,21 @@ public class MainWindow extends javax.swing.JFrame implements IService
         this.setIconImage(image.getImage());
         relationView.setModel(relationModel);
 
-        // Implement keybinds for various buttons        
+        // Implement keybinds for various buttons
         Action runKeybindAction = new AbstractAction()
         {
             @Override
             public void actionPerformed(ActionEvent a) {
                 runButtonActionPerformed(a);
             }
-        };        
+        };
         Action newSheetKeybindAction = new AbstractAction()
         {
             @Override
             public void actionPerformed(ActionEvent a) {
                 newSheetButtonActionPerformed(a);
             }
-        };        
+        };
         Action removeSheetKeybindAction = new AbstractAction()
         {
             @Override
@@ -132,23 +138,23 @@ public class MainWindow extends javax.swing.JFrame implements IService
         KeyStroke keystrokeR = KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK);
         KeyStroke keystrokeU = KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_DOWN_MASK);
         KeyStroke keystrokeT = KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_DOWN_MASK);
-        
+
         worksheetPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(keystrokeEnter, "enterPressed");
         worksheetPane.getActionMap().put("enterPressed", runKeybindAction);
-        
+
         jToolBar2.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keystrokeN, "nPressed");
         jToolBar2.getActionMap().put("nPressed", newSheetKeybindAction);
-        
+
         jToolBar2.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keystrokeR, "rPressed");
         jToolBar2.getActionMap().put("rPressed", removeSheetKeybindAction);
-        
+
         jToolBar1.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keystrokeU, "uPressed");
         jToolBar1.getActionMap().put("uPressed", saveButtonKeybindAction);
-        
+
         jToolBar1.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(keystrokeT, "tPressed");
         jToolBar1.getActionMap().put("tPressed", treeButtonKeybindAction);
         // Done setting keybinds
-        
+
         //setting the default font
         try
         {
@@ -222,10 +228,12 @@ public class MainWindow extends javax.swing.JFrame implements IService
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        loadFileChooser = new javax.swing.JFileChooser();
-        saveFileChooser = new javax.swing.JFileChooser();
-        importFileChooser = new javax.swing.JFileChooser();
-        exportFileChooser = new javax.swing.JFileChooser();
+        loadProjectChooser = new javax.swing.JFileChooser();
+        saveProjectChooser = new javax.swing.JFileChooser();
+        importTableChooser = new javax.swing.JFileChooser();
+        exportTableChooser = new javax.swing.JFileChooser();
+        loadScriptChooser = new javax.swing.JFileChooser();
+        saveScriptChooser = new javax.swing.JFileChooser();
         combinedView = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jToolBar2 = new javax.swing.JToolBar();
@@ -264,28 +272,40 @@ public class MainWindow extends javax.swing.JFrame implements IService
         relationView = new javax.swing.JList();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
-        loadMenuItem = new javax.swing.JMenuItem();
-        saveMenuItem = new javax.swing.JMenuItem();
+        saveScriptMenuItem = new javax.swing.JMenuItem();
+        loadScriptMenuItem = new javax.swing.JMenuItem();
+        saveProjectMenuItem = new javax.swing.JMenuItem();
+        loadProjectMenuItem = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         importMenuItem = new javax.swing.JMenuItem();
         exportMenuItem = new javax.swing.JMenuItem();
         deleteMenuItem = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
         exitMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
         helpMenuItem = new javax.swing.JMenuItem();
 
-        loadFileChooser.setDialogTitle("Load Script");
+        loadProjectChooser.setDialogTitle("Load Project");
+        loadProjectChooser.setFileFilter(new ExtensionFileFilter("real", new String[]{"real"}));
 
-        saveFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
-        saveFileChooser.setDialogTitle("Save Script");
+        saveProjectChooser.setAcceptAllFileFilterUsed(false);
+        saveProjectChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
+        saveProjectChooser.setDialogTitle("Save Project");
+        saveProjectChooser.setFileFilter(new ExtensionFileFilter("real", new String[]{"real"}));
 
-        importFileChooser.setDialogTitle("Import");
-        importFileChooser.setFileFilter(new ExtensionFileFilter("csv", new String[]{"csv"}));
+        importTableChooser.setDialogTitle("Import");
+        importTableChooser.setFileFilter(new ExtensionFileFilter("csv", new String[]{"csv"}));
 
-        exportFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
-        exportFileChooser.setDialogTitle("Export");
-        exportFileChooser.setFileFilter(new ExtensionFileFilter("csv", new String[]{"csv"}));
+        exportTableChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
+        exportTableChooser.setDialogTitle("Export");
+        exportTableChooser.setFileFilter(new ExtensionFileFilter("csv", new String[]{"csv"}));
+
+        loadScriptChooser.setAcceptAllFileFilterUsed(false);
+        loadScriptChooser.setFileFilter(new ExtensionFileFilter("rs", new String[]{"rs"}));
+
+        saveScriptChooser.setAcceptAllFileFilterUsed(false);
+        saveScriptChooser.setFileFilter(new ExtensionFileFilter("rs", new String[]{"rs"}));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ReAl");
@@ -616,23 +636,42 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         fileMenu.setText("File");
 
-        loadMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
-        loadMenuItem.setText("Load project");
-        loadMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        saveScriptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        saveScriptMenuItem.setText("Save script");
+        saveScriptMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadMenuItemActionPerformed(evt);
+                saveScriptMenuItemActionPerformed(evt);
             }
         });
-        fileMenu.add(loadMenuItem);
+        fileMenu.add(saveScriptMenuItem);
 
-        saveMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        saveMenuItem.setText("Save project");
-        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        loadScriptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        loadScriptMenuItem.setText("Load script");
+        loadScriptMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveMenuItemActionPerformed(evt);
+                loadScriptMenuItemActionPerformed(evt);
             }
         });
-        fileMenu.add(saveMenuItem);
+        fileMenu.add(loadScriptMenuItem);
+
+        saveProjectMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        saveProjectMenuItem.setText("Save project");
+        saveProjectMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveProjectMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(saveProjectMenuItem);
+
+        loadProjectMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        loadProjectMenuItem.setText("Load project");
+        loadProjectMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadProjectMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(loadProjectMenuItem);
+        fileMenu.add(jSeparator1);
 
         importMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         importMenuItem.setText("Import table");
@@ -660,7 +699,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
             }
         });
         fileMenu.add(deleteMenuItem);
-        fileMenu.add(jSeparator1);
+        fileMenu.add(jSeparator4);
 
         exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         exitMenuItem.setText("Quit");
@@ -675,7 +714,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         helpMenu.setText("Help");
 
-        aboutMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
+        aboutMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
         aboutMenuItem.setText("About");
         aboutMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -684,7 +723,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         });
         helpMenu.add(aboutMenuItem);
 
-        helpMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
+        helpMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
         helpMenuItem.setText("Help");
         helpMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -779,14 +818,14 @@ public class MainWindow extends javax.swing.JFrame implements IService
         JTextArea area = getCurrentWorksheet();
         if(area != null)
         {
-           area.insert(symbol, area.getCaretPosition()); 
+           area.insert(symbol, area.getCaretPosition());
         }
         else
         {
             JOptionPane.showMessageDialog(rootPane,"Please create a new worksheet first.");
         }
     }
-    
+
     private void piButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_piButtonActionPerformed
         insertSymbol("π");
     }//GEN-LAST:event_piButtonActionPerformed
@@ -800,7 +839,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_rhoButtonActionPerformed
 
     private void gammaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gammaButtonActionPerformed
-        
+
         insertSymbol("γ");
     }//GEN-LAST:event_gammaButtonActionPerformed
 
@@ -850,7 +889,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         window.setVisible(true);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
-    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
+    private void saveProjectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveProjectMenuItemActionPerformed
         // Get the components to save
         ArrayList<Dataset> datasets = Kernel.GetService(DataManager.class).GetAllDatasets();
         ArrayList<TextQueryView> worksheets = new ArrayList<>();
@@ -870,10 +909,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         }
         else
         {
-            int returnVal = saveFileChooser.showOpenDialog(this);
+            int returnVal = saveProjectChooser.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION)
             {
-                File file = saveFileChooser.getSelectedFile();
+                File file = new File(Utility.addExtension(saveProjectChooser.getSelectedFile().getAbsolutePath(), ".real"));
                 try
                 {
                     ProjectState state = new ProjectState(worksheets, datasets);
@@ -894,23 +933,23 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 System.out.println("File save cancelled by user.");
             }
         }
-    }//GEN-LAST:event_saveMenuItemActionPerformed
+    }//GEN-LAST:event_saveProjectMenuItemActionPerformed
 
-    private void loadMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadMenuItemActionPerformed
+    private void loadProjectMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadProjectMenuItemActionPerformed
 
         if(worksheetPane.getTabCount() != 0 || ! Kernel.GetService(DataManager.class).GetAllDatasets().isEmpty())
         {
-            JOptionPane.showMessageDialog(loadFileChooser,
+            JOptionPane.showMessageDialog(loadProjectChooser,
                     "An active project is open.\nLoading a new project will "
                   + "override any unsaved datasets and/or worksheets.",
                     "Warning",
                      JOptionPane.WARNING_MESSAGE);
         }
-        int returnVal = loadFileChooser.showOpenDialog(this);
+        int returnVal = loadProjectChooser.showOpenDialog(this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION)
         {
-            File file = loadFileChooser.getSelectedFile();
+            File file = loadProjectChooser.getSelectedFile();
             try
             {
                 ObjectInputStream input = new ObjectInputStream(new FileInputStream(file));
@@ -918,11 +957,11 @@ public class MainWindow extends javax.swing.JFrame implements IService
                 ProjectState state = (ProjectState) input.readObject();
                 ArrayList<Dataset> datasets = state.getDatasets();
                 ArrayList<TextQueryView> worksheets = state.getWorksheets();
-                
+
                 worksheetPane.removeAll();
                 Kernel.GetService(DataManager.class).removeAllDatasets();
                 relationModel.removeAllElements();
-                
+
                 for(Dataset dataset : datasets)
                 {
                     String name = dataset.getName();
@@ -930,7 +969,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                     relationModel.addElement(name);
                     TextQueryView.addTableAutoWords(name);
                 }
-                
+
                 for(TextQueryView worksheet : worksheets)
                 {
                     worksheetPane.addTab(worksheet.getName(), worksheet);
@@ -949,15 +988,15 @@ public class MainWindow extends javax.swing.JFrame implements IService
         {
             System.out.println("File access cancelled by user.");
         }
-    }//GEN-LAST:event_loadMenuItemActionPerformed
+    }//GEN-LAST:event_loadProjectMenuItemActionPerformed
 
     private void importMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importMenuItemActionPerformed
         //todo: need to write my own filechooser - not use the save and load from script
-        int returnVal = importFileChooser.showOpenDialog(this);
+        int returnVal = importTableChooser.showOpenDialog(this);
 
         if (returnVal == JFileChooser.APPROVE_OPTION)
         {
-            File file = importFileChooser.getSelectedFile();
+            File file = importTableChooser.getSelectedFile();
 
             try
             {
@@ -1008,10 +1047,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         //todo: need to write my own filechooser - not use the save and load from script
         try {
             Dataset dataset = Kernel.GetService(DataManager.class).getDataset((String) relationModel.getElementAt(relationView.getSelectedIndex()));
-            int returnVal = exportFileChooser.showOpenDialog(this);
+            int returnVal = exportTableChooser.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION)
             {
-                File file = exportFileChooser.getSelectedFile();
+                File file = exportTableChooser.getSelectedFile();
                 try
                 {
                     FileWriter fw = new FileWriter(Utility.addExtension(
@@ -1200,6 +1239,60 @@ public class MainWindow extends javax.swing.JFrame implements IService
         window.setVisible(true);
     }//GEN-LAST:event_helpMenuItemActionPerformed
 
+    private void saveScriptMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveScriptMenuItemActionPerformed
+        int returnVal = saveScriptChooser.showOpenDialog(this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION)
+        {
+            File file = saveScriptChooser.getSelectedFile();
+            try
+            {
+                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file.getAbsolutePath() + ".rs"), "UTF-8"));
+                TextQueryView view = (TextQueryView)worksheetPane.getSelectedComponent();
+                out.write(view.getTextArea().getText());
+                out.close();
+            }
+            catch (IOException ex)
+            {
+                JOptionPane.showMessageDialog(rootPane, "Problem accessing file " + file.getAbsolutePath());
+            }
+        }
+        else
+        {
+            System.out.println("File access cancelled by user.");
+        }
+    }//GEN-LAST:event_saveScriptMenuItemActionPerformed
+
+    private void loadScriptMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadScriptMenuItemActionPerformed
+        int returnVal = loadScriptChooser.showOpenDialog(this);
+
+        if (returnVal == JFileChooser.APPROVE_OPTION)
+        {
+            File file = loadScriptChooser.getSelectedFile();
+            try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
+            String sCurrentLine;
+            String allLines = "";
+            while ((sCurrentLine = br.readLine()) != null)
+            {
+                allLines = allLines + sCurrentLine + "\n";
+            }
+            TextQueryView t = new TextQueryView(file.getName());
+            worksheetPane.addTab(file.getName(), t);
+
+            JTextArea area = getCurrentWorksheet();
+            area.setText(allLines);
+            }
+            catch (IOException ex)
+            {
+                JOptionPane.showMessageDialog(rootPane, "Problem accessing file " + file.getAbsolutePath());
+            }
+        }
+        else
+        {
+            System.out.println("File access cancelled by user.");
+        }
+    }//GEN-LAST:event_loadScriptMenuItemActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JButton arrowButton;
@@ -1208,15 +1301,15 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private javax.swing.JButton deltaButton;
     private javax.swing.JButton differenceButton;
     private javax.swing.JMenuItem exitMenuItem;
-    private javax.swing.JFileChooser exportFileChooser;
     private javax.swing.JMenuItem exportMenuItem;
+    private javax.swing.JFileChooser exportTableChooser;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JButton fullouterjoinButton;
     private javax.swing.JButton gammaButton;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenuItem helpMenuItem;
-    private javax.swing.JFileChooser importFileChooser;
     private javax.swing.JMenuItem importMenuItem;
+    private javax.swing.JFileChooser importTableChooser;
     private javax.swing.JButton intersectionButton;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
@@ -1227,13 +1320,16 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JToolBar jToolBar3;
     private javax.swing.JButton joinButton;
     private javax.swing.JButton leftouterjoinButton;
-    private javax.swing.JFileChooser loadFileChooser;
-    private javax.swing.JMenuItem loadMenuItem;
+    private javax.swing.JFileChooser loadProjectChooser;
+    private javax.swing.JMenuItem loadProjectMenuItem;
+    private javax.swing.JFileChooser loadScriptChooser;
+    private javax.swing.JMenuItem loadScriptMenuItem;
     private javax.swing.JButton newSheetButton;
     private javax.swing.JButton piButton;
     private javax.swing.JButton productButton;
@@ -1245,8 +1341,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private javax.swing.JButton rightouterjoinButton;
     private javax.swing.JButton runButton;
     private javax.swing.JButton saveButton;
-    private javax.swing.JFileChooser saveFileChooser;
-    private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JFileChooser saveProjectChooser;
+    private javax.swing.JMenuItem saveProjectMenuItem;
+    private javax.swing.JFileChooser saveScriptChooser;
+    private javax.swing.JMenuItem saveScriptMenuItem;
     private javax.swing.JButton showTreeButton;
     private javax.swing.JButton sigmaButton;
     private javax.swing.JTable tableView;

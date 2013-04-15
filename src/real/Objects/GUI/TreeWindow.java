@@ -14,7 +14,8 @@ public class TreeWindow extends javax.swing.JFrame {
     public TreeWindow(OperationBase tree) {
         initComponents();
         treeView.initialize(this);
-        treeView.loadTree(tree);   
+        treeView.loadTree(tree);
+        this.setLocationRelativeTo(null);
     }
 
     public JTable getTableView()

@@ -2,18 +2,25 @@
 
 <Form version="1.5" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Component class="javax.swing.JFileChooser" name="loadFileChooser">
+    <Component class="javax.swing.JFileChooser" name="loadProjectChooser">
       <Properties>
-        <Property name="dialogTitle" type="java.lang.String" value="Load Script"/>
+        <Property name="dialogTitle" type="java.lang.String" value="Load Project"/>
+        <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new ExtensionFileFilter(&quot;real&quot;, new String[]{&quot;real&quot;})" type="code"/>
+        </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JFileChooser" name="saveFileChooser">
+    <Component class="javax.swing.JFileChooser" name="saveProjectChooser">
       <Properties>
+        <Property name="acceptAllFileFilterUsed" type="boolean" value="false"/>
         <Property name="dialogType" type="int" value="1"/>
-        <Property name="dialogTitle" type="java.lang.String" value="Save Script"/>
+        <Property name="dialogTitle" type="java.lang.String" value="Save Project"/>
+        <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new ExtensionFileFilter(&quot;real&quot;, new String[]{&quot;real&quot;})" type="code"/>
+        </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JFileChooser" name="importFileChooser">
+    <Component class="javax.swing.JFileChooser" name="importTableChooser">
       <Properties>
         <Property name="dialogTitle" type="java.lang.String" value="Import"/>
         <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
@@ -21,12 +28,28 @@
         </Property>
       </Properties>
     </Component>
-    <Component class="javax.swing.JFileChooser" name="exportFileChooser">
+    <Component class="javax.swing.JFileChooser" name="exportTableChooser">
       <Properties>
         <Property name="dialogType" type="int" value="1"/>
         <Property name="dialogTitle" type="java.lang.String" value="Export"/>
         <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new ExtensionFileFilter(&quot;csv&quot;, new String[]{&quot;csv&quot;})" type="code"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JFileChooser" name="loadScriptChooser">
+      <Properties>
+        <Property name="acceptAllFileFilterUsed" type="boolean" value="false"/>
+        <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new ExtensionFileFilter(&quot;rs&quot;, new String[]{&quot;rs&quot;})" type="code"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JFileChooser" name="saveScriptChooser">
+      <Properties>
+        <Property name="acceptAllFileFilterUsed" type="boolean" value="false"/>
+        <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new ExtensionFileFilter(&quot;rs&quot;, new String[]{&quot;rs&quot;})" type="code"/>
         </Property>
       </Properties>
     </Component>
@@ -37,18 +60,29 @@
             <Property name="text" type="java.lang.String" value="File"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="loadMenuItem">
+            <MenuItem class="javax.swing.JMenuItem" name="saveScriptMenuItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+L"/>
+                  <KeyStroke key="Ctrl+A"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Load project"/>
+                <Property name="text" type="java.lang.String" value="Save script"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadMenuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveScriptMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="saveMenuItem">
+            <MenuItem class="javax.swing.JMenuItem" name="loadScriptMenuItem">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+O"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Load script"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadScriptMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="saveProjectMenuItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+S"/>
@@ -56,8 +90,21 @@
                 <Property name="text" type="java.lang.String" value="Save project"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveMenuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveProjectMenuItemActionPerformed"/>
               </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="loadProjectMenuItem">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+L"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Load project"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadProjectMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="importMenuItem">
               <Properties>
@@ -92,7 +139,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator4">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exitMenuItem">
               <Properties>
@@ -115,7 +162,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="aboutMenuItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+A"/>
+                  <KeyStroke key="F1"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="About"/>
               </Properties>
@@ -126,7 +173,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="helpMenuItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+H"/>
+                  <KeyStroke key="F2"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Help"/>
               </Properties>

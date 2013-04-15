@@ -12,7 +12,7 @@ import real.Objects.ConditionOperations.Atomic.*;
 import real.Objects.ConditionOperations.BooleanOperations.*;
 import real.Objects.ConditionOperations.*;
 import real.Objects.Exceptions.*;
-import real.Objects.GUI.TreeViewTest;
+//import real.Objects.GUI.TreeViewTest;
 //import real.Objects.GUI.TreeViewTest;
 import real.Objects.Parser.*;
 import real.Objects.RAOperations.*;
@@ -24,15 +24,15 @@ public class Query
     private TokenTree current;
     private OperationBase currentData;
     //will be removed.
-    private TreeViewTest view;
+    //private TreeViewTest view;
 
     public Query()
     {
 
         //will be removed
-        view = new TreeViewTest();
-        view.setSize(800, 820);
-        view.setVisible(true);
+        //view = new TreeViewTest();
+        //view.setSize(800, 820);
+        //view.setVisible(true);
 
 
         TokenOpManager opManager = new TokenOpManager();
@@ -62,15 +62,15 @@ public class Query
 
         //relational binary operators
         //todo: figure out the proper precendence for each operator.
-        opManager.addOp(new Token("∪", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
-        opManager.addOp(new Token("∩", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
-        opManager.addOp(new Token("–", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
-        opManager.addOp(new Token("×", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
-        opManager.addOp(new Token("⋈", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
-        opManager.addOp(new Token("→", 3, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL))); 
-        opManager.addOp(new Token("⟕", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
-        opManager.addOp(new Token("⟖", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));   
-        opManager.addOp(new Token("⟗", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL))); 
+        opManager.addOp(new Token("∪", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));
+        opManager.addOp(new Token("∩", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));
+        opManager.addOp(new Token("–", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));
+        opManager.addOp(new Token("×", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));
+        opManager.addOp(new Token("⋈", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));
+        opManager.addOp(new Token("→", 3, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));
+        opManager.addOp(new Token("⟕", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));
+        opManager.addOp(new Token("⟖", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));
+        opManager.addOp(new Token("⟗", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));
 
         TokenStream tokenStream = new TokenStream(opManager);
 
@@ -93,7 +93,7 @@ public class Query
         if (trees != null && !trees.isEmpty())
         {
             //will be removed
-            view.load(trees.get(0));
+            //view.load(trees.get(0));
 
             for (int i = 0; i < trees.size(); ++i)
             {
