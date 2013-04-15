@@ -1040,7 +1040,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_importMenuItemActionPerformed
 
     private void exportMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportMenuItemActionPerformed
-        //todo: need to write my own filechooser - not use the save and load from script
         try {
             Dataset dataset = Kernel.GetService(DataManager.class).getDataset((String) relationModel.getElementAt(relationView.getSelectedIndex()));
             int returnVal = exportTableChooser.showOpenDialog(this);

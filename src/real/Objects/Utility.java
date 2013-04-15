@@ -138,11 +138,17 @@ public class Utility
         return duplicates;
     }
     
+    
     public static String filename(String filename)
     {
         int dot = filename.lastIndexOf(".");
-        int sep = filename.lastIndexOf("/");
-        return filename.substring(sep + 1, dot);
+        
+        if(dot == -1)
+        {     
+            return filename;
+        }
+        
+        return filename.substring(0, dot);
     }
     
     public static String addExtension(String filepath, String extension)
