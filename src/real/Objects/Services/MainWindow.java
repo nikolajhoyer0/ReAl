@@ -2,41 +2,18 @@ package real.Objects.Services;
 
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import real.Interfaces.IService;
 import real.Objects.Dataset;
 import real.Objects.Exceptions.*;
+import real.Objects.*;
 import real.Objects.GUI.*;
-import real.Objects.Kernel;
-import real.Objects.Query;
-import real.Objects.Utility;
-import real.Objects.GUI.ExtensionFileFilter;
-import real.Objects.GUI.HelpWindow;
 
 
 public class MainWindow extends javax.swing.JFrame implements IService
@@ -57,9 +34,9 @@ public class MainWindow extends javax.swing.JFrame implements IService
         this.addWindowListener(new java.awt.event.WindowAdapter()
         {
             @Override
-            public void windowClosing(WindowEvent winEvt)
+            public void windowClosing(WindowEvent evt)
             {
-                Kernel.Stop();
+                
             }
         });
     }
@@ -873,8 +850,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
     }//GEN-LAST:event_fullouterjoinButtonActionPerformed
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        Kernel.Stop();
-        System.exit(0);
+        saveOnExit(evt);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
@@ -1334,6 +1310,62 @@ public class MainWindow extends javax.swing.JFrame implements IService
         }
     }//GEN-LAST:event_loadScriptMenuItemActionPerformed
 
+    private void saveOnExit(java.awt.event.ActionEvent evt) {
+    if(worksheetPane.getTabCount() == 0 && Kernel.GetService(DataManager.class).GetAllDatasets().isEmpty())
+        {
+            Kernel.Stop();
+            System.exit(0);
+        }
+        else
+        {
+            // Mostly taken from the java dialog tutorial
+            final JOptionPane optionPane = new JOptionPane(
+                "There are active worksheets and/or tables.\n"
+                + "Any unsaved changes will be lost.\n"
+                + "Do you want to save your progress first?",
+                JOptionPane.QUESTION_MESSAGE,
+                JOptionPane.YES_NO_CANCEL_OPTION);
+            final JDialog dialog = new JDialog(this, "Save?", true);
+            
+           dialog.setContentPane(optionPane);
+           optionPane.addPropertyChangeListener(
+           new PropertyChangeListener()
+           {
+               @Override
+               public void propertyChange(PropertyChangeEvent e)
+               {
+                   String prop = e.getPropertyName();
+                   if (dialog.isVisible() && (e.getSource() == optionPane) && (prop.equals(JOptionPane.VALUE_PROPERTY)))
+                   {
+                       //If you were going to check something
+                       //before closing the window, you'd do
+                       //it here.
+                       dialog.setVisible(false);
+                   }
+               }
+           });
+           dialog.pack();
+           dialog.setLocationRelativeTo(null);
+           dialog.setVisible(true);
+
+           int value = ((Integer)optionPane.getValue()).intValue();
+           if (value == JOptionPane.YES_OPTION)
+           {
+               saveProjectMenuItemActionPerformed(evt);
+               Kernel.Stop();
+               System.exit(0);
+           }
+           else if (value == JOptionPane.NO_OPTION)
+           {
+               Kernel.Stop();
+               System.exit(0);
+           }
+           else if (value == JOptionPane.CANCEL_OPTION)
+           {
+               // Do nothing
+           }
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JButton arrowButton;
