@@ -123,7 +123,7 @@ public class HelpWindow extends javax.swing.JFrame {
         }
         catch (IOException ex)
         {
-            System.out.println("Help window: file not found");
+            textArea.setText("");
         }
     }
 
