@@ -36,7 +36,7 @@ public class ExpressionParser
         String lowercaseSymbol = token.getSymbol().toLowerCase();
         
         
-        if(token.isBinary())
+        if(token.isBinary() && !token.getAssociativity().contains(OpTypes.UNARY))
         {
             if (errorMessage.isEmpty())
             {
@@ -51,7 +51,7 @@ public class ExpressionParser
         if(token.getAssociativity().contains(OpTypes.UNARY))
         {
             tokenStream.consume();
-            TokenTree[] tree = {expression(token.getPrecedence()+1)};
+            TokenTree[] tree = {primary()};
             return new TokenTree(tree, token);
         }
         

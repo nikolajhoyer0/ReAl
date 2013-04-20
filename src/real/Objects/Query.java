@@ -12,8 +12,7 @@ import real.Objects.ConditionOperations.Atomic.*;
 import real.Objects.ConditionOperations.BooleanOperations.*;
 import real.Objects.ConditionOperations.*;
 import real.Objects.Exceptions.*;
-//import real.Objects.GUI.TreeViewTest;
-//import real.Objects.GUI.TreeViewTest;
+import real.Objects.GUI.TreeViewTest;
 import real.Objects.Parser.*;
 import real.Objects.RAOperations.*;
 import real.Objects.Services.LocalDataManager;
@@ -230,7 +229,14 @@ public class Query
             case "+":
                 return new Add(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case "-":
-                return new Sub(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
+                if(children.length == 2)
+                {
+                    return new Sub(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
+                }
+                else
+                {
+                    return new Neg(interpretCondition(children[0], relation, ignoreNoAttribute), linePosition);
+                }
             case "*":
                 return new Mult(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case "/":
