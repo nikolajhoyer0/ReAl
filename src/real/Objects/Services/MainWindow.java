@@ -36,7 +36,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
             @Override
             public void windowClosing(WindowEvent evt)
             {
-                
+                Kernel.Stop();
             }
         });
     }

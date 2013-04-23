@@ -51,6 +51,7 @@ public class AboutWindow extends java.awt.Dialog {
         });
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon("/home/nikolaj/NetBeansProjects/ReAl/assets/icon/Large_icon.png")); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -67,7 +68,7 @@ public class AboutWindow extends java.awt.Dialog {
         jLabel2.setText("ReAl");
 
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        jLabel3.setText("0.9b");
+        jLabel3.setText("1.0");
 
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel4.setText("ReAl is a relational algebra query tool");
