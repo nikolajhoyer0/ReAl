@@ -2,14 +2,27 @@ package real.Objects.ConditionOperations.AggregateFunctions;
 
 import java.util.ArrayList;
 import real.BaseClasses.ConditionBase;
+import real.Objects.ConditionOperations.Atomic.AttributeLiteral;
 import real.Objects.Exceptions.InvalidEvaluation;
+import real.Objects.Exceptions.InvalidParameters;
 import real.Objects.Row;
 
 public class Average extends AggregateCondition
 {
-    public Average(ConditionBase operand, int linePosition)
+    
+    private String columnName;
+    
+    public Average(ConditionBase operand, int linePosition) throws InvalidParameters
     {
         super(operand, linePosition);
+        
+        if(!(operand instanceof AttributeLiteral))
+        {
+            throw new InvalidParameters(linePosition, "Aggregate functions can only use one attribute.");
+        }
+        
+        AttributeLiteral att = (AttributeLiteral)operand;
+        columnName = att.getColumnName();
     }
     
     @Override
@@ -21,7 +34,16 @@ public class Average extends AggregateCondition
     @Override
     public Float aggregateNumber(ArrayList<Row> rows) throws InvalidEvaluation
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        float counter = 0;
+        float values = 0;
+        
+        for(Row row : rows)
+        {
+            values += Float.parseFloat(row.getValue(columnName));
+            ++counter;
+        }
+        
+        return values / counter;      
     }
 
     @Override

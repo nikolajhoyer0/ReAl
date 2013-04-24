@@ -267,6 +267,8 @@ public class Query
                 return new Count(interpretCondition(children[0], relation, ignoreNoAttribute), linePosition);
             case "min":
                 return new Min(interpretCondition(children[0], relation, ignoreNoAttribute), linePosition);
+            case "average":
+                return new Average(interpretCondition(children[0], relation, ignoreNoAttribute), linePosition);
             case "Attribute":
                 String value = children[0].getToken().getSymbol();
 
