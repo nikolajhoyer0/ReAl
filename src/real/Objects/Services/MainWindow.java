@@ -2,6 +2,7 @@ package real.Objects.Services;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -130,6 +131,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         {
             InputStream is = new BufferedInputStream(new FileInputStream("assets/font/Asana-Math.ttf"));
             standardFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.PLAIN, 18);
+            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(standardFont);
         }
         catch (Exception ex)
         {

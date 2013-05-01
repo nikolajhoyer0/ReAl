@@ -34,6 +34,7 @@ import real.Objects.Exceptions.InvalidSchema;
 import real.Objects.Exceptions.NoSuchAttribute;
 import real.Objects.RAOperations.ReferencedDataset;
 import real.Objects.RAOperations.TupleList;
+import real.Objects.Services.MainWindow;
 
 public class TreeView extends JPanel {
     
@@ -84,7 +85,7 @@ public class TreeView extends JPanel {
         style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_RECTANGLE);
         style.put(mxConstants.STYLE_ROUNDED, true);
         style.put(mxConstants.STYLE_VERTICAL_ALIGN, mxConstants.ALIGN_MIDDLE);
-        style.put(mxConstants.STYLE_FONTFAMILY, "cambria");
+        style.put(mxConstants.STYLE_FONTFAMILY, "Asana Math");
         style.put(mxConstants.STYLE_FONTSIZE, 15);
 
         graph.getStylesheet().putCellStyle("DEFAULT", style);
