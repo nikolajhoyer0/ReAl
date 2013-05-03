@@ -73,14 +73,13 @@ public class HelpWindow extends javax.swing.JFrame {
         gettingStarted.add(new DefaultMutableTreeNode("Datasets"));
         gettingStarted.add(new DefaultMutableTreeNode("Worksheets"));
         gettingStarted.add(new DefaultMutableTreeNode("Keybinds"));
+        gettingStarted.add(new DefaultMutableTreeNode("Auto-complete"));
         root.add(gettingStarted);
 
-        DefaultMutableTreeNode features = new DefaultMutableTreeNode("Features");
         DefaultMutableTreeNode treeView = new DefaultMutableTreeNode("Tree view");
         treeView.add(new DefaultMutableTreeNode("Running treeview"));
-        treeView.add(new DefaultMutableTreeNode("Tree features"));
-        features.add(treeView);
-        root.add(features);
+        treeView.add(new DefaultMutableTreeNode("Tree view features"));
+        root.add(treeView);
 
         DefaultMutableTreeNode operations = new DefaultMutableTreeNode("Operations");
         operations.add(new DefaultMutableTreeNode("Projection"));
@@ -117,7 +116,8 @@ public class HelpWindow extends javax.swing.JFrame {
     private void loadText(String item) {
         try
         {
-            InputStreamReader reader = new InputStreamReader(new FileInputStream("assets/helpfiles/english/" + item + ".txt"), "UTF-8");
+            InputStreamReader reader = new InputStreamReader(
+                    new FileInputStream("assets/helpfiles/english/" + item + ".txt"), "UTF-8");
             textArea.setText("");
             textArea.read(reader, null);
         }
