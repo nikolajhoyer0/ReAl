@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.swing.AbstractAction;
@@ -57,7 +56,16 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
         addAutoWord("selection");
         addAutoWord("rename");
         addAutoWord("group");
-
+        addAutoWord("sort");
+        addAutoWord("removeduplicates");
+        addAutoWord("union");
+        addAutoWord("intersection");
+        addAutoWord("difference");
+        addAutoWord("product");
+        addAutoWord("naturaljoin");
+        addAutoWord("leftouterjoin");
+        addAutoWord("rightouterjoin");
+        addAutoWord("fullouterjoin");
     }
 
     @Override
@@ -92,8 +100,6 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                 }
             }
         }
-
-
         addAutoWord(table);
     }
 
@@ -108,7 +114,6 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
                 words.remove(keyword);
             }
         }
-
         removeAutoWord(table);
     }
 
@@ -199,13 +204,11 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
         {
             // Nothing found
             mode = Mode.INSERT;
-
         }
     }
 
     private class CompletionTask implements Runnable
     {
-
         String completion;
         int position;
 
@@ -314,8 +317,6 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
             if (str.length() > pos)
             {
-
-
                 //if we are in the string we only look for one string
                 if (!Character.isWhitespace(str.charAt(pos)))
                 {
@@ -335,14 +336,11 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
                     for (rightIndex = pos; rightIndex < str.length(); ++rightIndex)
                     {
-
                         if (Character.isWhitespace(str.charAt(rightIndex)))
                         {
                             break;
                         }
-
                     }
-
                     convertToSymbol(leftIndex, rightIndex, str);
                 }
             }

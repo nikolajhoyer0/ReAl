@@ -1,0 +1,2 @@
+
+ReAl provides features to save and load project states, from the "File" menu. A project state consists of active datasets and/or worksheets. A file extension, .real, is automatically applied on save.

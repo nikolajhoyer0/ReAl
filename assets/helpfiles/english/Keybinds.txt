@@ -9,11 +9,13 @@ Ctrl + U: Save current table
 Ctrl + T: Show tree
 
 Menus:
-Ctrl + L: Load project
 Ctrl + S: Save project
+Ctrl + O: Load project
+Ctrl + K: Save script
+Ctrl + L: Load script
 Ctrl + I: Import table
 Ctrl + E: Export table
 Ctrl + D: Delete table
 Ctrl + Q: Quit
-Ctrl + A: About
-Ctrl + H: Help
+F1: About
+F2: Help

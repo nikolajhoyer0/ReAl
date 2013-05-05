@@ -244,10 +244,10 @@ public class MainWindow extends javax.swing.JFrame implements IService
         relationView = new javax.swing.JList();
         jMenuBar1 = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
-        saveScriptMenuItem = new javax.swing.JMenuItem();
-        loadScriptMenuItem = new javax.swing.JMenuItem();
         saveProjectMenuItem = new javax.swing.JMenuItem();
         loadProjectMenuItem = new javax.swing.JMenuItem();
+        saveScriptMenuItem = new javax.swing.JMenuItem();
+        loadScriptMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         importMenuItem = new javax.swing.JMenuItem();
         exportMenuItem = new javax.swing.JMenuItem();
@@ -608,24 +608,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
         fileMenu.setText("File");
 
-        saveScriptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.CTRL_MASK));
-        saveScriptMenuItem.setText("Save script");
-        saveScriptMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveScriptMenuItemActionPerformed(evt);
-            }
-        });
-        fileMenu.add(saveScriptMenuItem);
-
-        loadScriptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
-        loadScriptMenuItem.setText("Load script");
-        loadScriptMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadScriptMenuItemActionPerformed(evt);
-            }
-        });
-        fileMenu.add(loadScriptMenuItem);
-
         saveProjectMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         saveProjectMenuItem.setText("Save project");
         saveProjectMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -643,6 +625,24 @@ public class MainWindow extends javax.swing.JFrame implements IService
             }
         });
         fileMenu.add(loadProjectMenuItem);
+
+        saveScriptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_K, java.awt.event.InputEvent.CTRL_MASK));
+        saveScriptMenuItem.setText("Save script");
+        saveScriptMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveScriptMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(saveScriptMenuItem);
+
+        loadScriptMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        loadScriptMenuItem.setText("Load script");
+        loadScriptMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadScriptMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(loadScriptMenuItem);
         fileMenu.add(jSeparator1);
 
         importMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
@@ -1246,7 +1246,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
         {
             File file = loadScriptChooser.getSelectedFile();
             String fileName = Utility.filename(file.getName());
-
+            
             String s = (String)JOptionPane.showInputDialog(
                     loadScriptChooser, "Please choose a name for the new worksheet:", "Worksheet name", JOptionPane.PLAIN_MESSAGE, null, null, fileName);
 
@@ -1292,8 +1292,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
                     JOptionPane.showMessageDialog(rootPane, "Problem accessing file " + file.getAbsolutePath());
                 }
 
-                TextQueryView t = new TextQueryView(fileName);
-                worksheetPane.addTab(fileName, t);
+                TextQueryView t = new TextQueryView(s);
+                worksheetPane.addTab(s, t);
                 worksheetPane.setSelectedComponent(t);
                 JTextArea area = getCurrentWorksheet();
                 area.setText(content);
