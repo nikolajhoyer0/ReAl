@@ -2,7 +2,6 @@ package real.Objects.GUI;
 
 import java.awt.Font;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import javax.swing.event.TreeSelectionEvent;
@@ -42,7 +41,7 @@ public class HelpWindow extends javax.swing.JFrame {
         textArea.setFont(new java.awt.Font("Cambria", 0, 13)); // NOI18N
         textArea.setLineWrap(true);
         textArea.setRows(5);
-        textArea.setText("\nWelcome to the help file for ReAl.\n\nPlease select an item from the tree to the left to get started.");
+        textArea.setText("\nWelcome to the ReAl help file.\n\nPlease select an item from the tree to the left to get started.");
         textArea.setWrapStyleWord(true);
         jScrollPane2.setViewportView(textArea);
 
@@ -72,6 +71,7 @@ public class HelpWindow extends javax.swing.JFrame {
         DefaultMutableTreeNode gettingStarted = new DefaultMutableTreeNode("Getting started");
         gettingStarted.add(new DefaultMutableTreeNode("Datasets"));
         gettingStarted.add(new DefaultMutableTreeNode("Worksheets"));
+        gettingStarted.add(new DefaultMutableTreeNode("Saving and loading"));
         gettingStarted.add(new DefaultMutableTreeNode("Keybinds"));
         gettingStarted.add(new DefaultMutableTreeNode("Auto-complete"));
         root.add(gettingStarted);
@@ -80,6 +80,10 @@ public class HelpWindow extends javax.swing.JFrame {
         treeView.add(new DefaultMutableTreeNode("Running treeview"));
         treeView.add(new DefaultMutableTreeNode("Tree view features"));
         root.add(treeView);
+
+        DefaultMutableTreeNode sets = new DefaultMutableTreeNode("Sets");
+        sets.add(new DefaultMutableTreeNode("Sets and bags"));
+        root.add(sets);
 
         DefaultMutableTreeNode operations = new DefaultMutableTreeNode("Operations");
         operations.add(new DefaultMutableTreeNode("Projection"));

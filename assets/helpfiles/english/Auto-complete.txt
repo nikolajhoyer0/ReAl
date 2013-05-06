@@ -3,14 +3,14 @@ ReAl has auto-complete features in its text area supporting both table names, at
 
 Table and attribute names are found by typing the first three characters in the name, followed by pressing the enter key.
 
-Operator symbols can be inserted by typing a textual representation of their respective symbols, eg. by typing "union" will insert a ∪ symbol. Below is an overview:
+Operator symbols can be inserted by typing a textual representation of their respective symbols, eg. typing "union" will insert a ∪ symbol. Below is an overview:
 
 π: projection
 σ: selection
 ρ: rename
 γ: group
 τ: sort
-δ: delta???
+δ: removeduplicates
 →: ->
 ∪: union
 ∩: intersection

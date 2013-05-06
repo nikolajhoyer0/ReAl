@@ -1,2 +1,4 @@
 
 Worksheets are created and deleted from the two buttons "New sheet" and "Remove sheet", respectively. The query work area start out empty. Sheet names are unique when created.
+
+The contents of a given worksheet can be saved to an UFT-8 text-file from the "Save script" and "Load script" entries in the "File" menu.

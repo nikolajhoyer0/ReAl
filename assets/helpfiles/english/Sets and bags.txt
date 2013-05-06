@@ -1,0 +1,4 @@
+
+Per default, ReAl operates on bags (multisets). It is possible to convert a multiset to a set by the use of the remove duplicates operator, δ.
+
+Future releases will implement a way of explicitly switching between these modes.
