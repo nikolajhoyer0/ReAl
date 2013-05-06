@@ -81,6 +81,10 @@ public class HelpWindow extends javax.swing.JFrame {
         treeView.add(new DefaultMutableTreeNode("Tree view features"));
         root.add(treeView);
 
+        DefaultMutableTreeNode sets = new DefaultMutableTreeNode("Sets");
+        sets.add(new DefaultMutableTreeNode("Sets and bags"));
+        root.add(sets);
+
         DefaultMutableTreeNode operations = new DefaultMutableTreeNode("Operations");
         operations.add(new DefaultMutableTreeNode("Projection"));
         operations.add(new DefaultMutableTreeNode("Selection"));

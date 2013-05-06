@@ -998,11 +998,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
                     TextQueryView.addTableAutoWords(str);
                 }
             }
-            catch (InvalidDataset ex)
-            {
-                JOptionPane.showMessageDialog(rootPane, ex.getMessage());
-            }
-            catch (DatasetDuplicate ex)
+            catch (InvalidDataset | DatasetDuplicate | StringIndexOutOfBoundsException ex)
             {
                 JOptionPane.showMessageDialog(rootPane, ex.getMessage());
             }
