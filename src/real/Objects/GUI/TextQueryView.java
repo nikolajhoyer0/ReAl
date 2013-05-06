@@ -18,6 +18,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import real.Objects.Dataset;
 import real.Objects.Kernel;
+import real.Objects.Parser.TokenOpManager;
 import real.Objects.Services.DataManager;
 import real.Objects.Services.MainWindow;
 
@@ -37,7 +38,8 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
     //autocompletion words for textarea
     static private ArrayList<String> words = new ArrayList<>();
-
+    static private TokenOpManager opManager = null;
+    
     public TextQueryView(String name)
     {
         this.name = name;
@@ -57,7 +59,17 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
         addAutoWord("selection");
         addAutoWord("rename");
         addAutoWord("group");
-
+        addAutoWord("naturaljoin");
+        addAutoWord("union");
+        addAutoWord("intersection");
+        addAutoWord("difference");
+        addAutoWord("product");
+        addAutoWord("leftouterjoin");
+        addAutoWord("rightouterjoin");
+        addAutoWord("fullouterjoin");
+        addAutoWord("sort");
+        
+        
     }
 
     @Override
@@ -75,6 +87,11 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
     public static void removeAutoWord(String word)
     {
         words.remove(word);
+    }
+    
+    public static void setOpManager(TokenOpManager manager)
+    {
+        opManager = manager;
     }
 
     public static void addTableAutoWords(String table)
@@ -257,6 +274,8 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
         private void convertToSymbol(final int start, final int end, String str)
         {
+            System.out.println(str.substring(start, end).toLowerCase());
+            
             switch (str.substring(start, end).toLowerCase())
             {
                 case "projection":
@@ -314,31 +333,31 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
 
             if (str.length() > pos)
             {
-
-
                 //if we are in the string we only look for one string
-                if (!Character.isWhitespace(str.charAt(pos)))
+                if (!Character.isWhitespace(str.charAt(pos)) && opManager.getNonLetterOp(Character.toString(str.charAt(pos))) == null)
                 {
                     int leftIndex;
                     int rightIndex;
-
-                    for (leftIndex = pos; leftIndex > 0; --leftIndex)
+                    
+                    for (leftIndex = pos; leftIndex >= 0; --leftIndex)
                     {
-
-                        if (Character.isWhitespace(str.charAt(leftIndex)))
-                        {
-                            leftIndex++;
+                        System.out.println(leftIndex);
+                        
+                        if (Character.isWhitespace(str.charAt(leftIndex)) || opManager.getNonLetterOp(Character.toString(str.charAt(leftIndex))) != null)
+                        {                           
                             break;
                         }
 
                     }
-
+                    
+                    leftIndex++;
+                    
                     for (rightIndex = pos; rightIndex < str.length(); ++rightIndex)
                     {
 
-                        if (Character.isWhitespace(str.charAt(rightIndex)))
+                        if (Character.isWhitespace(str.charAt(rightIndex)) || opManager.getNonLetterOp(Character.toString(str.charAt(rightIndex))) != null)
                         {
-                            break;
+                            break;                        
                         }
 
                     }

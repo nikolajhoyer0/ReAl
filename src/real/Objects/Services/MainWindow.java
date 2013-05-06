@@ -154,6 +154,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         leftouterjoinButton.setFont(standardFont);
         rightouterjoinButton.setFont(standardFont);
         fullouterjoinButton.setFont(standardFont);
+        
+        TextQueryView.setOpManager(query.getTokenOpManager());
     }
 
     @Override

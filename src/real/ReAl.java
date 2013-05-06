@@ -20,7 +20,7 @@ public class ReAl
 
             System.setProperty("awt.useSystemAAFontSettings","on");
             System.setProperty("swing.aatext", "true");
-
+            
             com.jtattoo.plaf.smart.SmartLookAndFeel.setCurrentTheme(props);
             UIManager.setLookAndFeel("com.jtattoo.plaf.smart.SmartLookAndFeel");
             Kernel.AddService(new ErrorSystem());

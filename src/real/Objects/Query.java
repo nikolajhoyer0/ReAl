@@ -22,19 +22,18 @@ public class Query
     private ExpressionParser parser;
     private TokenTree current;
     private OperationBase currentData;
+    private TokenOpManager opManager;
     //will be removed.
     //private TreeViewTest view;
 
     public Query()
     {
-
         //will be removed
         //view = new TreeViewTest();
         //view.setSize(800, 820);
         //view.setVisible(true);
-
-
-        TokenOpManager opManager = new TokenOpManager();
+        
+        opManager = new TokenOpManager();
 
         opManager.addOp(new Token("+", 4, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token("-", 4, EnumSet.of(OpTypes.LEFT, OpTypes.UNARY)));
@@ -72,10 +71,14 @@ public class Query
         opManager.addOp(new Token("⟗", 6, EnumSet.of(OpTypes.LEFT, OpTypes.RELATIONAL)));
 
         TokenStream tokenStream = new TokenStream(opManager);
-
         parser = new ExpressionParser(tokenStream);
     }
 
+    public TokenOpManager getTokenOpManager()
+    {
+        return opManager;
+    }
+    
     private LinkedList<TokenTree> parse(String str) throws InvalidParsing
     {
         return parser.parse(str);
