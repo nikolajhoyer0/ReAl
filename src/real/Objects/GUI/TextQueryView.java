@@ -67,9 +67,7 @@ public class TextQueryView extends JPanel implements DocumentListener, KeyListen
         addAutoWord("leftouterjoin");
         addAutoWord("rightouterjoin");
         addAutoWord("fullouterjoin");
-        addAutoWord("sort");
-        
-        
+        addAutoWord("sort");       
     }
 
     @Override
