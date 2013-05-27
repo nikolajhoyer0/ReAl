@@ -4,6 +4,9 @@
  */
 package real.Objects.GUI;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import javax.swing.ImageIcon;
 
 /**
@@ -21,6 +24,7 @@ public class AboutWindow extends java.awt.Dialog {
         this.setLocationRelativeTo(null);
         ImageIcon image = new ImageIcon("assets/icon/Large_icon.png");
         jLabel1.setIcon(image);
+        loadText();
     }
 
     /**
@@ -42,6 +46,8 @@ public class AboutWindow extends java.awt.Dialog {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -49,6 +55,8 @@ public class AboutWindow extends java.awt.Dialog {
                 closeDialog(evt);
             }
         });
+
+        jTabbedPane1.setName(""); // NOI18N
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setIcon(new javax.swing.ImageIcon("/home/nikolaj/NetBeansProjects/ReAl/assets/icon/Large_icon.png")); // NOI18N
@@ -136,6 +144,15 @@ public class AboutWindow extends java.awt.Dialog {
 
         jTabbedPane1.addTab("About", jPanel2);
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+        jTextArea1.getAccessibleContext().setAccessibleName("");
+        jTextArea1.getAccessibleContext().setAccessibleDescription("");
+
+        jTabbedPane1.addTab("License", jScrollPane1);
+        jScrollPane1.getAccessibleContext().setAccessibleName("");
+
         add(jTabbedPane1, java.awt.BorderLayout.CENTER);
 
         pack();
@@ -148,7 +165,19 @@ public class AboutWindow extends java.awt.Dialog {
         setVisible(false);
         dispose();
     }//GEN-LAST:event_closeDialog
-
+    private void loadText() {
+        try
+        {
+            InputStreamReader reader = new InputStreamReader(
+                    new FileInputStream("License.txt"), "UTF-8");
+            jTextArea1.setText("");
+            jTextArea1.read(reader, null);
+        }
+        catch (IOException ex)
+        {
+            jTextArea1.setText("");
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -161,6 +190,8 @@ public class AboutWindow extends java.awt.Dialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }

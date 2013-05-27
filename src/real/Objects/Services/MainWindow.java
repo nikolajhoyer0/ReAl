@@ -37,7 +37,7 @@ public class MainWindow extends javax.swing.JFrame implements IService
             @Override
             public void windowClosing(WindowEvent evt)
             {
-                Kernel.Stop();
+                saveOnExit(null);
             }
         });
     }
@@ -67,7 +67,8 @@ public class MainWindow extends javax.swing.JFrame implements IService
         query = new Query();
         this.setIconImage(image.getImage());
         relationView.setModel(relationModel);
-
+        TextQueryView.setOpManager(query.getTokenOpManager());
+        
         // Implement keybinds for various buttons
         Action runKeybindAction = new AbstractAction()
         {
@@ -201,11 +202,11 @@ public class MainWindow extends javax.swing.JFrame implements IService
     private void initComponents() {
 
         loadProjectChooser = new javax.swing.JFileChooser();
-        saveProjectChooser = new javax.swing.JFileChooser();
+        saveProjectChooser = new real.Objects.GUI.FileChooserSave();
         importTableChooser = new javax.swing.JFileChooser();
-        exportTableChooser = new javax.swing.JFileChooser();
+        exportTableChooser = new real.Objects.GUI.FileChooserSave();
         loadScriptChooser = new javax.swing.JFileChooser();
-        saveScriptChooser = new javax.swing.JFileChooser();
+        saveScriptChooser = new real.Objects.GUI.FileChooserSave();
         combinedView = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jToolBar2 = new javax.swing.JToolBar();
@@ -258,25 +259,31 @@ public class MainWindow extends javax.swing.JFrame implements IService
         aboutMenuItem = new javax.swing.JMenuItem();
         helpMenuItem = new javax.swing.JMenuItem();
 
+        loadProjectChooser.setApproveButtonText("Load");
         loadProjectChooser.setDialogTitle("Load Project");
         loadProjectChooser.setFileFilter(new ExtensionFileFilter("real", new String[]{"real"}));
 
         saveProjectChooser.setAcceptAllFileFilterUsed(false);
         saveProjectChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
+        saveProjectChooser.setApproveButtonText("Save");
         saveProjectChooser.setDialogTitle("Save Project");
         saveProjectChooser.setFileFilter(new ExtensionFileFilter("real", new String[]{"real"}));
 
+        importTableChooser.setApproveButtonText("Import");
         importTableChooser.setDialogTitle("Import");
         importTableChooser.setFileFilter(new ExtensionFileFilter("csv", new String[]{"csv"}));
 
         exportTableChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
+        exportTableChooser.setApproveButtonText("Export");
         exportTableChooser.setDialogTitle("Export");
         exportTableChooser.setFileFilter(new ExtensionFileFilter("csv", new String[]{"csv"}));
 
         loadScriptChooser.setAcceptAllFileFilterUsed(false);
+        loadScriptChooser.setApproveButtonText("Load");
         loadScriptChooser.setFileFilter(new ExtensionFileFilter("txt", new String[]{"txt"}));
 
         saveScriptChooser.setAcceptAllFileFilterUsed(false);
+        saveScriptChooser.setApproveButtonText("Save");
         saveScriptChooser.setFileFilter(new ExtensionFileFilter("txt", new String[]{"txt"}));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1262,17 +1269,6 @@ public class MainWindow extends javax.swing.JFrame implements IService
 
             else if ((s.length() > 0) && foundDup == false)
             {
-
-                /*
-                 String sCurrentLine;
-                 String allLines = "";
-                 while ((sCurrentLine = br.readLine()) != null)
-                 {
-                 allLines = allLines + sCurrentLine + "\n";
-                 }
-                 */
-
-
                 String content = null;
 
                 try
@@ -1282,17 +1278,17 @@ public class MainWindow extends javax.swing.JFrame implements IService
                     reader.read(chars);
                     content = new String(chars);
                     reader.close();
+                    
+                    TextQueryView t = new TextQueryView(s);
+                    worksheetPane.addTab(s, t);
+                    worksheetPane.setSelectedComponent(t);
+                    JTextArea area = getCurrentWorksheet();
+                    area.setText(content);
                 }
                 catch (IOException ex)
                 {
                     JOptionPane.showMessageDialog(rootPane, "Problem accessing file " + file.getAbsolutePath());
-                }
-
-                TextQueryView t = new TextQueryView(s);
-                worksheetPane.addTab(s, t);
-                worksheetPane.setSelectedComponent(t);
-                JTextArea area = getCurrentWorksheet();
-                area.setText(content);
+                }               
             }
             else
             {

@@ -4,24 +4,33 @@
   <NonVisualComponents>
     <Component class="javax.swing.JFileChooser" name="loadProjectChooser">
       <Properties>
+        <Property name="approveButtonText" type="java.lang.String" value="Load"/>
         <Property name="dialogTitle" type="java.lang.String" value="Load Project"/>
         <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new ExtensionFileFilter(&quot;real&quot;, new String[]{&quot;real&quot;})" type="code"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="MainWindow_loadProjectChooser"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JFileChooser" name="saveProjectChooser">
       <Properties>
         <Property name="acceptAllFileFilterUsed" type="boolean" value="false"/>
         <Property name="dialogType" type="int" value="1"/>
+        <Property name="approveButtonText" type="java.lang.String" value="Save"/>
         <Property name="dialogTitle" type="java.lang.String" value="Save Project"/>
         <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new ExtensionFileFilter(&quot;real&quot;, new String[]{&quot;real&quot;})" type="code"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new real.Objects.GUI.FileChooserSave()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JFileChooser" name="importTableChooser">
       <Properties>
+        <Property name="approveButtonText" type="java.lang.String" value="Import"/>
         <Property name="dialogTitle" type="java.lang.String" value="Import"/>
         <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new ExtensionFileFilter(&quot;csv&quot;, new String[]{&quot;csv&quot;})" type="code"/>
@@ -31,15 +40,20 @@
     <Component class="javax.swing.JFileChooser" name="exportTableChooser">
       <Properties>
         <Property name="dialogType" type="int" value="1"/>
+        <Property name="approveButtonText" type="java.lang.String" value="Export"/>
         <Property name="dialogTitle" type="java.lang.String" value="Export"/>
         <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new ExtensionFileFilter(&quot;csv&quot;, new String[]{&quot;csv&quot;})" type="code"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new real.Objects.GUI.FileChooserSave()"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JFileChooser" name="loadScriptChooser">
       <Properties>
         <Property name="acceptAllFileFilterUsed" type="boolean" value="false"/>
+        <Property name="approveButtonText" type="java.lang.String" value="Load"/>
         <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new ExtensionFileFilter(&quot;txt&quot;, new String[]{&quot;txt&quot;})" type="code"/>
         </Property>
@@ -48,10 +62,14 @@
     <Component class="javax.swing.JFileChooser" name="saveScriptChooser">
       <Properties>
         <Property name="acceptAllFileFilterUsed" type="boolean" value="false"/>
+        <Property name="approveButtonText" type="java.lang.String" value="Save"/>
         <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new ExtensionFileFilter(&quot;txt&quot;, new String[]{&quot;txt&quot;})" type="code"/>
         </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new real.Objects.GUI.FileChooserSave()"/>
+      </AuxValues>
     </Component>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
