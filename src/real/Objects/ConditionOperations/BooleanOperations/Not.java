@@ -32,7 +32,7 @@ public class Not extends BooleanOperator
                 return false;
             }
             
-            return Boolean.compare(a, b) != 0;
+            return a.booleanValue() != b.booleanValue();
         }
         
         else if(operandA.getType() == DataType.NUMBER)
@@ -45,7 +45,7 @@ public class Not extends BooleanOperator
                 return false;
             }
             
-            return Float.compare(a, b) != 0;
+            return a.floatValue() != b.floatValue();
         }
         
         else
@@ -58,7 +58,7 @@ public class Not extends BooleanOperator
                 return false;
             }
             
-            return a.equals(b);
+            return !a.equals(b);
         }     
     }
     

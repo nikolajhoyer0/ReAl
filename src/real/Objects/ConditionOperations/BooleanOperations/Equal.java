@@ -34,7 +34,7 @@ public class Equal extends BooleanOperator
                 return false;
             }
             
-            return Boolean.compare(a, b) == 0;
+            return a.booleanValue() == b.booleanValue();
         }
         
         else if(operandA.getType() == DataType.NUMBER)
@@ -47,7 +47,7 @@ public class Equal extends BooleanOperator
                 return false;
             }
             
-            return Float.compare(a, b) == 0;
+            return a.floatValue() == b.floatValue();
         }
         
         else
