@@ -49,6 +49,7 @@ public class Query
         opManager.addOp(new Token("OR", 0, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token("and", 1, EnumSet.of(OpTypes.LEFT)));
         opManager.addOp(new Token("or", 0, EnumSet.of(OpTypes.LEFT)));
+        opManager.addOp(new Token("<>", 2, EnumSet.of(OpTypes.LEFT)));
 
         //function operators
         opManager.addOp(new Token("π", 0, EnumSet.of(OpTypes.FUNCTION, OpTypes.RELATIONAL)));
@@ -255,6 +256,8 @@ public class Query
             case "<":
                 return new Less(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case "!=":
+                return new Not(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
+            case "<>":
                 return new Not(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
             case "AND": case "and":
                 return new And(interpretCondition(children[0], relation, ignoreNoAttribute),interpretCondition(children[1], relation, ignoreNoAttribute), linePosition);
